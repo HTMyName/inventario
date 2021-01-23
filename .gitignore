@@ -1,0 +1,15 @@
+###> symfony/framework-bundle ###
+/bin
+/migrations
+/tests
+/translations
+/var
+/vendor
+/.idea
+.env
+.env.test
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+phpunit.xml.dist
+/phpunit.xml

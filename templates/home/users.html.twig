@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
+{% endblock %}
+
+
+{% block page_name %}
+    Trabajadores
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                </div>
+                <label class="text-sm mt-2"><span class="text-danger">• </span>La contraseña por defecto para un nuevo trabajador es: 12345</label>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <!-- /.card-body -->
+    </div>
+    <div class="card card-primary container-fluid">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr class="text-center">
+                        <th width="20%">Nombre</th>
+                        <th width="20%">Usuario</th>
+                        <th width="20%">Pago_Servicios</th>
+                        <th width="20%">Pago_Ventas</th>
+                        <th width="20%">Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <tfoot>
+                    <tr class="text-center">
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Pago_Servicios</th>
+                        <th>Pago_Ventas</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for user in data %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.payS }}</td>
+                            <td>{{ user.payV }}</td>
+                            <td class="text-center">
+                                <input class="btn-sm btn-info mr-1 ml-1 mb-1 border-0" type="button" value="Pagar"
+                                       style="width: 80px" onclick="">
+                                <a href="{{ path('app_users_edit', {'id': user.id}) }}"><input
+                                            class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
+                                            value="Editar"
+                                            style="width: 80px"></a>
+                                {% if user.roles[0] != "ROLE_ADMIN" %}
+                                    <input class="btn-sm btn-danger mr-1 ml-1 mb-1 border-0" type="button"
+                                           value="Eliminar"
+                                           style="width: 80px" onclick="delUser({{ user.id }}, '{{ user.name }}')">
+                                {% else %}
+                                    <input class="btn-sm btn-flat mr-1 ml-1 mb-1 border-0" type="button"
+                                           value="Eliminar"
+                                           style="width: 80px" disabled>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('dist/js/actions.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('plugins/users.js') }}"></script>
+{% endblock %}
