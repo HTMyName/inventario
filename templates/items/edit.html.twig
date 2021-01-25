@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    {{ form_row(form.marca, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.modelo, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.precioC, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.precioV, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+
+
+

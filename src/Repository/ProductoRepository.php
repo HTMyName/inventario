@@ -14,37 +14,57 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductoRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Producto::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Producto::class);
+	}
 
-    // /**
-    //  * @return Producto[] Returns an array of Producto objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+	public function deleteBy($id)
+	{
+		return $this->createQueryBuilder('p')
+			->update('App:Producto', 'p')
+			->set('p.active', '0')
+			->where("p.id = :id")
+			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
 
-    /*
-    public function findOneBySomeField($value): ?Producto
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+	public function showAllProducts()
+	{
+		return $this->createQueryBuilder('p')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia')
+			->where('p.active = 1')
+			->getQuery()
+			->getResult();
+	}
+
+	// /**
+	//  * @return Producto[] Returns an array of Producto objects
+	//  */
+	/*
+	public function findByExampleField($value)
+	{
+		return $this->createQueryBuilder('p')
+			->andWhere('p.exampleField = :val')
+			->setParameter('val', $value)
+			->orderBy('p.id', 'ASC')
+			->setMaxResults(10)
+			->getQuery()
+			->getResult()
+		;
+	}
+	*/
+
+	/*
+	public function findOneBySomeField($value): ?Producto
+	{
+		return $this->createQueryBuilder('p')
+			->andWhere('p.exampleField = :val')
+			->setParameter('val', $value)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+	}
+	*/
 }
