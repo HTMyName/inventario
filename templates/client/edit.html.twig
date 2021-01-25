@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block page_name %}
+    Editar cliente
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.tell, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-2">
+                    {{ form_row(form.add, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                </div>
+                <div class="col-2">
+                    <a href="{{ path('app_client') }}"><input class="btn btn-danger btn-block" type="button"
+                                                              value="Cancelar" style="margin-top: 32px!important"></a>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+
+

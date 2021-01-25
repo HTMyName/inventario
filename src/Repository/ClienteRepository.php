@@ -15,40 +15,41 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClienteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Cliente::class);
-    }
-
-    public function findClientbyName(){
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Cliente::class);
 	}
 
-    // /**
-    //  * @return Cliente[] Returns an array of Cliente objects
-    //  */
+	public function findAllClients()
+	{
+		return $this->createQueryBuilder('c')
+			->select('c')
+			->where('c.active = 1')
+			->getQuery()
+			->getResult();
+	}
 
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-			->innerJoin('App\Entity\Logs', 'l', Join::WITH, 'c.id = l.id_cliente')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+	public function deleteClient($id)
+	{
+		return $this->createQueryBuilder('c')
+			->update('App:Cliente', 'c')
+			->set('c.active', '0')
+			->where('c.id = :id')
+			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
 
 
-    /*
-    public function findOneBySomeField($value): ?Cliente
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+	/*
+	public function findOneBySomeField($value): ?Cliente
+	{
+		return $this->createQueryBuilder('c')
+			->andWhere('c.exampleField = :val')
+			->setParameter('val', $value)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+	}
+	*/
 }
