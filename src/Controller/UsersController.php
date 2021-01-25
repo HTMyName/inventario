@@ -41,7 +41,7 @@ class UsersController extends AbstractController
 		$user_data = $this->getDoctrine()->getRepository(User::class);
 		$data = $user_data->showAllUsers();
 
-		return $this->render('home/users.html.twig', ['form' => $form->createView(), 'data' => $data]);
+		return $this->render('users/users.html.twig', ['form' => $form->createView(), 'data' => $data]);
 	}
 
 	/**
@@ -83,6 +83,6 @@ class UsersController extends AbstractController
 			return $this->redirectToRoute('app_users');
 		}
 
-		return $this->render('home/edit.html.twig', ['form' => $form->createView()]);
+		return $this->render('users/edit.html.twig', ['form' => $form->createView()]);
 	}
 }

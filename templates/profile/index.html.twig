@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(form.password, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+

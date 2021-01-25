@@ -21,3 +21,13 @@ function delUser(id, name) {
 
     }
 }
+
+
+function ganancia() {
+    let precioC = document.getElementById('add_item_precioC');
+    let precioV = document.getElementById('add_item_precioV');
+
+    document.getElementById('auto-ganacias').innerHTML = precioV.value - precioC.value;
+
+}
+
