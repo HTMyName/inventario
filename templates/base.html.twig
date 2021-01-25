@@ -77,11 +77,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="{{ path('app_items') }}" class="nav-link">
+                            <i class="nav-icon fas fa-truck-loading"></i>
                             <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
+                                Productos
                             </p>
                         </a>
                     </li>
@@ -136,13 +135,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="p-3">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    <img src="{{ asset('dist/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    {{ app.user.name }}
                 </div>
             </div>
-            <a href="{{ path('app_logout') }}">Logout</a>
+            <div class="row pl-3 mb-2">
+                <a href="{{ path('app_profile') }}">Configuración</a>
+            </div>
+            <div class="row pl-3 mb-2">
+                <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
         </div>
     </aside>
     <!-- /.control-sidebar -->

@@ -10,18 +10,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditUserType extends AbstractType
+class ProfileUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('name', TextType::class, ['attr'=>['autocomplete' => 'off']])
-			->add('username', TextType::class, ['attr'=>['autocomplete' => 'off']])
-			->add('submit', SubmitType::class,
-				[
-					'label' => "Update",
-				]
-			);
+            ->add('username', TextType::class)
+            ->add('name', TextType::class)
+            ->add('password', PasswordType::class)
+			->add('submit', SubmitType::class)
         ;
     }
 
