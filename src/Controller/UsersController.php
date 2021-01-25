@@ -37,7 +37,7 @@ class UsersController extends AbstractController
 
 			return $this->redirectToRoute('app_users');
 		}
-
+		//listar trabajadores en tabla
 		$user_data = $this->getDoctrine()->getRepository(User::class);
 		$data = $user_data->showAllUsers();
 

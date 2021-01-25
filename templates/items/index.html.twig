@@ -36,7 +36,7 @@
                     <label id="auto-ganacias" class="form-control"></label>
                 </div>
                 <div class="col-4 m-auto">
-                    {{ form_row(form.add, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
         </div>
@@ -49,30 +49,30 @@
                 <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="13%">Nombre</th>
-                        <th width="13%">Usuario</th>
-                        <th width="13%">Pago_Servicios</th>
-                        <th width="13%">Pago_Ventas</th>
-                        <th width="13%">Pago_Ventas</th>
-                        <th width="13%">Pago_Ventas</th>
+                        <th width="13%">Marca</th>
+                        <th width="13%">Modelo</th>
+                        <th width="13%">Serie</th>
+                        <th width="13%">Precio_Compra</th>
+                        <th width="13%">Precio_Venta</th>
+                        <th width="13%">Ganancia</th>
                         <th width="22%">Acciones</th>
                     </tr>
                     </thead>
 
                     <tfoot>
                     <tr class="text-center">
-                        <th>Nombre</th>
-                        <th>Usuario</th>
-                        <th>Pago_Servicios</th>
-                        <th>Pago_Ventas</th>
-                        <th>Pago_Ventas</th>
-                        <th>Pago_Ventas</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Serie</th>
+                        <th>Precio_Compra</th>
+                        <th>Precio_Venta</th>
+                        <th>Ganancia</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     {% for item in data %}
-                        <tr>
+                        <tr class="text-center">
                             <td>{{ item.marca }}</td>
                             <td>{{ item.modelo }}</td>
                             <td>{{ item.serie }}</td>
@@ -80,21 +80,15 @@
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
                             <td class="text-center">
-                                <input class="btn-sm btn-info mr-1 ml-1 mb-1 border-0" type="button" value="Pagar"
-                                       style="width: 80px" onclick="">
-                                <a href="{{ path('app_users_edit', {'id': item.id}) }}"><input
+
+                                <a href="{{ path('app_edit', {'id': item.id}) }}"><input
                                             class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
                                             value="Editar"
                                             style="width: 80px"></a>
-                                {% if app.user.roles[0] != "ROLE_ADMIN" %}
-                                    <input class="btn-sm btn-danger mr-1 ml-1 mb-1 border-0" type="button"
-                                           value="Eliminar"
-                                           style="width: 80px" onclick="delUser({{ item.id }}, '{{ item.name }}')">
-                                {% else %}
-                                    <input class="btn-sm btn-flat mr-1 ml-1 mb-1 border-0" type="button"
-                                           value="Eliminar"
-                                           style="width: 80px" disabled>
-                                {% endif %}
+                                <input class="btn-sm btn-danger mr-1 ml-1 mb-1 border-0" type="button"
+                                       value="Eliminar"
+                                       style="width: 80px"
+                                       onclick="delItem('{{ item.id }}', '{{ item.marca }}', '{{ item.modelo }}')">
                             </td>
                         </tr>
                     {% endfor %}

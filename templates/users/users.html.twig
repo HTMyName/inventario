@@ -56,7 +56,7 @@
                     </tfoot>
                     <tbody>
                     {% for user in data %}
-                        <tr>
+                        <tr class="text-center">
                             <td>{{ user.name }}</td>
                             <td>{{ user.username }}</td>
                             <td>{{ user.payS }}</td>
@@ -68,7 +68,7 @@
                                             class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
                                             value="Editar"
                                             style="width: 80px"></a>
-                                {% if app.user.roles[0] != "ROLE_ADMIN" %}
+                                {% if user.roles[0] != "ROLE_ADMIN" %}
                                     <input class="btn-sm btn-danger mr-1 ml-1 mb-1 border-0" type="button"
                                            value="Eliminar"
                                            style="width: 80px" onclick="delUser({{ user.id }}, '{{ user.name }}')">

@@ -20,7 +20,7 @@ class AddItemType extends AbstractType
 			->add('serie')
 			->add('precioC', NumberType::class)
 			->add('precioV', NumberType::class)
-			->add('add', SubmitType::class);
+			->add('submit', SubmitType::class);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)
