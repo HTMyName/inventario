@@ -42,7 +42,7 @@ class ItemsController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete/{id}", name="app_delete")
+	 * @Route("/delete/{id}", name="app_items_delete")
 	 */
 	public function deleteAction($id = null)
 	{
@@ -53,7 +53,7 @@ class ItemsController extends AbstractController
 	}
 
 	/**
-	 * @Route("/edit/{id}", name="app_edit")
+	 * @Route("/edit/{id}", name="app_items_edit")
 	 */
 	public function editAction($id = null, Request $request)
 	{
