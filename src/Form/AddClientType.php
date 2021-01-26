@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Cliente;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,7 +15,7 @@ class AddClientType extends AbstractType
 	{
 		$builder
 			->add('name')
-			->add('tell')
+			->add('tell', NumberType::class)
 			->add('add', SubmitType::class);
 	}
 

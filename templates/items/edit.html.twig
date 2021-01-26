@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Editar Producto
+{% endblock %}
+
+{% block page_name %}
+    Editar Producto
+{% endblock %}
+
 {% block main_content %}
     <div class="card card-primary container-fluid">
         {{ form_start(form) }}
@@ -20,8 +28,12 @@
                 <div class="col-4">
                     {{ form_row(form.precioV, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                </div>
+                <div class="col-2">
+                    <a href="{{ path('app_items') }}"><input class="btn btn-danger btn-block" type="button"
+                                                             value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>
             </div>
         </div>

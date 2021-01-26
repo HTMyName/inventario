@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Editar Trabajador
+    Editar Servicio
 {% endblock %}
 
 {% block page_name %}
-    Editar Trabajador
+    Editar Servicio
 {% endblock %}
 
 {% block main_content %}
@@ -17,15 +17,20 @@
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-4">
-                    {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-2">
+                <div class="col-4">
+                    {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+            </div>
+            <div class="row col-6 m-auto">
+                <div class="col-6">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <div class="col-2">
-                    <a href="{{ path('app_users') }}"><input class="btn btn-danger btn-block" type="button" value="Cancelar" style="margin-top: 32px!important"></a>
+                <div class="col-6">
+                    <a href="{{ path('app_services') }}"><input class="btn btn-danger btn-block" type="button"
+                                                                value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>
-                <label class="text-sm mt-2"><span class="text-danger">• </span>Al editar un trabajador su contraseña se restablecerá como: 12345</label>
             </div>
         </div>
         {{ form_end(form) }}

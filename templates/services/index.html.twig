@@ -1,31 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Clientes
-{% endblock %}
-
-{% block page_name %}
-    Clientes
-{% endblock %}
-
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
 {% endblock %}
 
+{% block title %}
+    Servicios
+{% endblock %}
+
+{% block page_name %}
+    Servicios
+{% endblock %}
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
-                    {{ form_row(form.tell, { attr: {'autocomplete': 'off'} } ) }}
+                <div class="col-3">
+                    {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
-                    {{ form_row(form.add, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                <div class="col-3">
+                    {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
         </div>
@@ -38,36 +40,35 @@
                 <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="33%">Nombre</th>
-                        <th width="33%">Teléfono</th>
-                        <th width="34%">Acciones</th>
+                        <th width="25%">Nombre</th>
+                        <th width="25%">Detalles</th>
+                        <th width="25%">Precio</th>
+                        <th width="25%">Acciones</th>
                     </tr>
                     </thead>
 
                     <tfoot>
                     <tr class="text-center">
-                        <th width="33%">Nombre</th>
-                        <th width="33%">Teléfono</th>
-                        <th width="34%">Acciones</th>
+                        <th width="25%">Nombre</th>
+                        <th width="25%">Detalles</th>
+                        <th width="25%">Precio</th>
+                        <th width="25%">Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
-                    {% for client in data %}
+                    {% for service in data %}
                         <tr class="text-center">
-                            <td>{{ client.name }}</td>
-                            <td>{{ client.tell }}</td>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.detalles }}</td>
+                            <td>{{ service.precio }}</td>
                             <td class="text-center">
-                                <a href="tel:{{ client.tell }}"><input
-                                            class="btn-sm btn-info mr-1 ml-1 mb-1 border-0" type="button"
-                                            value="Llamar"
-                                            style="width: 80px"></a>
-                                <a href="{{ path('app_client_edit', {'id': client.id}) }}"><input
+                                <a href="{{ path('app_services_edit', {'id': service.id}) }}"><input
                                             class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
                                             value="Editar"
                                             style="width: 80px"></a>
                                 <input class="btn-sm btn-danger mr-1 ml-1 mb-1 border-0" type="button"
                                        value="Eliminar"
-                                       style="width: 80px" onclick="delClient({{ client.id }}, '{{ client.name }}')">
+                                       style="width: 80px" onclick="delServicio({{ service.id }}, '{{ service.name }}')">
                             </td>
                         </tr>
                     {% endfor %}

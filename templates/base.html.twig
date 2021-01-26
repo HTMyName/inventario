@@ -9,13 +9,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>{% block title %}Inventario{% endblock %}</title>
+    <title>Inventario - {% block title %}{% endblock %}</title>
 
     {% block stylesheet %}{% endblock %}
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ asset('dist/css/custom.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 {% block body %}
@@ -47,7 +49,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-            <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
@@ -59,27 +62,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="{{ path('app_items') }}" class="nav-link">
+                            <i class="nav-icon fas fa-truck-loading"></i>
                             <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
+                                Productos
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_services') }}" class="nav-link">
+                            <i class="nav-icon fas fa-tasks"></i>
+                            <p>
+                                Servicios
                             </p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('app_client') }}" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
+                            <i class="nav-icon fas fa-user-tie"></i>
                             <p>
                                 Clientes
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('app_items') }}" class="nav-link">
-                            <i class="nav-icon fas fa-truck-loading"></i>
-                            <p>
-                                Productos
                             </p>
                         </a>
                     </li>
@@ -118,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="container-fluid">
                 <div class="row p-1">
                     {% block main_content %}
-                        
+
                     {% endblock %}
                 </div>
                 <!-- /.row -->
@@ -140,11 +142,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     {{ app.user.name }}
                 </div>
             </div>
-            <div class="row pl-3 mb-2">
-                <a href="{{ path('app_profile') }}">Configuración</a>
+            <div class="row pl-3 mb-3">
+                <a href="{{ path('app_profile') }}"><i class="nav-icon fas fa-cog"></i> Configuración</a>
             </div>
-            <div class="row pl-3 mb-2">
-                <a href="{{ path('app_logout') }}">Logout</a>
+            <div class="row pl-3 mb-3">
+                <a href="{{ path('app_logout') }}"><i class="nav-icon fas fa-sign-out-alt"></i> Salir</a>
             </div>
         </div>
     </aside>
