@@ -27,6 +27,7 @@ class ItemsController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
 			$items->setGanancia($items->getPrecioV() - $items->getPrecioC());
+			$items->setActive(1);
 			$em->persist($items);
 			$em->flush();
 

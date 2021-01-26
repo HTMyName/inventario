@@ -10,66 +10,87 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Servicio
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id
+	 * @ORM\GeneratedValue
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $detalles;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $detalles;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $precio;
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $precio;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $active;
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getActive()
+	{
+		return $this->active;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	/**
+	 * @param mixed $active
+	 */
+	public function setActive($active): void
+	{
+		$this->active = $active;
+	}
 
-        return $this;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getDetalles(): ?string
-    {
-        return $this->detalles;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-    public function setDetalles(string $detalles): self
-    {
-        $this->detalles = $detalles;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPrecio(): ?float
-    {
-        return $this->precio;
-    }
+	public function getDetalles(): ?string
+	{
+		return $this->detalles;
+	}
 
-    public function setPrecio(float $precio): self
-    {
-        $this->precio = $precio;
+	public function setDetalles(string $detalles): self
+	{
+		$this->detalles = $detalles;
 
-        return $this;
-    }
+		return $this;
+	}
+
+	public function getPrecio(): ?float
+	{
+		return $this->precio;
+	}
+
+	public function setPrecio(float $precio): self
+	{
+		$this->precio = $precio;
+
+		return $this;
+	}
 }

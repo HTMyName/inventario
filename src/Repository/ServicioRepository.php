@@ -14,37 +14,57 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ServicioRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Servicio::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Servicio::class);
+	}
 
-    // /**
-    //  * @return Servicio[] Returns an array of Servicio objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+	public function findAllClients()
+	{
+		return $this->createQueryBuilder('s')
+			->select('s')
+			->where('s.active = 1')
+			->getQuery()
+			->getResult();
+	}
 
-    /*
-    public function findOneBySomeField($value): ?Servicio
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+	public function deleteBy($id)
+	{
+		return $this->createQueryBuilder('s')
+			->update(Servicio::class, 's')
+			->set('s.active', '0')
+			->where('s.id = :id')
+			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
+
+	// /**
+	//  * @return Servicio[] Returns an array of Servicio objects
+	//  */
+	/*
+	public function findByExampleField($value)
+	{
+		return $this->createQueryBuilder('s')
+			->andWhere('s.exampleField = :val')
+			->setParameter('val', $value)
+			->orderBy('s.id', 'ASC')
+			->setMaxResults(10)
+			->getQuery()
+			->getResult()
+		;
+	}
+	*/
+
+	/*
+	public function findOneBySomeField($value): ?Servicio
+	{
+		return $this->createQueryBuilder('s')
+			->andWhere('s.exampleField = :val')
+			->setParameter('val', $value)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+	}
+	*/
 }
