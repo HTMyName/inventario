@@ -14,7 +14,6 @@ class Cliente
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
 	 * @ORM\Column(type="integer")
-	 * @ORM\OneToMany(targetEntity="App\Entity\Logs", mappedBy="id_cliente")
 	 */
 	private $id;
 

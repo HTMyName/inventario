@@ -17,7 +17,6 @@ class User implements UserInterface
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
 	 * @ORM\Column(type="integer")
-	 * @ORM\OneToMany(targetEntity="App\Entity\Logs", mappedBy="id_user")
 	 */
 	private $id;
 

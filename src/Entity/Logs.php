@@ -28,12 +28,14 @@ class Logs
 	private $detalles;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Cliente", inversedBy="id")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Cliente")
+	 * @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
 	 */
 	private $id_cliente;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
+	 * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
 	 */
 	private $id_user;
 

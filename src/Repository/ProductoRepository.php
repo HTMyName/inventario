@@ -39,6 +39,26 @@ class ProductoRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
+	public function showAllIventario()
+	{
+		return $this->createQueryBuilder('p')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.cantidad_inventario')
+			->where('p.active = 1')
+			->andWhere('p.cantidad_inventario > 0')
+			->getQuery()
+			->getResult();
+	}
+
+	public function showAllTaller()
+	{
+		return $this->createQueryBuilder('p')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.cantidad_taller')
+			->where('p.active = 1')
+			->andWhere('p.cantidad_taller > 0')
+			->getQuery()
+			->getResult();
+	}
+
 	// /**
 	//  * @return Producto[] Returns an array of Producto objects
 	//  */

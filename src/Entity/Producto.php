@@ -46,6 +46,49 @@ class Producto
 	 * @ORM\Column(type="float")
 	 */
 	private $ganancia;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $cantidad_taller;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $cantidad_inventario;
+
+	/**
+	 * @return mixed
+	 */
+	public function getCantidadTaller()
+	{
+		return $this->cantidad_taller;
+	}
+
+	/**
+	 * @param mixed $cantidad_taller
+	 */
+	public function setCantidadTaller($cantidad_taller): void
+	{
+		$this->cantidad_taller = $cantidad_taller;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCantidadInventario()
+	{
+		return $this->cantidad_inventario;
+	}
+
+	/**
+	 * @param mixed $cantidad_inventario
+	 */
+	public function setCantidadInventario($cantidad_inventario): void
+	{
+		$this->cantidad_inventario = $cantidad_inventario;
+	}
+
 	/**
 	 * @ORM\Column(type="boolean")
 	 */

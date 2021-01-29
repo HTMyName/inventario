@@ -40,7 +40,7 @@ class ClientController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete/{id}", name="app_client_delete")
+	 * @Route("/delete/{id}", name="app_client_delete", requirements={"id"="\d+"})
 	 */
 	public function deleteAction($id = null)
 	{
@@ -51,7 +51,7 @@ class ClientController extends AbstractController
 	}
 
 	/**
-	 * @Route("/edit/{id}", name="app_client_edit")
+	 * @Route("/edit/{id}", name="app_client_edit", requirements={"id"="\d+"})
 	 */
 	public function editAction($id = null, Request $request)
 	{

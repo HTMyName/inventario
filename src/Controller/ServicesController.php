@@ -37,7 +37,7 @@ class ServicesController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete/{id}", name="app_services_delete")
+	 * @Route("/delete/{id}", name="app_services_delete", requirements={"id"="\d+"})
 	 */
 	public function deleteAction($id = null)
 	{
@@ -49,7 +49,7 @@ class ServicesController extends AbstractController
 	}
 
 	/**
-	 * @Route("/edit/{id}", name="app_services_edit")
+	 * @Route("/edit/{id}", name="app_services_edit", requirements={"id"="\d+"})
 	 */
 	public function editAction($id = null, Request $request)
 	{
