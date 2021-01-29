@@ -94,7 +94,6 @@ function delServicio(id, name) {
     }
 }
 
-
 function ganancia() {
     let precioC = document.getElementById('add_item_precioC');
     let precioV = document.getElementById('add_item_precioV');
