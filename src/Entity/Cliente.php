@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClienteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,47 +35,90 @@ class Cliente
 	private $active;
 
 	/**
-	 * @return mixed
+	 * @ORM\OneToMany(targetEntity="App\Entity\Logs", mappedBy="id_cliente")
 	 */
-	public function getActive()
-	{
-		return $this->active;
-	}
+	private $logs;
 
-	/**
-	 * @param mixed $active
-	 */
-	public function setActive($active): void
-	{
-		$this->active = $active;
-	}
+	public function __construct()
+                              	{
+                              		$this->logs = new ArrayCollection();
+                              	}
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
 
-	public function getName(): ?string
-	{
-		return $this->name;
-	}
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
-	public function setName(string $name): self
-	{
-		$this->name = $name;
+        return $this;
+    }
 
-		return $this;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function getTell(): ?string
-	{
-		return $this->tell;
-	}
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-	public function setTell(string $tell): self
-	{
-		$this->tell = $tell;
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
+
+    public function getTell(): ?string
+    {
+        return $this->tell;
+    }
+
+    public function setTell(string $tell): self
+    {
+        $this->tell = $tell;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Logs[]
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(Logs $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs[] = $log;
+            $log->setIdCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Logs $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getIdCliente() === $this) {
+                $log->setIdCliente(null);
+            }
+        }
+
+        return $this;
+    }
+
+	public function setLogs(?Logs $logs): self
+                              	{
+                              		$this->logs = $logs;
+                              
+                              		return $this;
+                              	}
 }

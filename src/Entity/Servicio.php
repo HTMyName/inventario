@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ServicioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=ServicioRepository::class)
@@ -37,60 +39,61 @@ class Servicio
 	 */
 	private $active;
 
-	/**
-	 * @return mixed
-	 */
-	public function getActive()
-	{
-		return $this->active;
-	}
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
 
-	/**
-	 * @param mixed $active
-	 */
-	public function setActive($active): void
-	{
-		$this->active = $active;
-	}
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+        return $this;
+    }
 
-	public function getName(): ?string
-	{
-		return $this->name;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function setName(string $name): self
-	{
-		$this->name = $name;
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-		return $this;
-	}
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-	public function getDetalles(): ?string
-	{
-		return $this->detalles;
-	}
+        return $this;
+    }
 
-	public function setDetalles(string $detalles): self
-	{
-		$this->detalles = $detalles;
+    public function getDetalles(): ?string
+    {
+        return $this->detalles;
+    }
 
-		return $this;
-	}
+    public function setDetalles(string $detalles): self
+    {
+        $this->detalles = $detalles;
 
-	public function getPrecio(): ?float
-	{
-		return $this->precio;
-	}
+        return $this;
+    }
 
-	public function setPrecio(float $precio): self
-	{
-		$this->precio = $precio;
+    public function getPrecio(): ?float
+    {
+        return $this->precio;
+    }
 
-		return $this;
-	}
+    public function setPrecio(float $precio): self
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+	public function __toString()
+                                                                                                                                       	{
+                                                                                                                                       		return $this->name;
+                                                                                                                                       	}
 }
