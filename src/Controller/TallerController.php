@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cliente;
 use App\Entity\Facturas;
 use App\Entity\Producto;
 use App\Entity\Servicio;
@@ -20,7 +21,38 @@ class TallerController extends AbstractController
 	/**
 	 * @Route("", name="app_taller")
 	 */
-	public function index(Request $request): Response
+	public function index(): Response
+	{
+		$items_data = $this->getDoctrine()->getRepository(Producto::class);
+		$data = $items_data->showAllTaller();
+
+		return $this->render('taller/index.html.twig',
+			[
+				'data' => $data
+			]
+		);
+	}
+
+	/**
+	 * @Route("/get_producto/{id}", name="get_producto", methods={"POST"}, requirements={"id"="\d+"})
+	 */
+	public function get_productoAction($id = null)
+	{
+		if ($id !== null) {
+			$producto = $this->getDoctrine()->getRepository(Producto::class)->find($id);
+		}
+
+		$response = new JsonResponse();
+
+		$response->setData(['marca' => $producto->getMarca(), 'modelo' => $producto->getModelo(), 'precio' => $producto->getPrecioV()]);
+
+		return $response;
+	}
+
+	/**
+	 * @Route("/factura", name="app_factura")
+	 */
+	public function facturaAction(Request $request)
 	{
 		$factura = new Facturas();
 		$form = $this->createForm(FacturaType::class, $factura);
@@ -50,7 +82,7 @@ class TallerController extends AbstractController
 		$items_data = $this->getDoctrine()->getRepository(Producto::class);
 		$data = $items_data->showAllTaller();
 
-		return $this->render('taller/index.html.twig',
+		return $this->render('taller/factura.html.twig',
 			[
 				'form' => $form->createView(),
 				'data' => $data
@@ -59,18 +91,13 @@ class TallerController extends AbstractController
 	}
 
 	/**
-	 * @Route("/get_producto/{id}", name="get_producto", methods={"POST"}, requirements={"id"="\d+"})
+	 * @Route("/get_user/{data}", name="app_taller_get_user")
 	 */
-	public function get_productoAction($id = null)
+	public function get_userAction($data = null)
 	{
-		if ($id !== null) {
-			$producto = $this->getDoctrine()->getRepository(Producto::class)->find($id);
+		if ($data !== null) {
+			$user_repository = $this->getDoctrine()->getRepository(Cliente::class)->getClientName($data);
 		}
 
-		$response = new JsonResponse();
-
-		$response->setData(['marca' => $producto->getMarca(), 'modelo' => $producto->getModelo(), 'precio' => $producto->getPrecioV()]);
-
-		return $response;
 	}
 }
