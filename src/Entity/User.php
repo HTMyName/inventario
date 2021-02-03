@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -17,7 +19,6 @@ class User implements UserInterface
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
 	 * @ORM\Column(type="integer")
-	 * @ORM\OneToMany(targetEntity="App\Entity\Logs", mappedBy="id_user")
 	 */
 	private $id;
 
@@ -47,68 +48,125 @@ class User implements UserInterface
 	private $active;
 
 	/**
-	 * @return mixed
+	 * @ORM\Column(type="float")
 	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+	private $venta_direct;
 
 	/**
-	 * @param mixed $name
+	 * @ORM\Column(type="float")
 	 */
-	public function setName($name): void
-	{
-		$this->name = $name;
-	}
+	private $servicio_direct;
 
 	/**
-	 * @return mixed
+	 * @ORM\Column(type="float")
 	 */
-	public function getPayS()
-	{
-		return $this->payS;
-	}
+	private $venta_indirect;
 
 	/**
-	 * @param mixed $payS
+	 * @ORM\Column(type="float")
 	 */
-	public function setPayS($payS): void
-	{
-		$this->payS = $payS;
-	}
+	private $servicio_indirect;
 
 	/**
-	 * @return mixed
+	 * @ORM\OneToMany(targetEntity="App\Entity\Logs", mappedBy="id_user")
 	 */
-	public function getPayV()
-	{
-		return $this->payV;
-	}
+	private $logs;
 
-	/**
-	 * @param mixed $payV
-	 */
-	public function setPayV($payV): void
-	{
-		$this->payV = $payV;
-	}
+    public function getVentaIndirect(): ?float
+    {
+        return $this->venta_indirect;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getActive()
-	{
-		return $this->active;
-	}
+    public function setVentaIndirect(float $venta_indirect): self
+    {
+        $this->venta_indirect = $venta_indirect;
 
-	/**
-	 * @param mixed $active
-	 */
-	public function setActive($active): void
-	{
-		$this->active = $active;
-	}
+        return $this;
+    }
+
+    public function getServicioIndirect(): ?float
+    {
+        return $this->servicio_indirect;
+    }
+
+    public function setServicioIndirect(float $servicio_indirect): self
+    {
+        $this->servicio_indirect = $servicio_indirect;
+
+        return $this;
+    }
+
+    public function getVentaDirect(): ?float
+    {
+        return $this->venta_direct;
+    }
+
+    public function setVentaDirect(float $venta_direct): self
+    {
+        $this->venta_direct = $venta_direct;
+
+        return $this;
+    }
+
+    public function getServicioDirect(): ?float
+    {
+        return $this->servicio_direct;
+    }
+
+    public function setServicioDirect(float $servicio_direct): self
+    {
+        $this->servicio_direct = $servicio_direct;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPayS(): ?float
+    {
+        return $this->payS;
+    }
+
+    public function setPayS(float $payS): self
+    {
+        $this->payS = $payS;
+
+        return $this;
+    }
+
+    public function getPayV(): ?float
+    {
+        return $this->payV;
+    }
+
+    public function setPayV(float $payV): self
+    {
+        $this->payV = $payV;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
 
 
 	/**
@@ -122,76 +180,103 @@ class User implements UserInterface
 	 */
 	private $password;
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+	public function __construct()
+                                                                                                                                                            	{
+                                                                                                                                                            		$this->logs = new ArrayCollection();
+                                                                                                                                                            	}
 
-	/**
-	 * A visual identifier that represents this user.
-	 *
-	 * @see UserInterface
-	 */
-	public function getUsername(): string
-	{
-		return (string)$this->username;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function setUsername(string $username): self
-	{
-		$this->username = $username;
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
 
-		return $this;
-	}
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
-	/**
-	 * @see UserInterface
-	 */
-	public function getRoles(): array
-	{
-		$roles = $this->roles;
-		// guarantee every user at least has ROLE_USER
-		$roles[] = 'ROLE_USER';
+        return $this;
+    }
 
-		return array_unique($roles);
-	}
+    public function getRoles(): ?array
+    {
+        return $this->roles;
+    }
 
-	public function setRoles(array $roles): self
-	{
-		$this->roles = $roles;
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @see UserInterface
-	 */
-	public function getPassword(): string
-	{
-		return (string)$this->password;
-	}
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
 
-	public function setPassword(string $password): self
-	{
-		$this->password = $password;
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getSalt()
-	{
-		// not needed when using the "bcrypt" algorithm in security.yaml
-	}
+                                                                                                                                                            	{
+                                                                                                                                                            		// not needed when using the "bcrypt" algorithm in security.yaml
+                                                                                                                                                            	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials()
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+                                                                                                                                                            	{
+                                                                                                                                                            		// If you store any temporary, sensitive data on the user, clear it here
+                                                                                                                                                            		// $this->plainPassword = null;
+                                                                                                                                                            	}
+
+    /**
+     * @return Collection|Logs[]
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(Logs $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs[] = $log;
+            $log->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Logs $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getIdUser() === $this) {
+                $log->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+	public function setLogs(?Logs $logs): self
+                                                                                                                                                            	{
+                                                                                                                                                            		$this->logs = $logs;
+                                                                                                                                                            
+                                                                                                                                                            		return $this;
+                                                                                                                                                            	}
 }

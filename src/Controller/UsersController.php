@@ -45,7 +45,7 @@ class UsersController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete/{id}", name="app_users_delete")
+	 * @Route("/delete/{id}", name="app_users_delete", requirements={"id"="\d+"})
 	 */
 	public function userDeleteAction($id = null)
 	{
@@ -59,7 +59,7 @@ class UsersController extends AbstractController
 	}
 
 	/**
-	 * @Route("/edit/{id}", name="app_users_edit")
+	 * @Route("/edit/{id}", name="app_users_edit", requirements={"id"="\d+"})
 	 */
 	public function userEditAction($id = null, Request $request, UserPasswordEncoderInterface $passwordEncoder)
 	{

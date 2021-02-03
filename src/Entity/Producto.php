@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,102 +48,137 @@ class Producto
 	 * @ORM\Column(type="float")
 	 */
 	private $ganancia;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $cantidad_taller;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $cantidad_inventario;
+
+    public function getCantidadTaller(): ?int
+    {
+        return $this->cantidad_taller;
+    }
+
+    public function setCantidadTaller(int $cantidad_taller): self
+    {
+        $this->cantidad_taller = $cantidad_taller;
+
+        return $this;
+    }
+
+    public function getCantidadInventario(): ?int
+    {
+        return $this->cantidad_inventario;
+    }
+
+    public function setCantidadInventario(int $cantidad_inventario): self
+    {
+        $this->cantidad_inventario = $cantidad_inventario;
+
+        return $this;
+    }
+
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	private $active;
 
-	/**
-	 * @return mixed
-	 */
-	public function getActive()
-	{
-		return $this->active;
-	}
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
 
-	/**
-	 * @param mixed $active
-	 */
-	public function setActive($active): void
-	{
-		$this->active = $active;
-	}
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
+        return $this;
+    }
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function getMarca(): ?string
-	{
-		return $this->marca;
-	}
+    public function getMarca(): ?string
+    {
+        return $this->marca;
+    }
 
-	public function setMarca(string $marca): self
-	{
-		$this->marca = $marca;
+    public function setMarca(string $marca): self
+    {
+        $this->marca = $marca;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getModelo(): ?string
-	{
-		return $this->modelo;
-	}
+    public function getModelo(): ?string
+    {
+        return $this->modelo;
+    }
 
-	public function setModelo(string $modelo): self
-	{
-		$this->modelo = $modelo;
+    public function setModelo(string $modelo): self
+    {
+        $this->modelo = $modelo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getSerie(): ?string
-	{
-		return $this->serie;
-	}
+    public function getSerie(): ?string
+    {
+        return $this->serie;
+    }
 
-	public function setSerie(string $serie): self
-	{
-		$this->serie = $serie;
+    public function setSerie(string $serie): self
+    {
+        $this->serie = $serie;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPrecioC(): ?float
-	{
-		return $this->precioC;
-	}
+    public function getPrecioC(): ?float
+    {
+        return $this->precioC;
+    }
 
-	public function setPrecioC(float $precioC): self
-	{
-		$this->precioC = $precioC;
+    public function setPrecioC(float $precioC): self
+    {
+        $this->precioC = $precioC;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPrecioV(): ?float
-	{
-		return $this->precioV;
-	}
+    public function getPrecioV(): ?float
+    {
+        return $this->precioV;
+    }
 
-	public function setPrecioV(float $precioV): self
-	{
-		$this->precioV = $precioV;
+    public function setPrecioV(float $precioV): self
+    {
+        $this->precioV = $precioV;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getGanancia(): ?float
-	{
-		return $this->ganancia;
-	}
+    public function getGanancia(): ?float
+    {
+        return $this->ganancia;
+    }
 
-	public function setGanancia(float $ganancia): self
-	{
-		$this->ganancia = $ganancia;
+    public function setGanancia(float $ganancia): self
+    {
+        $this->ganancia = $ganancia;
 
-		return $this;
-	}
+        return $this;
+    }
+
+	public function __toString()
+                                                                                                                                                                                                                                                                                             	{
+                                                                                                                                                                                                                                                                                             		return $this->marca;
+                                                                                                                                                                                                                                                                                             	}
 }

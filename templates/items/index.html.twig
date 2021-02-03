@@ -83,7 +83,10 @@
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
                             <td class="text-center">
-
+                                <a href="{{ path('app_item_transf', {'id': item.id}) }}"><input
+                                            class="btn-sm btn-info mr-1 ml-1 mb-1 border-0" type="button"
+                                            value="Añadir"
+                                            style="width: 80px"></a>
                                 <a href="{{ path('app_items_edit', {'id': item.id}) }}"><input
                                             class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
                                             value="Editar"

@@ -39,7 +39,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/home, roles: ROLE_USER }
+        - { path: ^/home, roles: [ROLE_USER, ROLE_ADMIN] }
+        - { path: ^/items, roles: ROLE_ADMIN }
+        - { path: ^/inventario, roles: ROLE_ADMIN }
         - { path: ^/users, roles: ROLE_ADMIN }
 
 
