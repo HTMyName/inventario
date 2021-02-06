@@ -59,6 +59,21 @@ class ProductoRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
+	public function showTallerBy($data)
+	{
+		return $this->createQueryBuilder('p')
+			->select('p.id', 'p.marca', 'p.modelo','p.precioV')
+			->where('p.active = 1')
+			->andWhere('p.cantidad_taller > 0')
+			->andWhere('p.marca like :data')
+			->orWhere('p.modelo like :data')
+			->orWhere('p.precioV like :data')
+			->setParameter('data', "%$data%")
+			->setMaxResults(5)
+			->getQuery()
+			->getResult();
+	}
+
 	// /**
 	//  * @return Producto[] Returns an array of Producto objects
 	//  */

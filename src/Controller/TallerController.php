@@ -34,25 +34,9 @@ class TallerController extends AbstractController
 	}
 
 	/**
-	 * @Route("/get_producto/{id}", name="get_producto", methods={"POST"}, requirements={"id"="\d+"})
-	 */
-	public function get_productoAction($id = null)
-	{
-		if ($id !== null) {
-			$producto = $this->getDoctrine()->getRepository(Producto::class)->find($id);
-		}
-
-		$response = new JsonResponse();
-
-		$response->setData(['marca' => $producto->getMarca(), 'modelo' => $producto->getModelo(), 'precio' => $producto->getPrecioV()]);
-
-		return $response;
-	}
-
-	/**
 	 * @Route("/factura", name="app_factura")
 	 */
-	public function facturaAction(Request $request)
+	public function facturaAction(Request $request): Response
 	{
 		$factura = new Facturas();
 		$form = $this->createForm(FacturaType::class, $factura);
@@ -91,13 +75,69 @@ class TallerController extends AbstractController
 	}
 
 	/**
-	 * @Route("/get_user/{data}", name="app_taller_get_user")
+	 * @Route("/get_user/{data}", name="app_taller_get_user", methods={"POST"})
 	 */
-	public function get_userAction($data = null)
+	public function get_userAction($data = null): Response
 	{
+		$user_repository = "";
+
 		if ($data !== null) {
 			$user_repository = $this->getDoctrine()->getRepository(Cliente::class)->getClientName($data);
 		}
 
+		$response = "";
+
+		if ($user_repository) {
+			foreach ($user_repository as $user){
+				$response .= "<option value='{$user['id']}' id='{$user['tell']}'>{$user['name']}</option>";
+			}
+		}
+
+		return new Response($response);
+
+	}
+
+	/**
+	 * @Route("/get_producto/{data}", name="app_taller_get_producto", methods={"POST"})
+	 */
+	public function get_productoAction($data = null): JsonResponse
+	{
+		$producto_repository = "";
+
+		if ($data !== null) {
+			$producto_repository = $this->getDoctrine()->getRepository(Producto::class)->showTallerBy($data);
+		}
+
+		$json = new JsonResponse();
+
+		if (!$producto_repository) {
+			$producto_repository = [];
+		}
+
+		$json->setData($producto_repository);
+
+		return $json;
+	}
+
+	/**
+	 * @Route("/get_servicio/{data}", name="app_taller_get_servicio", methods={"POST"})
+	 */
+	public function get_servicioAction($data = null): JsonResponse
+	{
+		$servicio_repository = "";
+
+		if ($data !== null) {
+			$servicio_repository = $this->getDoctrine()->getRepository(Servicio::class)->showServiceBy($data);
+		}
+
+		$json = new JsonResponse();
+
+		if (!$servicio_repository) {
+			$servicio_repository = [];
+		}
+
+		$json->setData($servicio_repository);
+
+		return $json;
 	}
 }

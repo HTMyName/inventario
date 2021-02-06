@@ -163,7 +163,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img src="{{ asset('dist/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    {{ app.user.name }}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {{ app.user.name }}
+                    {% endif %}
                 </div>
             </div>
             <div class="row pl-3 mb-3">
