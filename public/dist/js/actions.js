@@ -166,14 +166,147 @@ function aceptarClient() {
     let select = document.getElementById('client_datalist');
     let selectedOption = select.options[select.selectedIndex];
 
-    id_cliente_hidden.value = selectedOption.value;
+    //id_cliente_hidden.value = selectedOption.value;
 
-    if (selectedOption.value != "null"){
+
+    if (selectedOption.value != "null") {
         id_cliente_visible.value = selectedOption.text;
         cliente_telefono.value = selectedOption.id;
-    }else{
+        id_cliente_hidden.innerHTML = '<option value="' + selectedOption.value + '">' + selectedOption.text + '</option>';
+    } else {
         id_cliente_visible.value = client_datalist_input.value;
         cliente_telefono.value = "";
+        id_cliente_hidden.innerHTML = '<option value=""></option>';
     }
+}
+
+function getProduct(id) {
+
+    let fila = document.getElementById(id + "_product");
+    let name = fila.childNodes[1].outerText;
+    let model = fila.childNodes[3].outerText;
+    let serie = fila.childNodes[5].outerText;
+    let precio = fila.childNodes[7].outerText;
+    let cant = fila.childNodes[9].outerText;
+
+    let cookie = getCookie(id);
+
+    console.log(cant + " cantidad");
+
+    if (cookie != "") {
+        cookie++;
+        document.cookie = `${id}=${cookie}`;
+    } else {
+        document.cookie = `${id}=1`;
+        cookie = 1;
+    }
+
+    console.log(cookie + " cokkie");
+
+    if (cookie >= cant) {
+        fila.style.display = "none";
+    }
+
+    let ul = document.getElementById('product-list');
+
+    let li = document.createElement("LI");
+    li.setAttribute("class", "list-group-item border-top-0 border-left-0 border-right-0");
+    li.setAttribute("id", id + name);
+    li.innerHTML = name + " " + model + " " + serie;
+
+    let btn_del = document.createElement("BUTTON");
+    btn_del.setAttribute("class", "btn btn-outline-danger btn-xs float-right");
+    btn_del.setAttribute("style", "min-width: 30px");
+    btn_del.setAttribute("type", "button");
+    btn_del.setAttribute("onclick", "productRemove('" + id + "','" + name + "')");
+
+    let icon = document.createElement("I");
+    icon.setAttribute("class", "fas fa-minus");
+
+    let producto = document.createElement("INPUT");
+    producto.setAttribute("id", id + name + "input");
+    producto.setAttribute("type", "hidden");
+    producto.setAttribute("name", "productsArray[]");
+    producto.setAttribute("value", "" + id + "");
+
+    li.appendChild(btn_del);
+    btn_del.appendChild(icon);
+    ul.appendChild(li);
+    ul.appendChild(producto);
+
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function productRemove(id, name) {
+
+    let fila = document.getElementById(id + "_product");
+    let cookie_cant = getCookie(id);
+
+    if (cookie_cant != "") {
+        cookie_cant--;
+        document.cookie = `${id}=${cookie_cant}`;
+    }
+
+    let list = document.getElementById(id + name);
+    list.remove();
+    let producto = document.getElementById(id + name + "input");
+    producto.remove();
+    fila.style.display = "table-row";
+}
+
+function getService(id) {
+
+    let fila = document.getElementById(id + "_service");
+    let name = fila.childNodes[1].outerText;
+
+    let ul = document.getElementById('service-list');
+
+    let li = document.createElement("LI");
+    li.setAttribute("class", "list-group-item border-top-0 border-left-0 border-right-0");
+    li.setAttribute("id", id + name + "service");
+    li.innerHTML = name;
+
+    let btn_del = document.createElement("BUTTON");
+    btn_del.setAttribute("class", "btn btn-outline-danger btn-xs float-right");
+    btn_del.setAttribute("style", "min-width: 30px");
+    btn_del.setAttribute("type", "button");
+    btn_del.setAttribute("onclick", "serviceRemove('" + id + "','" + name + "')");
+
+    let icon = document.createElement("I");
+    icon.setAttribute("class", "fas fa-minus");
+
+    let servicio = document.createElement("INPUT");
+    servicio.setAttribute("id", id + name + "inputservice");
+    servicio.setAttribute("type", "hidden");
+    servicio.setAttribute("name", "servicesArray[]");
+    servicio.setAttribute("value", "" + id + "");
+
+    li.appendChild(btn_del);
+    btn_del.appendChild(icon);
+    ul.appendChild(li);
+    ul.appendChild(servicio);
+
+}
+
+function serviceRemove(id, name) {
+
+    let list = document.getElementById(id + name + "service");
+    list.remove();
+    let servicio = document.getElementById(id + name + "inputservice");
+    servicio.remove();
 
 }

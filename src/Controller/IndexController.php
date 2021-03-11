@@ -29,6 +29,8 @@ class IndexController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
+			$user->setUsername(strtolower($user->getUsername()));
+			$user->setName(ucfirst($user->getName()));
 			$user->setActive(1);
 			$user->setRoles(['ROLE_ADMIN']);
 			$user->setPayV(0);

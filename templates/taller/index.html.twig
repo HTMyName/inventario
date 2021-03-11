@@ -14,8 +14,11 @@
 {% endblock %}
 
 {% block main_content %}
-    <a type="button" class="btn btn-primary mb-3" href="{{ path('app_factura') }}">
+    <a type="button" class="btn btn-primary mb-3 mr-1" href="{{ path('app_factura') }}">
         Nueva Factura
+    </a>
+    <a type="button" class="btn btn-success mb-3 mr-3" href="{{ path('app_user_factura') }}">
+        Mis Facturas
     </a>
     <div class="card card-primary container-fluid">
         <div class="card-body">
@@ -23,14 +26,12 @@
                 <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="11%">Marca</th>
-                        <th width="11%">Modelo</th>
-                        <th width="11%">Serie</th>
-                        <th width="11%">Precio_Compra</th>
-                        <th width="11%">Precio_Venta</th>
-                        <th width="11%">Ganancia</th>
-                        <th width="11%">Cantidad</th>
-                        <th width="23%">Acciones</th>
+                        <th width="14%">Marca</th>
+                        <th width="14%">Modelo</th>
+                        <th width="14%">Serie</th>
+                        <th width="14%">Precio_Venta</th>
+                        <th width="14%">Cantidad</th>
+                        <th width="30%">Acciones</th>
                     </tr>
                     </thead>
 
@@ -39,9 +40,7 @@
                         <th>Marca</th>
                         <th>Modelo</th>
                         <th>Serie</th>
-                        <th>Precio_Compra</th>
                         <th>Precio_Venta</th>
-                        <th>Ganancia</th>
                         <th>Cantidad</th>
                         <th>Acciones</th>
                     </tr>
@@ -52,9 +51,7 @@
                             <td>{{ item.marca }}</td>
                             <td>{{ item.modelo }}</td>
                             <td>{{ item.serie }}</td>
-                            <td>{{ item.precioC }}</td>
                             <td>{{ item.precioV }}</td>
-                            <td>{{ item.ganancia }}</td>
                             <td>{{ item.cantidad_taller }}</td>
                             <td class="text-center">
                                 <a href="{{ path('app_inventario_add_taller', {'id': item.id}) }}"><input

@@ -52,7 +52,7 @@ class ProductoRepository extends ServiceEntityRepository
 	public function showAllTaller()
 	{
 		return $this->createQueryBuilder('p')
-			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.cantidad_taller')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioV', 'p.cantidad_taller')
 			->where('p.active = 1')
 			->andWhere('p.cantidad_taller > 0')
 			->getQuery()

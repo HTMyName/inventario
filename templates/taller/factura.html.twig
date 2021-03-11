@@ -1,5 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
+    <script>
+        if (document.cookie != "") {
+            la_cookie = document.cookie.split("; ")
+            fecha_fin = new Date
+            fecha_fin.setDate(fecha_fin.getDate() - 1)
+            for (i = 0; i < la_cookie.length; i++) {
+                mi_cookie = la_cookie[i].split("=")[0]
+                document.cookie = mi_cookie + "=;expires=" + fecha_fin.toGMTString()
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block title %}
     Nueva Factura
 {% endblock %}
@@ -16,7 +31,8 @@
                 <div class="col-lg-6 mb-3 pr-lg-5 pl-lg-5">
                     <label class="d-block">Cliente</label>
                     <div class="input-group">
-                        <input id="id_cliente_input" class="form-control" required="" autocomplete="off" name="cliente_name">
+                        <input id="id_cliente_input" class="form-control" required="" autocomplete="off"
+                               name="cliente_name" readonly style="background-color: #ffffff!important;cursor: default">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#modal-cliente"><i
@@ -24,26 +40,24 @@
                             </button>
                         </div>
                     </div>
-                    {{ form_row(form.id_cliente) }}
+                    {{ form_row(form.id_cliente, { attr: {'readonly': 'readonly', 'class': 'd-none'}, label:'', label_attr:{'class':'d-none'} } ) }}
                 </div>
                 <div class="col-lg-6 mb-3 pr-lg-5 pl-lg-5">
                     <label>Teléfono</label>
-                    <input type="tel" class="form-control" id="cliente_telefono" name="telefono_name">
+                    <input type="tel" class="form-control" id="cliente_telefono" name="telefono_name" required>
                 </div>
                 <div class="col-lg-6 mt-3 mt-lg-0 pr-lg-5 pl-lg-5">
                     <div class="input-group">
                         <label class="form-control">Productos</label>
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modal-xl"><i
+                                    data-target="#modal-producto"><i
                                         class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <ul class="list-group mt-2 mb-3">
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">First item</li>
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">Second item</li>
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">Third item</li>
+                    <ul id="product-list" class="list-group mt-2 mb-3">
+
                     </ul>
                 </div>
                 <div class="col-lg-6 mt-3 mt-lg-0 pr-lg-5 pl-lg-5">
@@ -51,19 +65,13 @@
                         <label class="form-control">Servicios</label>
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modal-xl"><i
+                                    data-target="#modal-service"><i
                                         class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <ul class="list-group mt-2 mb-3">
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">First item
-                            <button type="button" class="btn btn-outline-danger btn-xs float-right"
-                                    style="min-width: 30px"><i class="fas fa-minus"></i>
-                            </button>
-                        </li>
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">Second item</li>
-                        <li class="list-group-item border-top-0 border-left-0 border-right-0">Third item</li>
+                    <ul id="service-list" class="list-group mt-2 mb-3">
+
                     </ul>
                 </div>
                 <div class="col-3 m-auto pt-5">
@@ -95,6 +103,98 @@
                     <button type="button" class="btn btn-primary float-right mt-3" data-dismiss="modal"
                             onclick="aceptarClient()">Aceptar
                     </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="modal-producto" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Buscar Productos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                <tr class="text-center">
+                                    <th width="14%">Marca</th>
+                                    <th width="14%">Modelo</th>
+                                    <th width="14%">Serie</th>
+                                    <th width="14%">Precio_Venta</th>
+                                    <th width="14%">Cantidad</th>
+                                    <th width="30%">Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in data %}
+                                    <tr class="text-center" id="{{ item.id }}_product">
+                                        <td>{{ item.marca }}</td>
+                                        <td>{{ item.modelo }}</td>
+                                        <td>{{ item.serie }}</td>
+                                        <td>{{ item.precioV }}</td>
+                                        <td>{{ item.cantidad_taller }}</td>
+                                        <td class="text-center">
+                                            <a><input
+                                                        class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0"
+                                                        type="button"
+                                                        value="Añadir"
+                                                        style="width: 80px" onclick="getProduct({{ item.id }})"></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="modal-service" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Buscar Productos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="dataTable2" class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                <tr class="text-center">
+                                    <th width="33%">Nombre</th>
+                                    <th width="33%">Precio</th>
+                                    <th width="33%">Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in service %}
+                                    <tr class="text-center" id="{{ item.id }}_service">
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.precio }}</td>
+                                        <td class="text-center">
+                                            <a><input class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
+                                                      value="Añadir" style="width: 80px"
+                                                      onclick="getService({{ item.id }})"></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.modal-content -->

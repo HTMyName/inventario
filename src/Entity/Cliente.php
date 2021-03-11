@@ -39,10 +39,22 @@ class Cliente
 	 */
 	private $logs;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\Facturas", mappedBy="id_cliente")
+	 */
+	private $facturas;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $descuento;
+
+
 	public function __construct()
-                              	{
-                              		$this->logs = new ArrayCollection();
-                              	}
+                                                                                                                                                                                                                                                                  	{
+                                                                                                                                                                                                                                                                  		$this->logs = new ArrayCollection();
+                                                                                                                                                                                                                                                                  		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                                  	}
 
     public function getActive(): ?bool
     {
@@ -116,9 +128,56 @@ class Cliente
     }
 
 	public function setLogs(?Logs $logs): self
-                              	{
-                              		$this->logs = $logs;
-                              
-                              		return $this;
-                              	}
+                                                                                                                                                                                                                                                                  	{
+                                                                                                                                                                                                                                                                  		$this->logs = $logs;
+                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                  		return $this;
+                                                                                                                                                                                                                                                                  	}
+
+    /**
+     * @return Collection|Facturas[]
+     */
+    public function getFacturas(): Collection
+    {
+        return $this->facturas;
+    }
+
+    public function addFactura(Facturas $factura): self
+    {
+        if (!$this->facturas->contains($factura)) {
+            $this->facturas[] = $factura;
+            $factura->setIdCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactura(Facturas $factura): self
+    {
+        if ($this->facturas->removeElement($factura)) {
+            // set the owning side to null (unless already changed)
+            if ($factura->getIdCliente() === $this) {
+                $factura->setIdCliente(null);
+            }
+        }
+
+        return $this;
+    }
+
+	public function __toString()
+                                                                                                                                                                                                                                                                  	{
+                                                                                                                                                                                                                                                                  		return $this->name;
+                                                                                                                                                                                                                                                                  	}
+
+    public function getDescuento(): ?float
+    {
+        return $this->descuento;
+    }
+
+    public function setDescuento(float $descuento): self
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
 }

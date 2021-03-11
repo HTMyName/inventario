@@ -20,6 +20,11 @@ class Producto
 	private $id;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\FacturasProducto", mappedBy="id_producto")
+	 */
+	private $facturas;
+
+	/**
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $marca;
@@ -87,6 +92,11 @@ class Producto
 	 * @ORM\Column(type="boolean")
 	 */
 	private $active;
+
+	public function __construct()
+                                                                                                                                                                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                                                                                                                                                                            	}
 
     public function getActive(): ?bool
     {
@@ -178,7 +188,37 @@ class Producto
     }
 
 	public function __toString()
-                                                                                                                                                                                                                                                                                             	{
-                                                                                                                                                                                                                                                                                             		return $this->marca;
-                                                                                                                                                                                                                                                                                             	}
+                                                                                                                                                                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                                                                                                                                                                            		return $this->marca;
+                                                                                                                                                                                                                                                                                                                                                                                                            	}
+
+    /**
+     * @return Collection|FacturasProducto[]
+     */
+    public function getFacturas(): Collection
+    {
+        return $this->facturas;
+    }
+
+    public function addFactura(FacturasProducto $factura): self
+    {
+        if (!$this->facturas->contains($factura)) {
+            $this->facturas[] = $factura;
+            $factura->setIdProducto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactura(FacturasProducto $factura): self
+    {
+        if ($this->facturas->removeElement($factura)) {
+            // set the owning side to null (unless already changed)
+            if ($factura->getIdProducto() === $this) {
+                $factura->setIdProducto(null);
+            }
+        }
+
+        return $this;
+    }
 }

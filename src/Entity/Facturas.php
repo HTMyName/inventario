@@ -20,20 +20,12 @@ class Facturas
 	private $id;
 
 	/**
-	 * Many Facturas have Many Productos.
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Producto")
-	 * @ORM\JoinTable(name="facturas_productos",
-	 *     joinColumns={@ORM\JoinColumn(name="factura_id", referencedColumnName="id")},
-	 *     inverseJoinColumns={@ORM\JoinColumn(name="productos_id", referencedColumnName="id")})
+	 * @ORM\OneToMany(targetEntity="App\Entity\FacturasProducto", mappedBy="id_factura")
 	 */
 	private $productos;
 
 	/**
-	 * Many Facturas have Many Servicios.
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Servicio")
-	 * @ORM\JoinTable(name="facturas_servicios",
-	 *     joinColumns={@ORM\JoinColumn(name="factura_id", referencedColumnName="id")},
-	 *     inverseJoinColumns={@ORM\JoinColumn(name="servicios_id", referencedColumnName="id")})
+	 * @ORM\OneToMany(targetEntity="App\Entity\FacturasServicio", mappedBy="id_factura")
 	 */
 	private $servicios;
 
@@ -48,14 +40,21 @@ class Facturas
 	private $total;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Cliente", inversedBy="facturas")
+	 * @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
 	 */
 	private $id_cliente;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="facturas")
+	 * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
 	 */
 	private $id_user;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $xpagar;
 
 	public function __construct()
 	{
@@ -69,7 +68,7 @@ class Facturas
 	}
 
 	/**
-	 * @return Collection|Producto[]
+	 * @return Collection|FacturasProducto[]
 	 */
 	public function getProductos(): Collection
 	{
@@ -77,7 +76,7 @@ class Facturas
 	}
 
 	/**
-	 * @return Collection|Servicio[]
+	 * @return Collection|FacturasServicio[]
 	 */
 	public function getServicios(): Collection
 	{
@@ -108,73 +107,110 @@ class Facturas
 		return $this;
 	}
 
-	public function getIdCliente(): ?int
+	public function getIdCliente(): ?Cliente
 	{
 		return $this->id_cliente;
 	}
 
-	public function setIdCliente(int $id_cliente): self
+	public function setIdCliente(?Cliente $id_cliente): self
 	{
 		$this->id_cliente = $id_cliente;
 
 		return $this;
 	}
 
-	public function getIdUser(): ?int
+	public function getIdUser(): ?User
 	{
 		return $this->id_user;
 	}
 
-	public function setIdUser(int $id_user): self
+	public function setIdUser(?User $id_user): self
 	{
 		$this->id_user = $id_user;
 
 		return $this;
 	}
 
-	public function setProductos(?Producto $productos): self
+	public function setProductos(string $productos): self
 	{
 		$this->productos = $productos;
 
 		return $this;
 	}
 
-	public function setServicios(?Servicio $servicios): self
+	public function setServicios(string $servicios): self
 	{
 		$this->servicios = $servicios;
 
 		return $this;
 	}
 
-	public function addProducto(Producto $producto): self
+	public function addProducto(FacturasProducto $producto): self
 	{
 		if (!$this->productos->contains($producto)) {
 			$this->productos[] = $producto;
+			$producto->setIdFactura($this);
 		}
 
 		return $this;
 	}
 
-	public function removeProducto(Producto $producto): self
+	public function removeProducto(FacturasProducto $producto): self
 	{
-		$this->productos->removeElement($producto);
+		if ($this->productos->removeElement($producto)) {
+			// set the owning side to null (unless already changed)
+			if ($producto->getIdFactura() === $this) {
+				$producto->setIdFactura(null);
+			}
+		}
 
 		return $this;
 	}
 
-	public function addServicio(Servicio $servicio): self
+	public function addServicio(FacturasServicio $servicio): self
 	{
 		if (!$this->servicios->contains($servicio)) {
 			$this->servicios[] = $servicio;
+			$servicio->setIdFactura($this);
 		}
 
 		return $this;
 	}
 
-	public function removeServicio(Servicio $servicio): self
+	public function removeServicio(FacturasServicio $servicio): self
 	{
-		$this->servicios->removeElement($servicio);
+		if ($this->servicios->removeElement($servicio)) {
+			// set the owning side to null (unless already changed)
+			if ($servicio->getIdFactura() === $this) {
+				$servicio->setIdFactura(null);
+			}
+		}
 
 		return $this;
 	}
+
+	public function getActive(): ?bool
+	{
+		return $this->active;
+	}
+
+	public function setActive(bool $active): self
+	{
+		$this->active = $active;
+
+		return $this;
+	}
+
+	public function getXpagar(): ?float
+	{
+		return $this->xpagar;
+	}
+
+	public function setXpagar(float $xpagar): self
+	{
+		$this->xpagar = $xpagar;
+
+		return $this;
+	}
+
 }

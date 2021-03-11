@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
+{% endblock %}
+
+{% block title %}
+    Mis Facturas
+{% endblock %}
+
+{% block page_name %}
+    Mis Facturas
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="dataTable3" class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr class="text-center">
+                        <th width="12%">Fecha</th>
+                        <th width="12%">Usuario</th>
+                        <th width="12%">Cliente</th>
+                        <th width="12%">Productos</th>
+                        <th width="12%">Servicios</th>
+                        <th width="12%">Total</th>
+                        <th width="12%">Deuda</th>
+                        <th width="16%">Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <tfoot>
+                    <tr class="text-center">
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Servicios</th>
+                        <th>Total</th>
+                        <th>Deuda</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for factura in facturas %}
+                        <tr class="text-center">
+                            <td>{{ factura.fecha|date("d-m-Y") }}</td>
+                            <td>{{ factura.iduser }}</td>
+                            <td>{{ factura.idcliente }}</td>
+                            {% set cantidadT = 0 %}
+                            {% for producto in factura.productos %}
+                                {% set cantidadT = cantidadT + producto.cantidad %}
+                            {% endfor %}
+                            <td>{{ cantidadT }}</td>
+                            {% set cantidadS = 0 %}
+                            {% for servicio in factura.servicios %}
+                                {% set cantidadS = cantidadS + servicio.cantidad %}
+                            {% endfor %}
+                            <td>{{ cantidadS }}</td>
+                            <td>{{ factura.total }}</td>
+                            <td>{{ factura.xpagar }}</td>
+                            <td><a href="{{ path('app_factura_detalles', {'id': factura.id}) }}"><input class="btn btn-primary btn-sm" type="button" value="Detalles"></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('dist/js/actions.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('plugins/users.js') }}"></script>
+{% endblock %}
+
+

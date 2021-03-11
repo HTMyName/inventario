@@ -20,6 +20,11 @@ class Servicio
 	private $id;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\FacturasServicio", mappedBy="id_servicio")
+	 */
+	private $facturas;
+
+	/**
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $name;
@@ -38,6 +43,11 @@ class Servicio
 	 * @ORM\Column(type="boolean")
 	 */
 	private $active;
+
+	public function __construct()
+                                                                                                                                                                                                                        	{
+                                                                                                                                                                                                                        		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                        	}
 
     public function getActive(): ?bool
     {
@@ -93,7 +103,37 @@ class Servicio
     }
 
 	public function __toString()
-                                                                                                                                       	{
-                                                                                                                                       		return $this->name;
-                                                                                                                                       	}
+                                                                                                                                                                                                                        	{
+                                                                                                                                                                                                                        		return $this->name;
+                                                                                                                                                                                                                        	}
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|FacturasServicio[]
+     */
+    public function getFacturas(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->facturas;
+    }
+
+    public function addFactura(FacturasServicio $factura): self
+    {
+        if (!$this->facturas->contains($factura)) {
+            $this->facturas[] = $factura;
+            $factura->setIdServicio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactura(FacturasServicio $factura): self
+    {
+        if ($this->facturas->removeElement($factura)) {
+            // set the owning side to null (unless already changed)
+            if ($factura->getIdServicio() === $this) {
+                $factura->setIdServicio(null);
+            }
+        }
+
+        return $this;
+    }
 }
