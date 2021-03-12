@@ -24,6 +24,11 @@
 {% endblock %}
 
 {% block main_content %}
+    <div class="col-12">
+        <a type="button" class="btn btn-primary mb-3 mr-3 float-right" href="{{ path('app_user_factura') }}">
+            Mis Facturas
+        </a>
+    </div>
     <div class="card card-primary container-fluid">
         {{ form_start(form) }}
         <div class="card-body">
@@ -74,7 +79,7 @@
 
                     </ul>
                 </div>
-                <div class="col-3 m-auto pt-5">
+                <div class="col-md-3 m-auto pt-md-3 pt-lg-5">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
@@ -121,7 +126,7 @@
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+                            <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="text-center">
                                     <th width="14%">Marca</th>
@@ -142,7 +147,7 @@
                                         <td>{{ item.cantidad_taller }}</td>
                                         <td class="text-center">
                                             <a><input
-                                                        class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0"
+                                                        class="btn btn-sm btn-default mr-1 ml-1 mb-1"
                                                         type="button"
                                                         value="Añadir"
                                                         style="width: 80px" onclick="getProduct({{ item.id }})"></a>
@@ -171,7 +176,7 @@
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="dataTable2" class="table table-bordered" width="100%" cellspacing="0">
+                            <table id="dataTable2" class="table table-striped" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="text-center">
                                     <th width="33%">Nombre</th>
@@ -185,7 +190,7 @@
                                         <td>{{ item.name }}</td>
                                         <td>{{ item.precio }}</td>
                                         <td class="text-center">
-                                            <a><input class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
+                                            <a><input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
                                                       value="Añadir" style="width: 80px"
                                                       onclick="getService({{ item.id }})"></a>
                                         </td>

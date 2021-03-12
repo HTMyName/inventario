@@ -13,17 +13,17 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-4">
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
+                <div class="col-md-4">
                     {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-2">
+                <div class="col-md-2">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <div class="col-2">
-                    <a href="{{ path('app_users') }}"><input class="btn btn-danger btn-block" type="button" value="Cancelar" style="margin-top: 32px!important"></a>
+                <div class="col-md-2">
+                    <a href="{{ path('app_users') }}"><input class="btn btn-danger btn-block mb-3" type="button" value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>
                 <label class="text-sm mt-2"><span class="text-danger">• </span>Al editar un trabajador su contraseña se restablecerá como: 12345</label>
             </div>

@@ -14,7 +14,9 @@ class FacturaType extends AbstractType
 	{
 		$builder
 			->add('id_cliente')
-			->add('submit', SubmitType::class);
+			->add('submit', SubmitType::class, [
+				'label' => 'Facturar'
+			]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)

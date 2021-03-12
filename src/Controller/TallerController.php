@@ -6,6 +6,7 @@ use App\Entity\Cliente;
 use App\Entity\Facturas;
 use App\Entity\FacturasProducto;
 use App\Entity\FacturasServicio;
+use App\Entity\Logs;
 use App\Entity\Producto;
 use App\Entity\Servicio;
 use App\Entity\User;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * @Route("/taller")
@@ -70,16 +72,19 @@ class TallerController extends AbstractController
 					$factura->setIdCliente($cliente);
 					$em->persist($cliente);
 				}
+			} else {
+				$cliente = $this->getDoctrine()->getRepository(Cliente::class)->find($factura->getIdCliente());
 			}
 
 			$factura->setFecha(new \DateTime("now"));
 			$factura->setIdUser($this->getUser());
 			$facturaTotalTemporal = 0;
+			$array_facturas_p = [];
+			$array_facturas_s = [];
+			$detalles = "";
 
 			$products_array = $request->get('productsArray');
 			if ($products_array != null) {
-
-				$array_facturas_p = [];
 				sort($products_array);
 				$products_cant = array_count_values($products_array);
 				$products_array = array_unique($products_array);
@@ -96,7 +101,10 @@ class TallerController extends AbstractController
 						$factura_productos->setCantidad($products_cant[$product]);
 						$facturaTotalTemporal += ($product_data->getPrecioV() * $products_cant[$product]);
 						$product_data->setCantidadTaller($product_data->getCantidadTaller() - $products_cant[$product]);
-						array_push($array_facturas_p, $factura_productos);
+						$array_facturas_p[] = $factura_productos;
+						$detalles = $product_data->getMarca() . ","
+							. $product_data->getPrecioV() . ","
+							. $factura_productos->getCantidad() . "|";
 					}
 				}
 				foreach ($array_facturas_p as $prod) {
@@ -107,8 +115,6 @@ class TallerController extends AbstractController
 
 			$service_array = $request->get('servicesArray');
 			if ($service_array != null) {
-
-				$array_facturas_s = [];
 				sort($service_array);
 				$service_cant = array_count_values($service_array);
 				$service_array = array_unique($service_array);
@@ -123,7 +129,10 @@ class TallerController extends AbstractController
 					$factura_servicios->setPrecio($service_data->getPrecio());
 					$factura_servicios->setCantidad($service_cant[$service]);
 					$facturaTotalTemporal += ($service_data->getPrecio() * $service_cant[$service]);
-					array_push($array_facturas_s, $factura_servicios);
+					$array_facturas_s[] = $factura_servicios;
+					$detalles = $service_data->getName() . ","
+						. $service_data->getPrecio() . ","
+						. $factura_productos->getCantidad() . "|";
 				}
 				foreach ($array_facturas_s as $serv) {
 					$em->persist($serv);
@@ -132,9 +141,12 @@ class TallerController extends AbstractController
 			}
 
 			$factura->setTotal($facturaTotalTemporal);
-			$factura->setXpagar($facturaTotalTemporal);
+			$factura->setXpagar($facturaTotalTemporal - $facturaTotalTemporal * $cliente->getDescuento() / 100);
 
 			$em->persist($factura);
+
+			$log = $this->generateLogs($cliente, $factura, "factura", $detalles);
+			$em->persist($log);
 
 			if ($facturaTotalTemporal > 0 && $createCliente === true) {
 				$em->flush();
@@ -180,6 +192,7 @@ class TallerController extends AbstractController
 	{
 		if ($id !== null) {
 			$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getFacturaById($id);
+			$logsHistory = $this->getDoctrine()->getRepository(Logs::class)->getClientPays($id);
 		} else {
 			return $this->redirectToRoute('app_user_factura');
 		}
@@ -188,20 +201,33 @@ class TallerController extends AbstractController
 		$form = $this->createForm(FacturaType::class, $factura);
 		$form->handleRequest($request);
 
+		$cliente = $this->getDoctrine()->getRepository(Cliente::class)->find($factura->getIdCliente());
+
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
 
 			$cantidad = $request->get('pagar');
+			$metodoPago = $request->get('tipopago');
+			if ($metodoPago == 2) {
+				$metodoPago = "Transfermovil";
+			} else {
+				$metodoPago = "Efectivo";
+			}
 			if ($cantidad != null && $cantidad <= $factura->getXpagar()) {
+				$detalles = $metodoPago . "," . $cantidad;
+				$log = $this->generateLogs($cliente, $factura, "pago", $detalles);
+				$em->persist($log);
 				$factura->setXpagar($factura->getXpagar() - $cantidad);
 				$em->persist($factura);
 				$em->flush();
+				return $this->redirectToRoute('app_factura_detalles', ['id' => $id]);
 			}
 
 		}
 
 		return $this->render('taller/detalles.html.twig', [
 			"facturas" => $factura_repo,
+			"logs" => $logsHistory,
 			"form" => $form->createView()
 		]);
 	}
@@ -271,5 +297,17 @@ class TallerController extends AbstractController
 		$json->setData($servicio_repository);
 
 		return $json;
+	}
+
+	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
+	{
+		$log = new Logs();
+		$log->setIdCliente($cliente);
+		$log->setIdUser($this->getUser());
+		$log->setIdFactura($factura);
+		$log->setFecha($factura->getFecha());
+		$log->setTipo($tipo);
+		$log->setDetalles($detalles);
+		return $log;
 	}
 }

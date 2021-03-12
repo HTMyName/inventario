@@ -51,10 +51,10 @@ class Cliente
 
 
 	public function __construct()
-                                                                                                                                                                                                                                                                  	{
-                                                                                                                                                                                                                                                                  		$this->logs = new ArrayCollection();
-                                                                                                                                                                                                                                                                  		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                                  	}
+                                                                                                                                                                                                                                                                                                               	{
+                                                                                                                                                                                                                                                                                                               		$this->logs = new ArrayCollection();
+                                                                                                                                                                                                                                                                                                               		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                                                                               	}
 
     public function getActive(): ?bool
     {
@@ -128,11 +128,11 @@ class Cliente
     }
 
 	public function setLogs(?Logs $logs): self
-                                                                                                                                                                                                                                                                  	{
-                                                                                                                                                                                                                                                                  		$this->logs = $logs;
-                                                                                                                                                                                                                                                                  
-                                                                                                                                                                                                                                                                  		return $this;
-                                                                                                                                                                                                                                                                  	}
+                                                                                                                                                                                                                                                                                                               	{
+                                                                                                                                                                                                                                                                                                               		$this->logs = $logs;
+                                                                                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                                                               		return $this;
+                                                                                                                                                                                                                                                                                                               	}
 
     /**
      * @return Collection|Facturas[]
@@ -165,9 +165,9 @@ class Cliente
     }
 
 	public function __toString()
-                                                                                                                                                                                                                                                                  	{
-                                                                                                                                                                                                                                                                  		return $this->name;
-                                                                                                                                                                                                                                                                  	}
+                                                                                                                                                                                                                                                                                                               	{
+                                                                                                                                                                                                                                                                                                               		return $this->name;
+                                                                                                                                                                                                                                                                                                               	}
 
     public function getDescuento(): ?float
     {

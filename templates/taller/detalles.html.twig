@@ -9,6 +9,11 @@
 {% endblock %}
 
 {% block main_content %}
+    <div class="col-12">
+        <a type="button" class="btn btn-primary mb-3 float-right" href="{{ path('app_user_factura') }}">
+            Mis Facturas
+        </a>
+    </div>
     {% for factura in facturas %}
         <div class="invoice p-3 mb-3 container-fluid">
             <div class="row">
@@ -105,26 +110,23 @@
                         </div>
                     </div>
                     {% if factura.xpagar != 0 %}
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <p>Metodo de Pago:</p>
                             <select name="tipopago" id="tipopago" class="form-control" required>
                                 <option value="1">Efectivo</option>
                                 <option value="2">Transfermovil</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <p>Cantidad a pagar:</p>
                             <input class="form-control" type="text" name="pagar" required>
                         </div>
                     {% endif %}
                     <div class="col-12 no-print mt-4">
                         {% if factura.xpagar != 0 %}
-                            {{ form_row(form.submit, {attr: {'class':'btn btn-success float-right'}}) }}
+                            {{ form_row(form.submit, {attr: {'class':'btn btn-primary float-right col-md-3'}}) }}
                             {{ form_row(form.id_cliente, { attr: {'readonly': 'readonly', 'class': 'd-none'}, label:'', label_attr:{'class':'d-none'} } ) }}
                         {% endif %}
-                        <a href="{{ path('app_user_factura') }}" class="btn btn-primary float-right"
-                           style="margin-right: 5px;margin-top: -16px">Regresar
-                        </a>
                     </div>
                     {% if factura.xpagar != 0 %}
                         {{ form_end(form) }}
@@ -137,6 +139,42 @@
             <!-- this row will not appear when printing -->
         </div>
     {% endfor %}
+        {% for factura in facturas %}
+            <div class="invoice p-3 mb-3 container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <small>Historial de Pagos</small>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Metodo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for log in logs %}
+                                <tr>
+                                    <td>{{ log.fecha|date("d/m/Y") }}</td>
+                                    <td>{{ log.iduser }}</td>
+                                    {% set array = log.detalles|split(',',3) %}
+                                    <td>{{ array[0] }}</td>
+                                    <td>{{ array[1] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 {% endblock %}
 
 

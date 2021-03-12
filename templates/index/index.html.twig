@@ -5,18 +5,20 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    title>Inventario - Configuración de Inicio</title>
+    <title>Inventario - Configuración de Inicio</title>
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 </head>
 <body>
-<div class="container mt-5 col-4 p-5" style="border-radius: 5px;box-shadow: 0.5px 0.5px 3px">
+<div class="p-3">
+    <div class="container-fluid mt-5 col-md-4 p-5" style="border-radius: 5px;box-shadow: 0.5px 0.5px 3px">
         {{ form_start(form) }}
         <h1 class="h3 mb-3 font-weight-normal">Registra el usuario de Administración</h1>
         {{ form_widget(form) }}
         {{ form_end(form) }}
-    </form>
+        </form>
+    </div>
 </div>
 </body>
 </html>

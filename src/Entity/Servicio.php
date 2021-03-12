@@ -45,9 +45,9 @@ class Servicio
 	private $active;
 
 	public function __construct()
-                                                                                                                                                                                                                        	{
-                                                                                                                                                                                                                        		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                        	}
+                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                            	}
 
     public function getActive(): ?bool
     {
@@ -103,9 +103,9 @@ class Servicio
     }
 
 	public function __toString()
-                                                                                                                                                                                                                        	{
-                                                                                                                                                                                                                        		return $this->name;
-                                                                                                                                                                                                                        	}
+                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                            		return $this->name;
+                                                                                                                                                                                                                                                            	}
 
     /**
      * @return \Doctrine\Common\Collections\Collection|FacturasServicio[]
