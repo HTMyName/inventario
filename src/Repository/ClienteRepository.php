@@ -43,9 +43,11 @@ class ClienteRepository extends ServiceEntityRepository
 	public function getClientName($data)
 	{
 		return $this->createQueryBuilder('c')
-			->select('c.name', 'c.id')
+			->select('c.name', 'c.id', 'c.tell')
 			->where('c.name like :data')
+			->andWhere('c.active = 1')
 			->setParameter('data', "%$data%")
+			->setMaxResults(5)
 			->getQuery()
 			->getResult();
 	}

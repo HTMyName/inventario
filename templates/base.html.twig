@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Inventario - {% block title %}{% endblock %}</title>
+    <title>{{ page_name.systemSettings.pagename }} - {% block title %}{% endblock %}</title>
 
     {% block stylesheet %}{% endblock %}
     <!-- Font Awesome Icons -->
@@ -48,11 +48,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
-            <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                 class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <a href="{{ path('app_home') }}" class="brand-link">
+            <span class="brand-text font-weight-light pl-4" style="font-weight: 800!important;">{{ page_name.systemSettings.pagename }}</span>
         </a>
 
         <!-- Sidebar -->
@@ -130,9 +127,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row pl-2 pt-3">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">{% block page_name %}{% endblock %}</h1>
+                <div class="pl-2 pt-3">
+                    <div class="row">
+                        <h1 class="m-0 text-dark col-md-7 pb-2 pb-md-0">{% block page_name %}{% endblock %}</h1>
+                        <div class="m-0 text-dark col-md-5">{% block page_btns %}{% endblock %}</div>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -163,11 +161,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img src="{{ asset('dist/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    {{ app.user.name }}
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        {{ app.user.name }}
+                    {% endif %}
                 </div>
             </div>
             <div class="row pl-3 mb-3">
-                <a href="{{ path('app_profile') }}"><i class="nav-icon fas fa-cog"></i> Configuración</a>
+                <a href="{{ path('app_profile') }}"><i class="nav-icon fas fa-user"></i> Perfil</a>
+            </div>
+            <div class="row pl-3 mb-3">
+                <a href="{{ path('app_system') }}"><i class="nav-icon fas fa-cog"></i> Configuración</a>
             </div>
             <div class="row pl-3 mb-3">
                 <a href="{{ path('app_logout') }}"><i class="nav-icon fas fa-sign-out-alt"></i> Salir</a>

@@ -10,22 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Cuenta
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id
+	 * @ORM\GeneratedValue
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $inversion;
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $inversion;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $fondo;
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $fondo;
 
     public function getId(): ?int
     {

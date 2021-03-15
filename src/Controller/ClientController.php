@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cliente;
 use App\Form\AddClientType;
+use App\Form\EditClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,8 @@ class ClientController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
+			$cliente->setName(ucfirst($cliente->getName()));
+			$cliente->setDescuento(0);
 			$cliente->setActive(1);
 			$em->persist($cliente);
 			$em->flush();
@@ -64,7 +67,7 @@ class ClientController extends AbstractController
 		if (!$client) {
 			return $this->redirectToRoute('app_client');
 		}
-		$form = $this->createForm(AddClientType::class, $client);
+		$form = $this->createForm(EditClientType::class, $client);
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->persist($client);

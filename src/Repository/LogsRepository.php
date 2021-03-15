@@ -19,6 +19,20 @@ class LogsRepository extends ServiceEntityRepository
         parent::__construct($registry, Logs::class);
     }
 
+	public function getClientPays($idfactura)
+	{
+		return $this->createQueryBuilder('l')
+			->select('l')
+			->where('l.tipo = :tipo')
+			->setParameter('tipo','pago')
+			->andWhere('l.id_factura = :idfactura')
+			->setParameter('idfactura', $idfactura)
+			->orderBy('l.id', 'DESC')
+			->getQuery()
+			->getResult()
+			;
+    }
+
     // /**
     //  * @return Logs[] Returns an array of Logs objects
     //  */

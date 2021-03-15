@@ -19,44 +19,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </head>
 <body>
 {% block body %}
-    <div class="container mt-5 col-4 p-5" style="border-radius: 5px;box-shadow: 0.5px 0.5px 3px">
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+    <div class="p-3">
+        <div class="container-fluid mt-5 col-md-4 p-5" style="border-radius: 5px;box-shadow: 0.5px 0.5px 3px">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <h1 class="h3 mb-3 font-weight-normal">Inicia Sesión</h1>
+                <label for="inputUsername">Usuario</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control mb-3"
+                       required autofocus autocomplete="off">
+                <label for="inputPassword">Contraseña</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="off">
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+
+                {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html #}
+
+                <div class="checkbox mb-3 mt-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Recuérdeme
+                    </label>
                 </div>
-            {% endif %}
-
-            <h1 class="h3 mb-3 font-weight-normal">Inicia Sesión</h1>
-            <label for="inputUsername">Usuario</label>
-            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control mb-3"
-                   required autofocus autocomplete="off">
-            <label for="inputPassword">Contraseña</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="off">
-
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-
-            {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html #}
-
-            <div class="checkbox mb-3 mt-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Recuérdeme
-                </label>
-            </div>
 
 
-            <button class="btn btn-primary btn-block mt-3" type="submit">
-                Entrar
-            </button>
-        </form>
+                <button class="btn btn-primary btn-block mt-3" type="submit">
+                    Entrar
+                </button>
+            </form>
+        </div>
     </div>
 {% endblock %}
 </body>

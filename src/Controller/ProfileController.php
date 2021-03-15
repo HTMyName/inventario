@@ -15,7 +15,7 @@ class ProfileController extends AbstractController
 	/**
 	 * @Route("/profile", name="app_profile")
 	 */
-	public function index($id = null, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+	public function index($id = null, Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
 	{
 		$user = $this->getUser();
 
@@ -23,7 +23,7 @@ class ProfileController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
-			$user->setPassword($passwordEncoder->encodePassword(
+			$user->setPassword($userPasswordEncoder->encodePassword(
 				$user, $user->getPassword()
 			));
 			$em->persist($user);

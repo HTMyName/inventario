@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Perfil
-{% endblock %}
+{% block title %}Sistema{% endblock %}
 
 {% block page_name %}
-    Perfil
+<div class="col-md-6">Sistema</div>
 {% endblock %}
 
 {% block main_content %}
@@ -14,13 +12,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.pagename, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.winproduct, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.password, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.winservice, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
@@ -31,3 +29,4 @@
         <!-- /.card-body -->
     </div>
 {% endblock %}
+

@@ -13,21 +13,21 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-4">
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
+                <div class="col-md-4">
                     {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-4">
+                <div class="col-md-4">
                     {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
             </div>
-            <div class="row col-6 m-auto">
-                <div class="col-6">
+            <div class="row col-md-6 m-auto">
+                <div class="col-md-6">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                     <a href="{{ path('app_services') }}"><input class="btn btn-danger btn-block" type="button"
                                                                 value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>

@@ -20,6 +20,7 @@ class AddItemType extends AbstractType
 			->add('serie')
 			->add('precioC', NumberType::class)
 			->add('precioV', NumberType::class)
+			->add('xcientoganancia', NumberType::class)
 			->add('submit', SubmitType::class);
 	}
 

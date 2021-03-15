@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Detalles de Factura
+{% endblock %}
+
+{% block page_name %}
+    Detalles de Factura
+{% endblock %}
+
+{% block page_btns %}
+    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_user_factura') }}">
+        Mis Facturas
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    {% for factura in facturas %}
+        <div class="invoice p-3 mb-3 container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <small class="float-right">Fecha de Factura: {{ factura.fecha|date("d/m/Y") }}</small>
+                    </h4>
+                </div>
+            </div>
+            <div class="row invoice-info mt-3">
+                <div class="col-sm-2 invoice-col pl-4">
+                    <h5 class="d-inline-block">Usuario:</h5> {{ factura.iduser }}
+                </div>
+                <div class="col-sm-2 invoice-col pb-4 pl-4">
+                    <h5 class="d-inline-block">Cliente:</h5> {{ factura.idcliente }}
+                </div>
+                <div class="col-sm-8 invoice-col pb-4 pl-4">
+                    <a href="invoice-print.html" target="_blank" class="btn btn-default float-right"><i
+                                class="fas fa-print"></i>
+                        Imprimir</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for producto in factura.productos %}
+                            <tr>
+                                <td>{{ producto.idproducto.marca }}</td>
+                                <td>Producto</td>
+                                <td>{{ producto.cantidad }}</td>
+                                <td>{{ producto.precio }}</td>
+                                <td>{{ producto.cantidad * producto.precio }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for servicio in factura.servicios %}
+                            <tr>
+                                <td>{{ servicio.idservicio.name }}</td>
+                                <td>Servicio</td>
+                                <td>{{ servicio.cantidad }}</td>
+                                <td>{{ servicio.precio }}</td>
+                                <td>{{ servicio.cantidad * servicio.precio }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <hr>
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <p class="pl-3">Fecha del Pago: {{ "now"|date("d/m/Y") }}</p>
+
+                    <div class="table-responsive col-11">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th style="width:50%">Subtotal:</th>
+                                <td>{{ factura.total }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descuento ({{ factura.idcliente.descuento }}%)</th>
+                                <td>{{ factura.total*factura.idcliente.descuento/100 }}</td>
+                            </tr>
+                            <tr>
+                                <th>Total:</th>
+                                <td>{{ factura.total - factura.total*factura.idcliente.descuento/100 }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    {% if factura.xpagar != 0 %}
+                        {{ form_start(form, {attr:{'class':'row'}}) }}
+                    {% endif %}
+                    <div class="col-12">
+                        <div class="row p-2 border-left-0 border-top-0 border-right-0 border-bottom mb-3">
+                            <div class="col-6">Deuda:</div>
+                            <div class="col-6 pl-0">{{ factura.xpagar }}</div>
+                        </div>
+                    </div>
+                    {% if factura.xpagar != 0 %}
+                        <div class="col-md-6">
+                            <p>Metodo de Pago:</p>
+                            <select name="tipopago" id="tipopago" class="form-control" required>
+                                <option value="1">Efectivo</option>
+                                <option value="2">Transfermovil</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Cantidad a pagar:</p>
+                            <input class="form-control" type="text" name="pagar" required>
+                        </div>
+                    {% endif %}
+                    <div class="col-12 no-print mt-4">
+                        {% if factura.xpagar != 0 %}
+                            {{ form_row(form.submit, {attr: {'class':'btn btn-primary float-right col-md-3'}}) }}
+                            {{ form_row(form.id_cliente, { attr: {'readonly': 'readonly', 'class': 'd-none'}, label:'', label_attr:{'class':'d-none'} } ) }}
+                        {% endif %}
+                    </div>
+                    {% if factura.xpagar != 0 %}
+                        {{ form_end(form) }}
+                    {% endif %}
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <!-- this row will not appear when printing -->
+        </div>
+    {% endfor %}
+        {% for factura in facturas %}
+            <div class="invoice p-3 mb-3 container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <small>Historial de Pagos</small>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Metodo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for log in logs %}
+                                <tr>
+                                    <td>{{ log.fecha|date("d/m/Y") }}</td>
+                                    <td>{{ log.iduser }}</td>
+                                    {% set array = log.detalles|split(',',3) %}
+                                    <td>{{ array[0] }}</td>
+                                    <td>{{ array[1] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+{% endblock %}
+
+
+

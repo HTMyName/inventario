@@ -25,6 +25,8 @@ class UsersController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
+			$user->setUsername(strtolower($user->getUsername()));
+			$user->setName(ucfirst($user->getName()));
 			$user->setActive(1);
 			$user->setRoles(['ROLE_USER']);
 			$user->setPayV(0);
@@ -63,10 +65,10 @@ class UsersController extends AbstractController
 	 */
 	public function userEditAction($id = null, Request $request, UserPasswordEncoderInterface $passwordEncoder)
 	{
-		if ( $id !== null) {
+		if ($id !== null) {
 			$em = $this->getDoctrine()->getManager();
 			$user = $em->getRepository(User::class)->find($id);
-		}else{
+		} else {
 			return $this->redirectToRoute('app_users');
 		}
 

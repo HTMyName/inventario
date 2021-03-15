@@ -31,7 +31,7 @@ class ServicesController extends AbstractController
 		}
 
 		$servicio_data = $this->getDoctrine()->getRepository(Servicio::class);
-		$data = $servicio_data->findAllClients();
+		$data = $servicio_data->findAllServices();
 
 		return $this->render('services/index.html.twig', ['form' => $form->createView(), 'data' => $data]);
 	}

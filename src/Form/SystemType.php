@@ -2,30 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Producto;
+use App\Entity\System;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AddTallerType extends AbstractType
+class SystemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cantidad_taller', TextType::class, [
-            	'attr' => [
-            		'autocomplete' => 'off'
-				]
-			])
-			->add('add', SubmitType::class);
+            ->add('pagename')
+            ->add('winservice')
+            ->add('winproduct')
+			->add('submit', SubmitType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Producto::class,
+            'data_class' => System::class,
         ]);
     }
 }

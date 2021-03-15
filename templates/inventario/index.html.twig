@@ -17,32 +17,20 @@
     <div class="card card-primary container-fluid">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+                <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="11%">Marca</th>
-                        <th width="11%">Modelo</th>
-                        <th width="11%">Serie</th>
-                        <th width="11%">Precio_Compra</th>
-                        <th width="11%">Precio_Venta</th>
-                        <th width="11%">Ganancia</th>
-                        <th width="11%">Cantidad</th>
-                        <th width="23%">Acciones</th>
+                        <th width="10%">Marca</th>
+                        <th width="10%">Modelo</th>
+                        <th width="10%">Serie</th>
+                        <th width="10%">Precio_Compra</th>
+                        <th width="10%">Precio_Venta</th>
+                        <th width="10%">Ganancia</th>
+                        <th width="10%">%_Venta</th>
+                        <th width="10%">Cantidad</th>
+                        <th width="20%">Acciones</th>
                     </tr>
                     </thead>
-
-                    <tfoot>
-                    <tr class="text-center">
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Serie</th>
-                        <th>Precio_Compra</th>
-                        <th>Precio_Venta</th>
-                        <th>Ganancia</th>
-                        <th>Cantidad</th>
-                        <th>Acciones</th>
-                    </tr>
-                    </tfoot>
                     <tbody>
                     {% for item in data %}
                         <tr class="text-center">
@@ -52,11 +40,16 @@
                             <td>{{ item.precioC }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
+                            <td>{{ item.xcientoganancia }}</td>
                             <td>{{ item.cantidad_inventario }}</td>
                             <td class="text-center">
                                 <a href="{{ path('app_inventario_add_taller', {'id': item.id}) }}"><input
-                                            class="btn-sm btn-secondary mr-1 ml-1 mb-1 border-0" type="button"
+                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
                                             value="Trasladar"
+                                            style="width: 80px"></a>
+                                <a href="{{ path('app_items_edit', {'id': item.id}) }}"><input
+                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                            value="Editar"
                                             style="width: 80px"></a>
                             </td>
                         </tr>

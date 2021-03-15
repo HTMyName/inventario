@@ -19,7 +19,7 @@ class ServicioRepository extends ServiceEntityRepository
 		parent::__construct($registry, Servicio::class);
 	}
 
-	public function findAllClients()
+	public function findAllServices()
 	{
 		return $this->createQueryBuilder('s')
 			->select('s')
@@ -35,6 +35,18 @@ class ServicioRepository extends ServiceEntityRepository
 			->set('s.active', '0')
 			->where('s.id = :id')
 			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
+
+	public function showServiceBy($data)
+	{
+		return $this->createQueryBuilder('s')
+			->select('s.id', 's.name')
+			->where('s.active = 1')
+			->andWhere('s.name like :data')
+			->setParameter('data', "%$data%")
+			->setMaxResults(5)
 			->getQuery()
 			->getResult();
 	}
