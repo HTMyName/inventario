@@ -20,14 +20,15 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="11%">Marca</th>
-                        <th width="11%">Modelo</th>
-                        <th width="11%">Serie</th>
-                        <th width="11%">Precio_Compra</th>
-                        <th width="11%">Precio_Venta</th>
-                        <th width="11%">Ganancia</th>
-                        <th width="11%">Cantidad</th>
-                        <th width="23%">Acciones</th>
+                        <th width="10%">Marca</th>
+                        <th width="10%">Modelo</th>
+                        <th width="10%">Serie</th>
+                        <th width="10%">Precio_Compra</th>
+                        <th width="10%">Precio_Venta</th>
+                        <th width="10%">Ganancia</th>
+                        <th width="10%">%_Venta</th>
+                        <th width="10%">Cantidad</th>
+                        <th width="20%">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,11 +40,16 @@
                             <td>{{ item.precioC }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
+                            <td>{{ item.xcientoganancia }}</td>
                             <td>{{ item.cantidad_inventario }}</td>
                             <td class="text-center">
                                 <a href="{{ path('app_inventario_add_taller', {'id': item.id}) }}"><input
                                             class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
                                             value="Trasladar"
+                                            style="width: 80px"></a>
+                                <a href="{{ path('app_items_edit', {'id': item.id}) }}"><input
+                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                            value="Editar"
                                             style="width: 80px"></a>
                             </td>
                         </tr>

@@ -31,10 +31,6 @@ class UsersController extends AbstractController
 			$user->setRoles(['ROLE_USER']);
 			$user->setPayV(0);
 			$user->setPayS(0);
-			$user->setVentaDirect(0);
-			$user->setVentaIndirect(0);
-			$user->setServicioDirect(0);
-			$user->setServicioIndirect(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user, '12345'
 			));

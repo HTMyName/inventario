@@ -19,26 +19,29 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.marca, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.modelo, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.precioC, { attr: {'autocomplete': 'off','onkeyup':'ganancia()'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.precioV, { attr: {'autocomplete': 'off','onkeyup':'ganancia()'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label>Ganancia</label>
                     <label id="auto-ganacias" class="form-control"></label>
                 </div>
-                <div class="col-md-4 m-auto">
+                <div class="col-md-3">
+                    {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-md-3 m-auto">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
@@ -52,13 +55,14 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="13%">Marca</th>
-                        <th width="13%">Modelo</th>
-                        <th width="13%">Serie</th>
-                        <th width="13%">Precio_Compra</th>
-                        <th width="13%">Precio_Venta</th>
-                        <th width="13%">Ganancia</th>
-                        <th width="22%">Acciones</th>
+                        <th width="11%">Marca</th>
+                        <th width="11%">Modelo</th>
+                        <th width="11%">Serie</th>
+                        <th width="11%">Precio_Compra</th>
+                        <th width="11%">Precio_Venta</th>
+                        <th width="11%">Ganancia</th>
+                        <th width="11%">%_Venta</th>
+                        <th width="23%">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,6 +74,7 @@
                             <td>{{ item.precioC }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
+                            <td>{{ item.xcientoganancia }}</td>
                             <td class="text-center">
                                 <a href="{{ path('app_item_transf', {'id': item.id}) }}"><input
                                             class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"

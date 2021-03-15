@@ -23,12 +23,13 @@
     Nueva Factura
 {% endblock %}
 
+{% block page_btns %}
+    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_user_factura') }}">
+        Mis Facturas
+    </a>
+{% endblock %}
+
 {% block main_content %}
-    <div class="col-12">
-        <a type="button" class="btn btn-primary mb-3 mr-3 float-right" href="{{ path('app_user_factura') }}">
-            Mis Facturas
-        </a>
-    </div>
     <div class="card card-primary container-fluid">
         {{ form_start(form) }}
         <div class="card-body">
@@ -37,7 +38,7 @@
                     <label class="d-block">Cliente</label>
                     <div class="input-group">
                         <input id="id_cliente_input" class="form-control" required="" autocomplete="off"
-                               name="cliente_name" readonly style="background-color: #ffffff!important;cursor: default">
+                               name="cliente_name">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#modal-cliente"><i

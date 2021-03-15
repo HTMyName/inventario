@@ -55,6 +55,11 @@ class Producto
 	private $ganancia;
 
 	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $xcientoganancia;
+
+	/**
 	 * @ORM\Column(type="integer")
 	 */
 	private $cantidad_taller;
@@ -94,9 +99,9 @@ class Producto
 	private $active;
 
 	public function __construct()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	}
 
     public function getActive(): ?bool
     {
@@ -188,9 +193,9 @@ class Producto
     }
 
 	public function __toString()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              		return $this->marca;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    		return $this->marca;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	}
 
     /**
      * @return Collection|FacturasProducto[]
@@ -218,6 +223,18 @@ class Producto
                 $factura->setIdProducto(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getXcientoganancia(): ?float
+    {
+        return $this->xcientoganancia;
+    }
+
+    public function setXcientoganancia(float $xcientoganancia): self
+    {
+        $this->xcientoganancia = $xcientoganancia;
 
         return $this;
     }

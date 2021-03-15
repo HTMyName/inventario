@@ -13,21 +13,26 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2">
-                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                <div class="col-md-7 row">
+                    <div class="col-md-4">
+                        {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.tell, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.descuento, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    {{ form_row(form.tell, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-2">
-                    {{ form_row(form.descuento, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-2">
-                    {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
-                </div>
-                <div class="col-md-2">
-                    <a href="{{ path('app_client') }}"><input class="btn btn-danger btn-block" type="button"
-                                                              value="Cancelar" style="margin-top: 32px!important"></a>
+                <div class="col-md-5 row">
+                    <div class="col-md-6">
+                        {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ path('app_client') }}"><input class="btn btn-danger btn-block" type="button"
+                                                                  value="Cancelar"
+                                                                  style="margin-top: 32px!important"></a>
+                    </div>
                 </div>
             </div>
         </div>

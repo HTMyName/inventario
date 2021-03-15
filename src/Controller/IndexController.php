@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\System;
 use App\Entity\User;
 use App\Form\AdminUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,11 @@ class IndexController extends AbstractController
 		$user_data = $this->getDoctrine()->getRepository(User::class);
 		$data = $user_data->showAllUsers();
 
+		$settings = new System();
+		$settings->setPagename("Inventario");
+		$settings->setWinproduct(0);
+		$settings->setWinservice(0);
+
 		if ($data) {
 			return $this->redirectToRoute('app_login');
 		}
@@ -35,15 +41,12 @@ class IndexController extends AbstractController
 			$user->setRoles(['ROLE_ADMIN']);
 			$user->setPayV(0);
 			$user->setPayS(0);
-			$user->setVentaDirect(0);
-			$user->setVentaIndirect(0);
-			$user->setServicioDirect(0);
-			$user->setServicioIndirect(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user,
 				$form['password']->getData()
 			));
 			$em->persist($user);
+			$em->persist($settings);
 			$em->flush();
 
 			return $this->redirectToRoute('app_home');

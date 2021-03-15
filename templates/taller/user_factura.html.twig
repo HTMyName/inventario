@@ -12,12 +12,14 @@
     Mis Facturas
 {% endblock %}
 
+{% block page_btns %}
+    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_factura') }}">
+        Nueva Factura
+    </a>
+{% endblock %}
+
+
 {% block main_content %}
-    <div class="col-12">
-        <a type="button" class="btn btn-primary mb-3 float-right" href="{{ path('app_factura') }}">
-            Nueva Factura
-        </a>
-    </div>
     <div class="card card-primary container-fluid">
         <div class="card-body">
             <div class="table-responsive">
@@ -52,7 +54,8 @@
                             <td>{{ cantidadS }}</td>
                             <td>{{ factura.total }}</td>
                             <td>{{ factura.xpagar }}</td>
-                            <td><a href="{{ path('app_factura_detalles', {'id': factura.id}) }}"><input class="btn btn-default btn-sm" type="button" value="Detalles"></a></td>
+                            <td><a href="{{ path('app_factura_detalles', {'id': factura.id}) }}"><input
+                                            class="btn btn-default btn-sm" type="button" value="Detalles"></a></td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -12,25 +12,28 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.marca, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.modelo, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.precioC, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.precioV, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
+                    {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-md-3">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <a href="{{ path('app_items') }}"><input class="btn btn-danger btn-block" type="button"
                                                              value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>

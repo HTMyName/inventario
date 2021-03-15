@@ -8,12 +8,13 @@
     Detalles de Factura
 {% endblock %}
 
+{% block page_btns %}
+    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_user_factura') }}">
+        Mis Facturas
+    </a>
+{% endblock %}
+
 {% block main_content %}
-    <div class="col-12">
-        <a type="button" class="btn btn-primary mb-3 float-right" href="{{ path('app_user_factura') }}">
-            Mis Facturas
-        </a>
-    </div>
     {% for factura in facturas %}
         <div class="invoice p-3 mb-3 container-fluid">
             <div class="row">
