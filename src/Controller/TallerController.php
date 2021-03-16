@@ -49,6 +49,8 @@ class TallerController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 
+			$user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+
 			$em = $this->getDoctrine()->getManager();
 			$createCliente = true;
 
@@ -77,7 +79,7 @@ class TallerController extends AbstractController
 			}
 
 			$factura->setFecha(new \DateTime("now"));
-			$factura->setIdUser($this->getUser());
+			$factura->setIdUser($user);
 			$facturaTotalTemporal = 0;
 			$array_facturas_p = [];
 			$array_facturas_s = [];
@@ -105,6 +107,7 @@ class TallerController extends AbstractController
 						$detalles = $product_data->getMarca() . ","
 							. $product_data->getPrecioV() . ","
 							. $factura_productos->getCantidad() . "|";
+						$factura->setSaldoRetenidoP($factura->getSaldoRetenidoP() + ($product_data->getPrecioV() - $product_data->getPrecioC()) * $product_data->getXcientoganancia() / 100);
 					}
 				}
 				foreach ($array_facturas_p as $prod) {
@@ -133,6 +136,7 @@ class TallerController extends AbstractController
 					$detalles = $service_data->getName() . ","
 						. $service_data->getPrecio() . ","
 						. $factura_productos->getCantidad() . "|";
+					$factura->setSaldoRetenidoS($factura->getSaldoRetenidoS() + $service_data->getPrecio() * $service_data->getXcientoganancia() / 100);
 				}
 				foreach ($array_facturas_s as $serv) {
 					$em->persist($serv);
@@ -218,6 +222,13 @@ class TallerController extends AbstractController
 				$log = $this->generateLogs($cliente, $factura, "pago", $detalles);
 				$em->persist($log);
 				$factura->setXpagar($factura->getXpagar() - $cantidad);
+				if ($factura->getXpagar() == 0) {
+					$user = $this->getDoctrine()->getRepository(User::class)->find($factura->getIdUser());
+					$user->setPayV($user->getPayV() + $factura->getSaldoRetenidoP());
+					$user->setPayS($user->getPayS() + $factura->getSaldoRetenidoS());
+					$factura->setSaldoRetenidoP(0);
+					$factura->setSaldoRetenidoS(0);
+				}
 				$em->persist($factura);
 				$em->flush();
 				return $this->redirectToRoute('app_factura_detalles', ['id' => $id]);

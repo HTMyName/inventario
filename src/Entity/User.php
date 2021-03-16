@@ -57,53 +57,53 @@ class User implements UserInterface
 	 */
 	private $facturas;
 
-	public function getName(): ?string
-	{
-		return $this->name;
-	}
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-	public function setName(string $name): self
-	{
-		$this->name = $name;
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPayS(): ?float
-	{
-		return $this->payS;
-	}
+    public function getPayS(): ?float
+    {
+        return $this->payS;
+    }
 
-	public function setPayS(float $payS): self
-	{
-		$this->payS = $payS;
+    public function setPayS(float $payS): self
+    {
+        $this->payS = $payS;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPayV(): ?float
-	{
-		return $this->payV;
-	}
+    public function getPayV(): ?float
+    {
+        return $this->payV;
+    }
 
-	public function setPayV(float $payV): self
-	{
-		$this->payV = $payV;
+    public function setPayV(float $payV): self
+    {
+        $this->payV = $payV;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getActive(): ?bool
-	{
-		return $this->active;
-	}
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
 
-	public function setActive(bool $active): self
-	{
-		$this->active = $active;
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
-		return $this;
-	}
+        return $this;
+    }
 
 
 	/**
@@ -118,140 +118,140 @@ class User implements UserInterface
 	private $password;
 
 	public function __construct()
-	{
-		$this->logs = new ArrayCollection();
-		$this->facturas = new ArrayCollection();
-	}
+                                                               	{
+                                                               		$this->logs = new ArrayCollection();
+                                                               		$this->facturas = new ArrayCollection();
+                                                               	}
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function getUsername(): ?string
-	{
-		return $this->username;
-	}
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
 
-	public function setUsername(string $username): self
-	{
-		$this->username = $username;
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getRoles(): ?array
-	{
-		return $this->roles;
-	}
+    public function getRoles(): ?array
+    {
+        return $this->roles;
+    }
 
-	public function setRoles(array $roles): self
-	{
-		$this->roles = $roles;
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPassword(): ?string
-	{
-		return $this->password;
-	}
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
 
-	public function setPassword(string $password): self
-	{
-		$this->password = $password;
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getSalt()
-	{
-		// not needed when using the "bcrypt" algorithm in security.yaml
-	}
+                                                               	{
+                                                               		// not needed when using the "bcrypt" algorithm in security.yaml
+                                                               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials()
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+                                                               	{
+                                                               		// If you store any temporary, sensitive data on the user, clear it here
+                                                               		// $this->plainPassword = null;
+                                                               	}
 
-	/**
-	 * @return Collection|Logs[]
-	 */
-	public function getLogs(): Collection
-	{
-		return $this->logs;
-	}
+    /**
+     * @return Collection|Logs[]
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
 
-	public function addLog(Logs $log): self
-	{
-		if (!$this->logs->contains($log)) {
-			$this->logs[] = $log;
-			$log->setIdUser($this);
-		}
+    public function addLog(Logs $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs[] = $log;
+            $log->setIdUser($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function removeLog(Logs $log): self
-	{
-		if ($this->logs->removeElement($log)) {
-			// set the owning side to null (unless already changed)
-			if ($log->getIdUser() === $this) {
-				$log->setIdUser(null);
-			}
-		}
+    public function removeLog(Logs $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getIdUser() === $this) {
+                $log->setIdUser(null);
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
 	public function setLogs(?Logs $logs): self
-	{
-		$this->logs = $logs;
+                                                               	{
+                                                               		$this->logs = $logs;
+                                                               
+                                                               		return $this;
+                                                               	}
 
-		return $this;
-	}
+    /**
+     * @return Collection|Facturas[]
+     */
+    public function getFacturas(): Collection
+    {
+        return $this->facturas;
+    }
 
-	/**
-	 * @return Collection|Facturas[]
-	 */
-	public function getFacturas(): Collection
-	{
-		return $this->facturas;
-	}
+    public function addFactura(Facturas $factura): self
+    {
+        if (!$this->facturas->contains($factura)) {
+            $this->facturas[] = $factura;
+            $factura->setIdUser($this);
+        }
 
-	public function addFactura(Facturas $factura): self
-	{
-		if (!$this->facturas->contains($factura)) {
-			$this->facturas[] = $factura;
-			$factura->setIdUser($this);
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    public function removeFactura(Facturas $factura): self
+    {
+        if ($this->facturas->removeElement($factura)) {
+            // set the owning side to null (unless already changed)
+            if ($factura->getIdUser() === $this) {
+                $factura->setIdUser(null);
+            }
+        }
 
-	public function removeFactura(Facturas $factura): self
-	{
-		if ($this->facturas->removeElement($factura)) {
-			// set the owning side to null (unless already changed)
-			if ($factura->getIdUser() === $this) {
-				$factura->setIdUser(null);
-			}
-		}
-
-		return $this;
-	}
+        return $this;
+    }
 
 	public function __toString()
-	{
-		return $this->name;
-	}
+                                                               	{
+                                                               		return $this->name;
+                                                               	}
 
 
 }

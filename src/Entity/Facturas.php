@@ -61,192 +61,227 @@ class Facturas
 	 */
 	private $xpagar;
 
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $saldoRetenidoP;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $saldoRetenidoS;
+
+
 	public function __construct()
-                                                                        	{
-                                                                        		$this->productos = new \Doctrine\Common\Collections\ArrayCollection();
-                                                                        		$this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
-                                                                          $this->logs = new ArrayCollection();
-                                                                        	}
+	{
+		$this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->logs = new ArrayCollection();
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    /**
-     * @return Collection|FacturasProducto[]
-     */
-    public function getProductos(): Collection
-    {
-        return $this->productos;
-    }
+	/**
+	 * @return Collection|FacturasProducto[]
+	 */
+	public function getProductos(): Collection
+	{
+		return $this->productos;
+	}
 
-    /**
-     * @return Collection|FacturasServicio[]
-     */
-    public function getServicios(): Collection
-    {
-        return $this->servicios;
-    }
+	/**
+	 * @return Collection|FacturasServicio[]
+	 */
+	public function getServicios(): Collection
+	{
+		return $this->servicios;
+	}
 
-    public function getFecha(): ?\DateTimeInterface
-    {
-        return $this->fecha;
-    }
+	public function getFecha(): ?\DateTimeInterface
+	{
+		return $this->fecha;
+	}
 
-    public function setFecha(\DateTimeInterface $fecha): self
-    {
-        $this->fecha = $fecha;
+	public function setFecha(\DateTimeInterface $fecha): self
+	{
+		$this->fecha = $fecha;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getTotal(): ?float
-    {
-        return $this->total;
-    }
+	public function getTotal(): ?float
+	{
+		return $this->total;
+	}
 
-    public function setTotal(float $total): self
-    {
-        $this->total = $total;
+	public function setTotal(float $total): self
+	{
+		$this->total = $total;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getIdCliente(): ?Cliente
-    {
-        return $this->id_cliente;
-    }
+	public function getIdCliente(): ?Cliente
+	{
+		return $this->id_cliente;
+	}
 
-    public function setIdCliente(?Cliente $id_cliente): self
-    {
-        $this->id_cliente = $id_cliente;
+	public function setIdCliente(?Cliente $id_cliente): self
+	{
+		$this->id_cliente = $id_cliente;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getIdUser(): ?User
-    {
-        return $this->id_user;
-    }
+	public function getIdUser(): ?User
+	{
+		return $this->id_user;
+	}
 
-    public function setIdUser(?User $id_user): self
-    {
-        $this->id_user = $id_user;
+	public function setIdUser(?User $id_user): self
+	{
+		$this->id_user = $id_user;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	public function setProductos(string $productos): self
-                                                                        	{
-                                                                        		$this->productos = $productos;
-                                                                        
-                                                                        		return $this;
-                                                                        	}
+	{
+		$this->productos = $productos;
+
+		return $this;
+	}
 
 	public function setServicios(string $servicios): self
-                                                                        	{
-                                                                        		$this->servicios = $servicios;
-                                                                        
-                                                                        		return $this;
-                                                                        	}
+	{
+		$this->servicios = $servicios;
 
-    public function addProducto(FacturasProducto $producto): self
-    {
-        if (!$this->productos->contains($producto)) {
-            $this->productos[] = $producto;
-            $producto->setIdFactura($this);
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function addProducto(FacturasProducto $producto): self
+	{
+		if (!$this->productos->contains($producto)) {
+			$this->productos[] = $producto;
+			$producto->setIdFactura($this);
+		}
 
-    public function removeProducto(FacturasProducto $producto): self
-    {
-        if ($this->productos->removeElement($producto)) {
-            // set the owning side to null (unless already changed)
-            if ($producto->getIdFactura() === $this) {
-                $producto->setIdFactura(null);
-            }
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function removeProducto(FacturasProducto $producto): self
+	{
+		if ($this->productos->removeElement($producto)) {
+			// set the owning side to null (unless already changed)
+			if ($producto->getIdFactura() === $this) {
+				$producto->setIdFactura(null);
+			}
+		}
 
-    public function addServicio(FacturasServicio $servicio): self
-    {
-        if (!$this->servicios->contains($servicio)) {
-            $this->servicios[] = $servicio;
-            $servicio->setIdFactura($this);
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function addServicio(FacturasServicio $servicio): self
+	{
+		if (!$this->servicios->contains($servicio)) {
+			$this->servicios[] = $servicio;
+			$servicio->setIdFactura($this);
+		}
 
-    public function removeServicio(FacturasServicio $servicio): self
-    {
-        if ($this->servicios->removeElement($servicio)) {
-            // set the owning side to null (unless already changed)
-            if ($servicio->getIdFactura() === $this) {
-                $servicio->setIdFactura(null);
-            }
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function removeServicio(FacturasServicio $servicio): self
+	{
+		if ($this->servicios->removeElement($servicio)) {
+			// set the owning side to null (unless already changed)
+			if ($servicio->getIdFactura() === $this) {
+				$servicio->setIdFactura(null);
+			}
+		}
+
+		return $this;
+	}
 
 	public function getActive(): ?bool
-                                                                        	{
-                                                                        		return $this->active;
-                                                                        	}
+	{
+		return $this->active;
+	}
 
 	public function setActive(bool $active): self
-                                                                        	{
-                                                                        		$this->active = $active;
-                                                                        
-                                                                        		return $this;
-                                                                        	}
+	{
+		$this->active = $active;
 
-    public function getXpagar(): ?float
-    {
-        return $this->xpagar;
-    }
+		return $this;
+	}
 
-    public function setXpagar(float $xpagar): self
-    {
-        $this->xpagar = $xpagar;
+	public function getXpagar(): ?float
+	{
+		return $this->xpagar;
+	}
 
-        return $this;
-    }
+	public function setXpagar(float $xpagar): self
+	{
+		$this->xpagar = $xpagar;
 
-    /**
-     * @return Collection|Logs[]
-     */
-    public function getLogs(): Collection
-    {
-        return $this->logs;
-    }
+		return $this;
+	}
 
-    public function addLog(Logs $log): self
-    {
-        if (!$this->logs->contains($log)) {
-            $this->logs[] = $log;
-            $log->setIdFactura($this);
-        }
+	/**
+	 * @return Collection|Logs[]
+	 */
+	public function getLogs(): Collection
+	{
+		return $this->logs;
+	}
 
-        return $this;
-    }
+	public function addLog(Logs $log): self
+	{
+		if (!$this->logs->contains($log)) {
+			$this->logs[] = $log;
+			$log->setIdFactura($this);
+		}
 
-    public function removeLog(Logs $log): self
-    {
-        if ($this->logs->removeElement($log)) {
-            // set the owning side to null (unless already changed)
-            if ($log->getIdFactura() === $this) {
-                $log->setIdFactura(null);
-            }
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function removeLog(Logs $log): self
+	{
+		if ($this->logs->removeElement($log)) {
+			// set the owning side to null (unless already changed)
+			if ($log->getIdFactura() === $this) {
+				$log->setIdFactura(null);
+			}
+		}
+
+		return $this;
+	}
+
+	public function getSaldoRetenidoP(): ?float
+	{
+		return $this->saldoRetenidoP;
+	}
+
+	public function setSaldoRetenidoP(float $saldoRetenidoP): self
+	{
+		$this->saldoRetenidoP = $saldoRetenidoP;
+
+		return $this;
+	}
+
+	public function getSaldoRetenidoS(): ?float
+	{
+		return $this->saldoRetenidoS;
+	}
+
+	public function setSaldoRetenidoS(float $saldoRetenidoS): self
+	{
+		$this->saldoRetenidoS = $saldoRetenidoS;
+
+		return $this;
+	}
 
 }
