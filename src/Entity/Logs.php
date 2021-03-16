@@ -52,10 +52,10 @@ class Logs
 	private $tipo;
 
 	public function __construct()
-                                       	{
-                                       		$this->id_cliente = new ArrayCollection();
-                                       		$this->id_user = new ArrayCollection();
-                                       	}
+                                                                              	{
+                                                                              		$this->id_cliente = new ArrayCollection();
+                                                                              		$this->id_user = new ArrayCollection();
+                                                                              	}
 
     public function getIdCliente(): ?Cliente
     {
@@ -111,48 +111,48 @@ class Logs
     }
 
 	public function addIdCliente(Cliente $idCliente): self
-                                       	{
-                                       		if (!$this->id_cliente->contains($idCliente)) {
-                                       			$this->id_cliente[] = $idCliente;
-                                       			$idCliente->setLogs($this);
-                                       		}
-
-                                       		return $this;
-                                       	}
+                                                                              	{
+                                                                              		if (!$this->id_cliente->contains($idCliente)) {
+                                                                              			$this->id_cliente[] = $idCliente;
+                                                                              			$idCliente->setLogs($this);
+                                                                              		}
+                                       
+                                                                              		return $this;
+                                                                              	}
 
 	public function removeIdCliente(Cliente $idCliente): self
-                                       	{
-                                       		if ($this->id_cliente->removeElement($idCliente)) {
-                                       			// set the owning side to null (unless already changed)
-                                       			if ($idCliente->getLogs() === $this) {
-                                       				$idCliente->setLogs(null);
-                                       			}
-                                       		}
-
-                                       		return $this;
-                                       	}
+                                                                              	{
+                                                                              		if ($this->id_cliente->removeElement($idCliente)) {
+                                                                              			// set the owning side to null (unless already changed)
+                                                                              			if ($idCliente->getLogs() === $this) {
+                                                                              				$idCliente->setLogs(null);
+                                                                              			}
+                                                                              		}
+                                       
+                                                                              		return $this;
+                                                                              	}
 
 	public function addIdUser(User $idUser): self
-                                       	{
-                                       		if (!$this->id_user->contains($idUser)) {
-                                       			$this->id_user[] = $idUser;
-                                       			$idUser->setLogs($this);
-                                       		}
-
-                                       		return $this;
-                                       	}
+                                                                              	{
+                                                                              		if (!$this->id_user->contains($idUser)) {
+                                                                              			$this->id_user[] = $idUser;
+                                                                              			$idUser->setLogs($this);
+                                                                              		}
+                                       
+                                                                              		return $this;
+                                                                              	}
 
 	public function removeIdUser(User $idUser): self
-                                       	{
-                                       		if ($this->id_user->removeElement($idUser)) {
-                                       			// set the owning side to null (unless already changed)
-                                       			if ($idUser->getLogs() === $this) {
-                                       				$idUser->setLogs(null);
-                                       			}
-                                       		}
-
-                                       		return $this;
-                                       	}
+                                                                              	{
+                                                                              		if ($this->id_user->removeElement($idUser)) {
+                                                                              			// set the owning side to null (unless already changed)
+                                                                              			if ($idUser->getLogs() === $this) {
+                                                                              				$idUser->setLogs(null);
+                                                                              			}
+                                                                              		}
+                                       
+                                                                              		return $this;
+                                                                              	}
 
     public function getIdFactura(): ?Facturas
     {

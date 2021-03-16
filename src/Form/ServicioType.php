@@ -18,6 +18,7 @@ class ServicioType extends AbstractType
             ->add('name', TextType::class)
             ->add('detalles', TextType::class)
             ->add('precio', NumberType::class)
+			->add('xcientoganancia', NumberType::class)
 			->add('submit', SubmitType::class)
         ;
     }

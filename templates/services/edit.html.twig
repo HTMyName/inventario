@@ -13,14 +13,17 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
             </div>
             <div class="row col-md-6 m-auto">

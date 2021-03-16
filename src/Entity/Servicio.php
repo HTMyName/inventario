@@ -40,14 +40,19 @@ class Servicio
 	private $precio;
 
 	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $xcientoganancia;
+
+	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	private $active;
 
 	public function __construct()
-                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                            	}
+                                                                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
+                                                                                                                                                                                                                                                                                                            	}
 
     public function getActive(): ?bool
     {
@@ -103,9 +108,9 @@ class Servicio
     }
 
 	public function __toString()
-                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                            		return $this->name;
-                                                                                                                                                                                                                                                            	}
+                                                                                                                                                                                                                                                                                                            	{
+                                                                                                                                                                                                                                                                                                            		return $this->name;
+                                                                                                                                                                                                                                                                                                            	}
 
     /**
      * @return \Doctrine\Common\Collections\Collection|FacturasServicio[]
@@ -133,6 +138,18 @@ class Servicio
                 $factura->setIdServicio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getXcientoganancia(): ?float
+    {
+        return $this->xcientoganancia;
+    }
+
+    public function setXcientoganancia(float $xcientoganancia): self
+    {
+        $this->xcientoganancia = $xcientoganancia;
 
         return $this;
     }
