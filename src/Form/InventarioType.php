@@ -10,18 +10,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventarioType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('cantidad_inventario')
-			->add('add', SubmitType::class)
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('cantidad_inventario')
+			->add('add', SubmitType::class);
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Producto::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => Producto::class,
+		]);
+	}
 }

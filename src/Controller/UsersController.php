@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Logs;
 use App\Entity\System;
 use App\Entity\User;
 use App\Form\AddUserType;
 use App\Form\EditUserType;
 use App\Form\PayUserType;
-use App\Form\SystemType;
-use Cassandra\Type\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,6 +17,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UsersController extends AbstractController
 {
+	private $logsOb;
+
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
+
 	/**
 	 * @Route("", name="app_users")
 	 */
@@ -142,8 +146,8 @@ class UsersController extends AbstractController
 				$system->setGanancia($system->getGanancia() - $tmpTotal);
 				$em->persist($system);
 				if ($tmpTotal < 0) {
-					$detalles = $user->getPayTotal();
-					$logs = $this->generateLogs(null, null, 'deudapaga', $detalles);
+					$detalles = $tmpTotal * -1;
+					$logs = $this->logsOb->generateLogs(null, null, $user, 'deudapaga', $detalles);
 					$em->persist($logs);
 				}
 
@@ -154,7 +158,7 @@ class UsersController extends AbstractController
 			}
 
 			if ($cantidad_pagar > 0) {
-				$logs = $this->generateLogs(null, null, 'salario', $cantidad_pagar);
+				$logs = $this->logsOb->generateLogs(null, null, $user, 'salario', $cantidad_pagar);
 				$em->persist($logs);
 			}
 
@@ -208,7 +212,7 @@ class UsersController extends AbstractController
 
 				if ($tmpTotal - $cantidad_pagar > 0) {
 					$paytmp = ($tmpTotal - $cantidad_pagar) * -1;
-				}else{
+				} else {
 					$paytmp = 0;
 				}
 
@@ -217,7 +221,7 @@ class UsersController extends AbstractController
 				$system = $this->getDoctrine()->getRepository(System::class)->find(1);
 				$system->setGanancia($system->getGanancia() + $cantidad_pagar);
 
-				$logs = $this->generateLogs(null, null, 'deudapaga', $cantidad_pagar);
+				$logs = $this->logsOb->generateLogs(null, null, $user, 'deudapaga', $cantidad_pagar);
 				$em->persist($logs);
 				$em->flush();
 			} else {
@@ -232,17 +236,5 @@ class UsersController extends AbstractController
 			'form' => $form->createView(),
 			'user' => $user
 		]);
-	}
-
-	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
-	{
-		$log = new Logs();
-		$log->setIdCliente($cliente);
-		$log->setIdUser($this->getUser());
-		$log->setIdFactura($factura);
-		$log->setFecha(new \DateTime('now'));
-		$log->setTipo($tipo);
-		$log->setDetalles($detalles);
-		return $log;
 	}
 }

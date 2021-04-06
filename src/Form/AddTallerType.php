@@ -11,21 +11,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddTallerType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('cantidad_taller', TextType::class, [
-            	'attr' => [
-            		'autocomplete' => 'off'
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('cantidad_taller', TextType::class, [
+				'attr' => [
+					'autocomplete' => 'off'
 				]
 			])
 			->add('add', SubmitType::class);
-    }
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Producto::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => Producto::class,
+		]);
+	}
 }

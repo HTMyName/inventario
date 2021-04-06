@@ -7,6 +7,7 @@ use App\Entity\Producto;
 use App\Entity\System;
 use App\Form\AddItemType;
 use App\Form\InventarioType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ItemsController extends AbstractController
 {
+	private $logsOb;
+
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
+
 	/**
 	 * @Route("", name="app_items")
 	 */
@@ -56,7 +64,7 @@ class ItemsController extends AbstractController
 			$this->getDoctrine()->getRepository(Producto::class)->deleteBy($id);
 			$em = $this->getDoctrine()->getManager();
 			$detalles = $id;
-			$logs = $this->generateLogs(null, null, 'deleteitem', $detalles);
+			$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'deleteitem', $detalles);
 			$em->persist($logs);
 			$em->flush();
 		}
@@ -130,12 +138,12 @@ class ItemsController extends AbstractController
 					$item->setCantidadInventario($actualCant + $item->getCantidadInventario());
 
 					$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $actualCant;
-					$logs = $this->generateLogs(null, null, 'additem', $detalles);
+					$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'additem', $detalles);
 					$em->persist($logs);
 					$em->flush();
 				} else {
 					//$sin_fondos = "No hay suficiente fondo";
-					return $this->redirectToRoute('app_item_transf',[
+					return $this->redirectToRoute('app_item_transf', [
 						'id' => $id,
 					]);
 				}
@@ -148,17 +156,5 @@ class ItemsController extends AbstractController
 			'cantidad_actual' => $item->getCantidadInventario(),
 			//'sin_fondos' => $sin_fondos
 		]);
-	}
-
-	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
-	{
-		$log = new Logs();
-		$log->setIdCliente($cliente);
-		$log->setIdUser($this->getUser());
-		$log->setIdFactura($factura);
-		$log->setFecha(new \DateTime('now'));
-		$log->setTipo($tipo);
-		$log->setDetalles($detalles);
-		return $log;
 	}
 }

@@ -12,21 +12,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ServicioType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('name', TextType::class)
-            ->add('detalles', TextType::class)
-            ->add('precio', NumberType::class)
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('name', TextType::class)
+			->add('detalles', TextType::class)
+			->add('precio', NumberType::class)
 			->add('xcientoganancia', NumberType::class)
-			->add('submit', SubmitType::class)
-        ;
-    }
+			->add('submit', SubmitType::class);
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Servicio::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => Servicio::class,
+		]);
+	}
 }

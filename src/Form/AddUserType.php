@@ -14,8 +14,8 @@ class AddUserType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('name', TextType::class, ['attr'=>['autocomplete' => 'off']])
-			->add('username', TextType::class, ['attr'=>['autocomplete' => 'off']])
+			->add('name', TextType::class, ['attr' => ['autocomplete' => 'off']])
+			->add('username', TextType::class, ['attr' => ['autocomplete' => 'off']])
 			->add('submit', SubmitType::class,
 				[
 					'label' => "Add",

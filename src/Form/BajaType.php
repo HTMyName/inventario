@@ -10,17 +10,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BajaType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('submit', SubmitType::class)
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('submit', SubmitType::class);
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Producto::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => Producto::class,
+		]);
+	}
 }

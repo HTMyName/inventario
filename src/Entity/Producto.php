@@ -68,174 +68,173 @@ class Producto
 	 * @ORM\Column(type="integer")
 	 */
 	private $cantidad_inventario;
-
-    public function getCantidadTaller(): ?int
-    {
-        return $this->cantidad_taller;
-    }
-
-    public function setCantidadTaller(int $cantidad_taller): self
-    {
-        $this->cantidad_taller = $cantidad_taller;
-
-        return $this;
-    }
-
-    public function getCantidadInventario(): ?int
-    {
-        return $this->cantidad_inventario;
-    }
-
-    public function setCantidadInventario(int $cantidad_inventario): self
-    {
-        $this->cantidad_inventario = $cantidad_inventario;
-
-        return $this;
-    }
-
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	private $active;
 
 	public function __construct()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	}
+	{
+		$this->facturas = new ArrayCollection();
+	}
 
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
+	public function getCantidadTaller(): ?int
+	{
+		return $this->cantidad_taller;
+	}
 
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
+	public function setCantidadTaller(int $cantidad_taller): self
+	{
+		$this->cantidad_taller = $cantidad_taller;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getCantidadInventario(): ?int
+	{
+		return $this->cantidad_inventario;
+	}
 
-    public function getMarca(): ?string
-    {
-        return $this->marca;
-    }
+	public function setCantidadInventario(int $cantidad_inventario): self
+	{
+		$this->cantidad_inventario = $cantidad_inventario;
 
-    public function setMarca(string $marca): self
-    {
-        $this->marca = $marca;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function getActive(): ?bool
+	{
+		return $this->active;
+	}
 
-    public function getModelo(): ?string
-    {
-        return $this->modelo;
-    }
+	public function setActive(bool $active): self
+	{
+		$this->active = $active;
 
-    public function setModelo(string $modelo): self
-    {
-        $this->modelo = $modelo;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getSerie(): ?string
-    {
-        return $this->serie;
-    }
+	public function getMarca(): ?string
+	{
+		return $this->marca;
+	}
 
-    public function setSerie(string $serie): self
-    {
-        $this->serie = $serie;
+	public function setMarca(string $marca): self
+	{
+		$this->marca = $marca;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPrecioC(): ?float
-    {
-        return $this->precioC;
-    }
+	public function getModelo(): ?string
+	{
+		return $this->modelo;
+	}
 
-    public function setPrecioC(float $precioC): self
-    {
-        $this->precioC = $precioC;
+	public function setModelo(string $modelo): self
+	{
+		$this->modelo = $modelo;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPrecioV(): ?float
-    {
-        return $this->precioV;
-    }
+	public function getSerie(): ?string
+	{
+		return $this->serie;
+	}
 
-    public function setPrecioV(float $precioV): self
-    {
-        $this->precioV = $precioV;
+	public function setSerie(string $serie): self
+	{
+		$this->serie = $serie;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getGanancia(): ?float
-    {
-        return $this->ganancia;
-    }
+	public function getPrecioC(): ?float
+	{
+		return $this->precioC;
+	}
 
-    public function setGanancia(float $ganancia): self
-    {
-        $this->ganancia = $ganancia;
+	public function setPrecioC(float $precioC): self
+	{
+		$this->precioC = $precioC;
 
-        return $this;
-    }
+		return $this;
+	}
+
+	public function getPrecioV(): ?float
+	{
+		return $this->precioV;
+	}
+
+	public function setPrecioV(float $precioV): self
+	{
+		$this->precioV = $precioV;
+
+		return $this;
+	}
+
+	public function getGanancia(): ?float
+	{
+		return $this->ganancia;
+	}
+
+	public function setGanancia(float $ganancia): self
+	{
+		$this->ganancia = $ganancia;
+
+		return $this;
+	}
 
 	public function __toString()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            		return $this->marca;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	}
+	{
+		return $this->marca;
+	}
 
-    /**
-     * @return Collection|FacturasProducto[]
-     */
-    public function getFacturas(): Collection
-    {
-        return $this->facturas;
-    }
+	/**
+	 * @return Collection|FacturasProducto[]
+	 */
+	public function getFacturas(): Collection
+	{
+		return $this->facturas;
+	}
 
-    public function addFactura(FacturasProducto $factura): self
-    {
-        if (!$this->facturas->contains($factura)) {
-            $this->facturas[] = $factura;
-            $factura->setIdProducto($this);
-        }
+	public function addFactura(FacturasProducto $factura): self
+	{
+		if (!$this->facturas->contains($factura)) {
+			$this->facturas[] = $factura;
+			$factura->setIdProducto($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeFactura(FacturasProducto $factura): self
-    {
-        if ($this->facturas->removeElement($factura)) {
-            // set the owning side to null (unless already changed)
-            if ($factura->getIdProducto() === $this) {
-                $factura->setIdProducto(null);
-            }
-        }
+	public function removeFactura(FacturasProducto $factura): self
+	{
+		if ($this->facturas->removeElement($factura)) {
+			// set the owning side to null (unless already changed)
+			if ($factura->getIdProducto() === $this) {
+				$factura->setIdProducto(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getXcientoganancia(): ?float
-    {
-        return $this->xcientoganancia;
-    }
+	public function getXcientoganancia(): ?float
+	{
+		return $this->xcientoganancia;
+	}
 
-    public function setXcientoganancia(float $xcientoganancia): self
-    {
-        $this->xcientoganancia = $xcientoganancia;
+	public function setXcientoganancia(float $xcientoganancia): self
+	{
+		$this->xcientoganancia = $xcientoganancia;
 
-        return $this;
-    }
+		return $this;
+	}
 }

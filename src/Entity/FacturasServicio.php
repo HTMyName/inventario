@@ -39,56 +39,56 @@ class FacturasServicio
 	 */
 	private $cantidad;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getIdFactura(): ?Facturas
-    {
-        return $this->id_factura;
-    }
+	public function getIdFactura(): ?Facturas
+	{
+		return $this->id_factura;
+	}
 
-    public function setIdFactura(?Facturas $id_factura): self
-    {
-        $this->id_factura = $id_factura;
+	public function setIdFactura(?Facturas $id_factura): self
+	{
+		$this->id_factura = $id_factura;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getIdServicio(): ?Servicio
-    {
-        return $this->id_servicio;
-    }
+	public function getIdServicio(): ?Servicio
+	{
+		return $this->id_servicio;
+	}
 
-    public function setIdServicio(?Servicio $id_servicio): self
-    {
-        $this->id_servicio = $id_servicio;
+	public function setIdServicio(?Servicio $id_servicio): self
+	{
+		$this->id_servicio = $id_servicio;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPrecio(): ?float
-    {
-        return $this->precio;
-    }
+	public function getPrecio(): ?float
+	{
+		return $this->precio;
+	}
 
-    public function setPrecio(float $precio): self
-    {
-        $this->precio = $precio;
+	public function setPrecio(float $precio): self
+	{
+		$this->precio = $precio;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getCantidad(): ?int
-    {
-        return $this->cantidad;
-    }
+	public function getCantidad(): ?int
+	{
+		return $this->cantidad;
+	}
 
-    public function setCantidad(int $cantidad): self
-    {
-        $this->cantidad = $cantidad;
+	public function setCantidad(int $cantidad): self
+	{
+		$this->cantidad = $cantidad;
 
-        return $this;
-    }
+		return $this;
+	}
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LogsRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -86,12 +87,12 @@ class Logs
 		return $this->id;
 	}
 
-	public function getFecha(): ?\DateTimeInterface
+	public function getFecha(): ?DateTimeInterface
 	{
 		return $this->fecha;
 	}
 
-	public function setFecha(\DateTimeInterface $fecha): self
+	public function setFecha(DateTimeInterface $fecha): self
 	{
 		$this->fecha = $fecha;
 

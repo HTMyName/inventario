@@ -61,6 +61,21 @@ class User implements UserInterface
 	 * @ORM\OneToMany(targetEntity="App\Entity\Facturas", mappedBy="id_user")
 	 */
 	private $facturas;
+	/**
+	 * @ORM\Column(type="json")
+	 */
+	private $roles = [];
+	/**
+	 * @var string The hashed password
+	 * @ORM\Column(type="string")
+	 */
+	private $password;
+
+	public function __construct()
+	{
+		$this->logs = new ArrayCollection();
+		$this->facturas = new ArrayCollection();
+	}
 
 	public function getName(): ?string
 	{
@@ -108,24 +123,6 @@ class User implements UserInterface
 		$this->active = $active;
 
 		return $this;
-	}
-
-
-	/**
-	 * @ORM\Column(type="json")
-	 */
-	private $roles = [];
-
-	/**
-	 * @var string The hashed password
-	 * @ORM\Column(type="string")
-	 */
-	private $password;
-
-	public function __construct()
-	{
-		$this->logs = new ArrayCollection();
-		$this->facturas = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -194,6 +191,13 @@ class User implements UserInterface
 		return $this->logs;
 	}
 
+	public function setLogs(?Logs $logs): self
+	{
+		$this->logs = $logs;
+
+		return $this;
+	}
+
 	public function addLog(Logs $log): self
 	{
 		if (!$this->logs->contains($log)) {
@@ -212,13 +216,6 @@ class User implements UserInterface
 				$log->setIdUser(null);
 			}
 		}
-
-		return $this;
-	}
-
-	public function setLogs(?Logs $logs): self
-	{
-		$this->logs = $logs;
 
 		return $this;
 	}

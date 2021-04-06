@@ -32,6 +32,18 @@ class LogsRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
+	public function getLogs($year, $mes, $tipo, $user)
+	{
+		$fecha = $this->getFecha($year, $mes);
+
+		return $this->createQueryBuilder('l')
+			->select('l.id', 'l.fecha', 'l.detalles', 'l.tipo', 'l.id_user')
+			->where('l.fecha >= :fecha')
+			->andWhere('l.id_user = :id_user')
+			->getQuery()
+			->getResult();
+	}
+
 	public function getBajas()
 	{
 		$mes = $this->getMes();
@@ -52,6 +64,14 @@ class LogsRepository extends ServiceEntityRepository
 		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
 		$firstDateTime->setTime(0, 0);
 		return $firstDateTime;
+	}
+
+	private function getFecha($year, $mes)
+	{
+		$fecha = new \DateTime('now');
+		$fecha->setDate($year, $mes, 1);
+		$fecha->setTime(0, 0);
+		return $fecha;
 	}
 
 	// /**

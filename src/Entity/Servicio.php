@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ServicioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=ServicioRepository::class)
@@ -50,107 +50,107 @@ class Servicio
 	private $active;
 
 	public function __construct()
-                                                                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                                                                            		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                                                                            	}
+	{
+		$this->facturas = new ArrayCollection();
+	}
 
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
+	public function getActive(): ?bool
+	{
+		return $this->active;
+	}
 
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
+	public function setActive(bool $active): self
+	{
+		$this->active = $active;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDetalles(): ?string
-    {
-        return $this->detalles;
-    }
+	public function getDetalles(): ?string
+	{
+		return $this->detalles;
+	}
 
-    public function setDetalles(string $detalles): self
-    {
-        $this->detalles = $detalles;
+	public function setDetalles(string $detalles): self
+	{
+		$this->detalles = $detalles;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPrecio(): ?float
-    {
-        return $this->precio;
-    }
+	public function getPrecio(): ?float
+	{
+		return $this->precio;
+	}
 
-    public function setPrecio(float $precio): self
-    {
-        $this->precio = $precio;
+	public function setPrecio(float $precio): self
+	{
+		$this->precio = $precio;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	public function __toString()
-                                                                                                                                                                                                                                                                                                            	{
-                                                                                                                                                                                                                                                                                                            		return $this->name;
-                                                                                                                                                                                                                                                                                                            	}
+	{
+		return $this->name;
+	}
 
-    /**
-     * @return \Doctrine\Common\Collections\Collection|FacturasServicio[]
-     */
-    public function getFacturas(): \Doctrine\Common\Collections\Collection
-    {
-        return $this->facturas;
-    }
+	/**
+	 * @return Collection|FacturasServicio[]
+	 */
+	public function getFacturas(): Collection
+	{
+		return $this->facturas;
+	}
 
-    public function addFactura(FacturasServicio $factura): self
-    {
-        if (!$this->facturas->contains($factura)) {
-            $this->facturas[] = $factura;
-            $factura->setIdServicio($this);
-        }
+	public function addFactura(FacturasServicio $factura): self
+	{
+		if (!$this->facturas->contains($factura)) {
+			$this->facturas[] = $factura;
+			$factura->setIdServicio($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeFactura(FacturasServicio $factura): self
-    {
-        if ($this->facturas->removeElement($factura)) {
-            // set the owning side to null (unless already changed)
-            if ($factura->getIdServicio() === $this) {
-                $factura->setIdServicio(null);
-            }
-        }
+	public function removeFactura(FacturasServicio $factura): self
+	{
+		if ($this->facturas->removeElement($factura)) {
+			// set the owning side to null (unless already changed)
+			if ($factura->getIdServicio() === $this) {
+				$factura->setIdServicio(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getXcientoganancia(): ?float
-    {
-        return $this->xcientoganancia;
-    }
+	public function getXcientoganancia(): ?float
+	{
+		return $this->xcientoganancia;
+	}
 
-    public function setXcientoganancia(float $xcientoganancia): self
-    {
-        $this->xcientoganancia = $xcientoganancia;
+	public function setXcientoganancia(float $xcientoganancia): self
+	{
+		$this->xcientoganancia = $xcientoganancia;
 
-        return $this;
-    }
+		return $this;
+	}
 }

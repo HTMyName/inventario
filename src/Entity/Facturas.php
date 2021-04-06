@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FacturasRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -99,8 +100,8 @@ class Facturas
 
 	public function __construct()
 	{
-		$this->productos = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->productos = new ArrayCollection();
+		$this->servicios = new ArrayCollection();
 		$this->logs = new ArrayCollection();
 	}
 
@@ -117,6 +118,13 @@ class Facturas
 		return $this->productos;
 	}
 
+	public function setProductos(string $productos): self
+	{
+		$this->productos = $productos;
+
+		return $this;
+	}
+
 	/**
 	 * @return Collection|FacturasServicio[]
 	 */
@@ -125,12 +133,19 @@ class Facturas
 		return $this->servicios;
 	}
 
-	public function getFecha(): ?\DateTimeInterface
+	public function setServicios(string $servicios): self
+	{
+		$this->servicios = $servicios;
+
+		return $this;
+	}
+
+	public function getFecha(): ?DateTimeInterface
 	{
 		return $this->fecha;
 	}
 
-	public function setFecha(\DateTimeInterface $fecha): self
+	public function setFecha(DateTimeInterface $fecha): self
 	{
 		$this->fecha = $fecha;
 
@@ -169,20 +184,6 @@ class Facturas
 	public function setIdUser(?User $id_user): self
 	{
 		$this->id_user = $id_user;
-
-		return $this;
-	}
-
-	public function setProductos(string $productos): self
-	{
-		$this->productos = $productos;
-
-		return $this;
-	}
-
-	public function setServicios(string $servicios): self
-	{
-		$this->servicios = $servicios;
 
 		return $this;
 	}

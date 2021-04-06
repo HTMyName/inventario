@@ -55,4 +55,69 @@ class HomeController extends AbstractController
 		}
 		return new JsonResponse('forbidden', Response::HTTP_FORBIDDEN);
 	}
+
+	/**
+	 * @Route("/home/sales", name="home_sales", methods={"GET"})
+	 */
+	public function getChart()
+	{
+		$facturas = $this->getDoctrine()->getRepository(Facturas::class)->getAllUserFacturas($this->getUser());
+
+		$array_prod = [
+			0 => 0,        //ene
+			1 => 0,        //feb
+			2 => 0,        //mar
+			3 => 0,        //abr
+			4 => 0,        //may
+			5 => 0,        //jun
+			6 => 0,        //jul
+			7 => 0,        //ago
+			8 => 0,        //sep
+			9 => 0,        //oct
+			10 => 0,       //nov
+			11 => 0        //dic
+		];
+
+		$array_serv = [
+			0 => 0,        //ene
+			1 => 0,        //feb
+			2 => 0,        //mar
+			3 => 0,        //abr
+			4 => 0,        //may
+			5 => 0,        //jun
+			6 => 0,        //jul
+			7 => 0,        //ago
+			8 => 0,        //sep
+			9 => 0,        //oct
+			10 => 0,       //nov
+			11 => 0        //dic
+		];
+
+		foreach ($facturas as $factura) {
+
+			$fecha = $factura->getFecha();
+			$fecha_formated = $fecha->format('Y-m-d H:i:s');
+			$fecha_formated = strtotime($fecha_formated);
+			$mes = date('n', $fecha_formated);
+			$mes -= 1;
+
+			foreach ($factura->getProductos() as $producto) {
+				$cantTmp = (int)$array_prod[$mes] + (int)$producto->getCantidad();
+				$array_prod[$mes] = [$cantTmp];
+			}
+
+			foreach ($factura->getServicios() as $servicio) {
+				$cantTmp = (int)$array_serv[$mes] + (int)$servicio->getCantidad();
+				$array_serv[$mes] = [$cantTmp];
+			}
+		}
+
+		$json = [
+			'productos' => $array_prod,
+			'servicios' => $array_serv
+		];
+
+		return new JsonResponse($json, Response::HTTP_OK);
+		//return $this->render('test.html.twig');
+	}
 }

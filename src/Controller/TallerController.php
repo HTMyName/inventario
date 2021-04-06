@@ -18,13 +18,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * @Route("/taller")
  */
 class TallerController extends AbstractController
 {
+	private $logsOb;
+
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
+
 	/**
 	 * @Route("", name="app_taller")
 	 */
@@ -69,7 +75,11 @@ class TallerController extends AbstractController
 				}
 				$tellForm = $request->get('telefono_name');
 				if ($tellForm !== null) {
-					$cliente->setTell($tellForm);
+					if (strlen($tellForm) == 8) {
+						$cliente->setTell($tellForm);
+					} else {
+						$createCliente = false;
+					}
 				} else {
 					$createCliente = false;
 				}
@@ -200,7 +210,7 @@ class TallerController extends AbstractController
 
 			$em->persist($factura);
 
-			$log = $this->generateLogs($cliente, $factura, "factura", $detalles);
+			$log = $this->logsOb->generateLogs($cliente, $factura, $this->getUser(), "factura", $detalles);
 			$em->persist($log);
 
 			if ($facturaTotalTemporal > 0 && $createCliente === true) {
@@ -287,7 +297,7 @@ class TallerController extends AbstractController
 				$system->setCaja($system->getCaja() + $cantidad);
 
 				$detalles = $metodoPago . "," . $cantidad;
-				$log = $this->generateLogs($cliente, $factura, "pago", $detalles);
+				$log = $this->logsOb->generateLogs($cliente, $factura, $this->getUser(), "pago", $detalles);
 				$em->persist($log);
 				$factura->setXpagar($factura->getXpagar() - $cantidad);
 
@@ -364,7 +374,7 @@ class TallerController extends AbstractController
 				$item->setCantidadInventario($item->getCantidadInventario() + $cantidad_inventario);
 
 				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cantidad_inventario;
-				$logs = $this->generateLogs(null, null, 'addinventario', $detalles);
+				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'addinventario', $detalles);
 				$em->persist($logs);
 
 				$em->flush();
@@ -447,22 +457,6 @@ class TallerController extends AbstractController
 		$json->setData($servicio_repository);
 
 		return $json;
-	}
-
-	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
-	{
-		$log = new Logs();
-		$log->setIdCliente($cliente);
-		$log->setIdUser($this->getUser());
-		$log->setIdFactura($factura);
-		if ($factura != null) {
-			$log->setFecha($factura->getFecha());
-		} else {
-			$log->setFecha(new \DateTime('now'));
-		}
-		$log->setTipo($tipo);
-		$log->setDetalles($detalles);
-		return $log;
 	}
 
 }

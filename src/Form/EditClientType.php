@@ -11,20 +11,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditClientType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('name')
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('name')
 			->add('tell', NumberType::class)
 			->add('descuento')
 			->add('submit', SubmitType::class);
-        ;
-    }
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Cliente::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => Cliente::class,
+		]);
+	}
 }

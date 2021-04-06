@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Logs;
 use App\Entity\Producto;
-use App\Entity\System;
-use App\Form\AddInventarioType;
 use App\Form\AddTallerType;
 use App\Form\BajaType;
-use App\Form\InventarioType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class InventarioController extends AbstractController
 {
+	private $logsOb;
+
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
 	/**
 	 * @Route("", name="app_inventario")
 	 */
@@ -69,7 +73,7 @@ class InventarioController extends AbstractController
 				$item->setCantidadTaller($item->getCantidadTaller() + $cantidad_taller);
 
 				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cantidad_taller;
-				$logs = $this->generateLogs(null, null, 'addtaller', $detalles);
+				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'addtaller', $detalles);
 				$em->persist($logs);
 
 				$em->flush();
@@ -112,8 +116,8 @@ class InventarioController extends AbstractController
 			}
 			if ($cant_bajas != null && is_numeric($cant_bajas) && $cant_bajas > 0 && $cant_bajas <= $item->getCantidadInventario()) {
 				$item->setCantidadInventario($item->getCantidadInventario() - $cant_bajas);
-				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cant_bajas .',' .$notas;
-				$logs = $this->generateLogs(null, null, 'baja', $detalles);
+				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cant_bajas . ',' . $notas;
+				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'baja', $detalles);
 				$em->persist($logs);
 				$em->flush();
 			} else {
@@ -128,17 +132,5 @@ class InventarioController extends AbstractController
 			'form' => $form->createView(),
 			'cantidad_actual' => $item->getCantidadInventario()
 		]);
-	}
-
-	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
-	{
-		$log = new Logs();
-		$log->setIdCliente($cliente);
-		$log->setIdUser($this->getUser());
-		$log->setIdFactura($factura);
-		$log->setFecha(new \DateTime('now'));
-		$log->setTipo($tipo);
-		$log->setDetalles($detalles);
-		return $log;
 	}
 }

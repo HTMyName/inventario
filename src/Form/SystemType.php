@@ -10,20 +10,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SystemType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('pagename')
-            ->add('winservice')
-            ->add('winproduct')
-			->add('submit', SubmitType::class)
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('pagename')
+			->add('winservice')
+			->add('winproduct')
+			->add('submit', SubmitType::class);
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => System::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => System::class,
+		]);
+	}
 }
