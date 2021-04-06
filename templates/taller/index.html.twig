@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
 {% endblock %}
 
-
 {% block title %}
     Taller
 {% endblock %}
@@ -14,10 +13,13 @@
 {% endblock %}
 
 {% block page_btns %}
-    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_factura') }}">
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_factura') }}">
         Nueva Factura
     </a>
-    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_user_factura') }}">
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura_xcobrar') }}">
+        Por Cobrar
+    </a>
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura') }}">
         Mis Facturas
     </a>
 {% endblock %}
@@ -36,7 +38,9 @@
                         <th width="14%">Serie</th>
                         <th width="14%">Precio_Venta</th>
                         <th width="14%">Cantidad</th>
-                        <th width="30%">Acciones</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <th width="30%">Acciones</th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>
@@ -47,12 +51,14 @@
                             <td>{{ item.serie }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.cantidad_taller }}</td>
-                            <td class="text-center">
-                                <a href="{{ path('app_inventario_add_taller', {'id': item.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Trasladar"
-                                            style="width: 80px"></a>
-                            </td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td class="text-center">
+                                    <a href="{{ path('app_taller_add_inventario', {'id': item.id}) }}"><input
+                                                class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                                value="Trasladar"
+                                                style="width: 80px"></a>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>

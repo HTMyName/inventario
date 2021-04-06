@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Mover a Ganancias
+{% endblock %}
+
+{% block page_name %}
+    Mover a Ganancias
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        <div class="card-body">
+            {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
+            {{ form_row(form.id, { attr: {class: 'd-none',} }) }}
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label class="form-control">Fondo:
+                        <span class="float-right">
+                            {{ system.recuperado }}
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control">Ganancias:
+                        <span class="float-right">
+                            {{ system.ganancia }}
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="cantidad-pagar" placeholder="Cantidad"
+                           required autocomplete="off">
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(form.submit, {attr: {class: 'form-control btn btn-primary submit-p-btn'}}) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let div = document.getElementById("fondo_id");
+        let parent = div.parentElement;
+        parent.style.display = 'none';
+    </script>
+{% endblock %}

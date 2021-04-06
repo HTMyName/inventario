@@ -10,7 +10,7 @@
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
@@ -20,7 +20,7 @@
                     {{ form_row(form.cantidad_inventario, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-2">
-                    {{ form_row(form.add, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.add, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
                 <div class="col-md-2">
                     <a href="{{ path('app_items') }}"><input class="btn btn-danger btn-block" type="button"

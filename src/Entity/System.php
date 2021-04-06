@@ -32,6 +32,26 @@ class System
      */
     private $winproduct;
 
+    /**
+	 * @ORM\Column(type="float")
+	 */
+	private $inversion;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $recuperado;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $ganancia;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $caja;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +89,54 @@ class System
     public function setWinproduct(float $winproduct): self
     {
         $this->winproduct = $winproduct;
+
+        return $this;
+    }
+
+    public function getInversion(): ?float
+    {
+        return $this->inversion;
+    }
+
+    public function setInversion(float $inversion): self
+    {
+        $this->inversion = $inversion;
+
+        return $this;
+    }
+
+    public function getRecuperado(): ?float
+    {
+        return $this->recuperado;
+    }
+
+    public function setRecuperado(float $recuperado): self
+    {
+        $this->recuperado = $recuperado;
+
+        return $this;
+    }
+
+    public function getGanancia(): ?float
+    {
+        return $this->ganancia;
+    }
+
+    public function setGanancia(float $ganancia): self
+    {
+        $this->ganancia = $ganancia;
+
+        return $this;
+    }
+
+    public function getCaja(): ?float
+    {
+        return $this->caja;
+    }
+
+    public function setCaja(float $caja): self
+    {
+        $this->caja = $caja;
 
         return $this;
     }

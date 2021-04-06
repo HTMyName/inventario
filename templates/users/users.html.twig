@@ -16,7 +16,7 @@
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
@@ -26,9 +26,10 @@
                     {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-4">
-                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <label class="text-sm mt-2"><span class="text-danger">• </span>La contraseña por defecto para un nuevo trabajador es: 12345</label>
+                <label class="text-sm mt-2"><span class="text-danger">• </span>La contraseña por defecto para un nuevo
+                    trabajador es: 12345</label>
             </div>
         </div>
         {{ form_end(form) }}
@@ -40,11 +41,12 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="17%">Nombre</th>
-                        <th width="17%">Usuario</th>
-                        <th width="17%">Pago_Ventas</th>
-                        <th width="17%">Pago_Servicios</th>
-                        <th width="32%">Acciones</th>
+                        <th width="15%">Nombre</th>
+                        <th width="15%">Usuario</th>
+                        <th width="15%">Acumulado_Ventas</th>
+                        <th width="15%">Acumulado_Servicios</th>
+                        <th width="15%">Total</th>
+                        <th width="25%">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,20 +56,25 @@
                             <td>{{ user.username }}</td>
                             <td>{{ user.payV }}</td>
                             <td>{{ user.payS }}</td>
+                            <td>{{ user.payS + user.payV + user.payTotal }}</td>
                             <td class="text-center">
-                                <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Pagar"
-                                       style="width: 80px" onclick="">
-                                <a href="{{ path('app_users_edit', {'id': user.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Editar"
-                                            style="width: 80px"></a>
+                                <a href="{{ path('app_pay_users', {'id': user.id}) }}">
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Pagar"
+                                           style="width: 80px">
+                                </a>
+                                <a href="{{ path('app_amortizar_users', {'id': user.id}) }}">
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Amortizar"
+                                           style="width: 80px">
+                                </a>
+                                <a href="{{ path('app_users_edit', {'id': user.id}) }}">
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Editar"
+                                           style="width: 80px">
+                                </a>
                                 {% if user.roles[0] != "ROLE_ADMIN" %}
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                           value="Eliminar"
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Eliminar"
                                            style="width: 80px" onclick="delUser({{ user.id }}, '{{ user.name }}')">
                                 {% else %}
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                           value="Eliminar"
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Eliminar"
                                            style="width: 80px" disabled>
                                 {% endif %}
                             </td>

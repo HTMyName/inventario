@@ -40,6 +40,16 @@ class Facturas
 	private $total;
 
 	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $total_real;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $descuento;
+
+	/**
 	 * @ORM\ManyToOne(targetEntity="App\Entity\Cliente", inversedBy="facturas")
 	 * @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
 	 */
@@ -70,6 +80,21 @@ class Facturas
 	 * @ORM\Column(type="float")
 	 */
 	private $saldoRetenidoS;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $saldoRetenidoI;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $saldoRetenidoFI;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
+	private $saldoRetenidoFG;
 
 
 	public function __construct()
@@ -280,6 +305,66 @@ class Facturas
 	public function setSaldoRetenidoS(float $saldoRetenidoS): self
 	{
 		$this->saldoRetenidoS = $saldoRetenidoS;
+
+		return $this;
+	}
+
+	public function getSaldoRetenidoI(): ?float
+	{
+		return $this->saldoRetenidoI;
+	}
+
+	public function setSaldoRetenidoI(float $saldoRetenidoI): self
+	{
+		$this->saldoRetenidoI = $saldoRetenidoI;
+
+		return $this;
+	}
+
+	public function getTotalReal(): ?float
+	{
+		return $this->total_real;
+	}
+
+	public function setTotalReal(float $total_real): self
+	{
+		$this->total_real = $total_real;
+
+		return $this;
+	}
+
+	public function getDescuento(): ?float
+	{
+		return $this->descuento;
+	}
+
+	public function setDescuento(float $descuento): self
+	{
+		$this->descuento = $descuento;
+
+		return $this;
+	}
+
+	public function getSaldoRetenidoFI(): ?float
+	{
+		return $this->saldoRetenidoFI;
+	}
+
+	public function setSaldoRetenidoFI(float $saldoRetenidoFI): self
+	{
+		$this->saldoRetenidoFI = $saldoRetenidoFI;
+
+		return $this;
+	}
+
+	public function getSaldoRetenidoFG(): ?float
+	{
+		return $this->saldoRetenidoFG;
+	}
+
+	public function setSaldoRetenidoFG(float $saldoRetenidoFG): self
+	{
+		$this->saldoRetenidoFG = $saldoRetenidoFG;
 
 		return $this;
 	}

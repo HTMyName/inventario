@@ -13,40 +13,45 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3">
-                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-3 m-auto">
-                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="card card-primary container-fluid">
+            {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_row(form.detalles, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_row(form.precio, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
+                    </div>
+                    <div class="col-md-3 m-auto">
+                        {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
+                    </div>
                 </div>
             </div>
+            {{ form_end(form) }}
+            <!-- /.card-body -->
         </div>
-        {{ form_end(form) }}
-        <!-- /.card-body -->
-    </div>
+    {% endif %}
     <div class="card card-primary container-fluid">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="25%">Nombre</th>
-                        <th width="25%">Detalles</th>
-                        <th width="25%">Precio</th>
-                        <th width="25%">Acciones</th>
+                        <th width="20%">Nombre</th>
+                        <th width="20%">Detalles</th>
+                        <th width="20%">Precio</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <th width="20%">%_Venta</th>
+                            <th width="20%">Acciones</th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>
@@ -55,15 +60,19 @@
                             <td>{{ service.name }}</td>
                             <td>{{ service.detalles }}</td>
                             <td>{{ service.precio }}</td>
-                            <td class="text-center">
-                                <a href="{{ path('app_services_edit', {'id': service.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Editar"
-                                            style="width: 80px"></a>
-                                <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                       value="Eliminar"
-                                       style="width: 80px" onclick="delServicio({{ service.id }}, '{{ service.name }}')">
-                            </td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>{{ service.xcientoganancia }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('app_services_edit', {'id': service.id}) }}"><input
+                                                class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                                value="Editar"
+                                                style="width: 80px"></a>
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                           value="Eliminar"
+                                           style="width: 80px"
+                                           onclick="delServicio({{ service.id }}, '{{ service.name }}')">
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>
