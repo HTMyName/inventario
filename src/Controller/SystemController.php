@@ -18,7 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SystemController extends AbstractController
 {
+	private $logsOb;
 
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
 	/**
 	 * @Route("", name="app_system")
 	 */
@@ -189,6 +194,8 @@ class SystemController extends AbstractController
 			if ($user) {
 				$system->setGanancia($system->getGanancia() - $cantidad);
 				$user->setPayTotal($user->getPayTotal() - $cantidad);
+				$logs = $this->logsOb->generateLogs(null, null, $user, 'prestamo', $cantidad);
+				$em->persist($logs);
 				$em->persist($system);
 				$em->persist($user);
 				$em->flush();

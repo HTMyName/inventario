@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Facturas;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +37,43 @@ class FacturasRepository extends ServiceEntityRepository
 			->orderBy('f.id', 'DESC')
 			->getQuery()
 			->getResult();
+	}
+
+	private function getMes()
+	{
+		$currentMonthDateTime = new \DateTime();
+		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
+		$firstDateTime->setTime(0, 0);
+		return $firstDateTime;
+	}
+
+	public function getAllUserFacturas($id_user)
+	{
+
+		$year = $this->getYear();
+
+		return $this->createQueryBuilder('f')
+			->select('f', 'fp', 'fs')
+			->where('f.id_user = :id_user')
+			->setParameter('id_user', $id_user)
+			->andWhere('f.fecha >= :fecha')
+			->setParameter('fecha', $year)
+			->orWhere('f.xpagar > 0')
+			->leftJoin('f.productos', 'fp')
+			->leftJoin('f.servicios', 'fs')
+			->orderBy('f.id', 'DESC')
+			->getQuery()
+			->getResult();
+	}
+
+	private function getYear()
+	{
+		$year = date('Y');
+		$currentMonthDateTime = new \DateTime();
+		$firstDateTime = $currentMonthDateTime->modify('now');
+		$firstDateTime->setTime(0, 0);
+		$firstDateTime->setDate($year, 1, 1);
+		return $firstDateTime;
 	}
 
 	public function getFacturasXcobrar()
@@ -78,14 +114,6 @@ class FacturasRepository extends ServiceEntityRepository
 			->select('SUM(f.xpagar) as xpagar')
 			->getQuery()
 			->getResult();
-	}
-
-	private function getMes()
-	{
-		$currentMonthDateTime = new \DateTime();
-		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
-		$firstDateTime->setTime(0, 0);
-		return $firstDateTime;
 	}
 
 	/*public function getUserFacturas($id_user){

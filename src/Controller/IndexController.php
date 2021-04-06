@@ -28,6 +28,7 @@ class IndexController extends AbstractController
 		$settings->setRecuperado(0);
 		$settings->setGanancia(0);
 		$settings->setCaja(0);
+		$settings->setYearStart(date('Y'));
 
 		if ($data) {
 			return $this->redirectToRoute('app_login');
