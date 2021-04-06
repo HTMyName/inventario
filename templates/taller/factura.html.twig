@@ -12,6 +12,10 @@
                 document.cookie = mi_cookie + "=;expires=" + fecha_fin.toGMTString()
             }
         }
+        /*function disableBtn(){
+            let btn = document.getElementById('factura_submit');
+            btn.disabled = true;
+        }*/
     </script>
 {% endblock %}
 
@@ -24,14 +28,20 @@
 {% endblock %}
 
 {% block page_btns %}
-    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_user_factura') }}">
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_factura') }}">
+        Nueva Factura
+    </a>
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura_xcobrar') }}">
+        Por Cobrar
+    </a>
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura') }}">
         Mis Facturas
     </a>
 {% endblock %}
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-6 mb-3 pr-lg-5 pl-lg-5">
@@ -81,7 +91,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 m-auto pt-md-3 pt-lg-5">
-                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
         </div>

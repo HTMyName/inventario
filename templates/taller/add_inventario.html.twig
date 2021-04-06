@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Perfil
+    Trasladar a Inventario
 {% endblock %}
 
 {% block page_name %}
-    Perfil
+    Trasladar a Inventario
 {% endblock %}
 
 {% block main_content %}
@@ -14,16 +14,17 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
+                    <label class="">Cantidad en Taller</label><label class="form-control">{{ cantidad_actual }} </label>
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.username, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.cantidadInventario, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.password, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.add, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
+                    <a href="{{ path('app_inventario') }}"><input class="btn btn-danger btn-block" type="button"
+                                                             value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>
             </div>
         </div>

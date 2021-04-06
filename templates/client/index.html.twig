@@ -15,17 +15,17 @@
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     {{ form_row(form.name, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-4">
-                    {{ form_row(form.tell, { attr: {'autocomplete': 'off'} } ) }}
+                    {{ form_row(form.tell, { attr: {autocomplete: 'off', maxlength: '8', minlength: '8'} } ) }}
                 </div>
                 <div class="col-md-4">
-                    {{ form_row(form.add, {attr:{class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.add, {attr:{class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
         </div>
@@ -55,13 +55,16 @@
                                             class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
                                             value="Llamar"
                                             style="width: 80px"></a>
-                                <a href="{{ path('app_client_edit', {'id': client.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Editar"
-                                            style="width: 80px"></a>
-                                <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                       value="Eliminar"
-                                       style="width: 80px" onclick="delClient({{ client.id }}, '{{ client.name }}')">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_client_edit', {'id': client.id}) }}"><input
+                                                class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                                value="Editar"
+                                                style="width: 80px"></a>
+                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
+                                           value="Eliminar"
+                                           style="width: 80px"
+                                           onclick="delClient({{ client.id }}, '{{ client.name }}')">
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

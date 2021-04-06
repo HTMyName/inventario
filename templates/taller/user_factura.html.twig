@@ -5,16 +5,22 @@
 {% endblock %}
 
 {% block title %}
-    Mis Facturas
+    {{ title }}
 {% endblock %}
 
 {% block page_name %}
-    Mis Facturas
+    {{ title }}
 {% endblock %}
 
 {% block page_btns %}
-    <a type="button" class="btn btn-primary m-1 float-right col-md-5" href="{{ path('app_factura') }}">
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_factura') }}">
         Nueva Factura
+    </a>
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura_xcobrar') }}">
+        Por Cobrar
+    </a>
+    <a type="button" class="btn btn-primary m-1 float-right col-md-3" href="{{ path('app_user_factura') }}">
+        Mis Facturas
     </a>
 {% endblock %}
 

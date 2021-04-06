@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Logs;
+use App\Entity\System;
 use App\Entity\User;
 use App\Form\AddUserType;
 use App\Form\EditUserType;
+use App\Form\PayUserType;
+use App\Form\SystemType;
+use Cassandra\Type\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,6 +36,7 @@ class UsersController extends AbstractController
 			$user->setRoles(['ROLE_USER']);
 			$user->setPayV(0);
 			$user->setPayS(0);
+			$user->setPayTotal(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user, '12345'
 			));
@@ -86,5 +92,157 @@ class UsersController extends AbstractController
 		}
 
 		return $this->render('users/edit.html.twig', ['form' => $form->createView()]);
+	}
+
+	/**
+	 * @Route("/pay/{id}", name="app_pay_users")
+	 */
+	public function payUsers($id = null, Request $request)
+	{
+		if ($id != null) {
+			$user = $this->getDoctrine()->getRepository(User::class)->find($id);
+		} else {
+			return $this->redirectToRoute('app_pay_users', [
+				'id' => $id
+			]);
+		}
+
+		$form = $this->createForm(PayUserType::class, $user);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$idform = $form->getData()->getId();
+			if ($id == $idform) {
+				if (is_numeric($request->get("cantidad-pagar"))) {
+					$cantidad_pagar = $request->get("cantidad-pagar");
+				} else {
+					return $this->redirectToRoute('app_pay_users', [
+						'id' => $id
+					]);;
+				}
+			} else {
+				return $this->redirectToRoute('app_pay_users', [
+					'id' => $id
+				]);
+			}
+
+			if ($user->getPayTotal() < 0) {
+				$tmpTotal = $user->getPayTotal();
+			} else {
+				$tmpTotal = 0;
+			}
+
+			if ($cantidad_pagar >= 0 && $cantidad_pagar <= $user->getPayTotal() + $user->getPayV() + $user->getPayS()) {
+				$user->setPayTotal($user->getPayTotal() + $user->getPayV() + $user->getPayS() - $cantidad_pagar);
+				$user->setPayV(0);
+				$user->setPayS(0);
+
+				$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+				$system->setGanancia($system->getGanancia() - $tmpTotal);
+				$em->persist($system);
+				if ($tmpTotal < 0) {
+					$detalles = $user->getPayTotal();
+					$logs = $this->generateLogs(null, null, 'deudapaga', $detalles);
+					$em->persist($logs);
+				}
+
+			} else {
+				return $this->redirectToRoute('app_pay_users', [
+					'id' => $id
+				]);
+			}
+
+			if ($cantidad_pagar > 0) {
+				$logs = $this->generateLogs(null, null, 'salario', $cantidad_pagar);
+				$em->persist($logs);
+			}
+
+			$em->persist($user);
+			$em->flush();
+		}
+
+		return $this->render('users/payusers.html.twig', [
+				'form' => $form->createView(),
+				'user' => $user]
+		);
+	}
+
+	/**
+	 * @Route("/amortizar/{id}", name="app_amortizar_users")
+	 */
+	public function amortizar($id = null, Request $request)
+	{
+		if ($id != null) {
+			$user = $this->getDoctrine()->getRepository(User::class)->find($id);
+		} else {
+			return $this->redirectToRoute('app_amortizar_users', [
+				'id' => $id
+			]);
+		};
+
+		$form = $this->createForm(PayUserType::class, $user);
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$idform = $form->getData()->getId();
+			if ($id == $idform) {
+				if (is_numeric($request->get("cantidad-pagar"))) {
+					$cantidad_pagar = $request->get("cantidad-pagar");
+				} else {
+					return $this->redirectToRoute('app_amortizar_users', [
+						'id' => $id
+					]);;
+				}
+			} else {
+				return $this->redirectToRoute('app_amortizar_users', [
+					'id' => $id
+				]);
+			}
+			if ($user->getPayTotal() < 0) {
+				$tmpTotal = $user->getPayTotal() * -1;
+			} else {
+				$tmpTotal = 0;
+			}
+			if ($cantidad_pagar > 0 && $cantidad_pagar <= $tmpTotal) {
+
+				if ($tmpTotal - $cantidad_pagar > 0) {
+					$paytmp = ($tmpTotal - $cantidad_pagar) * -1;
+				}else{
+					$paytmp = 0;
+				}
+
+				$user->setPayTotal($paytmp);
+
+				$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+				$system->setGanancia($system->getGanancia() + $cantidad_pagar);
+
+				$logs = $this->generateLogs(null, null, 'deudapaga', $cantidad_pagar);
+				$em->persist($logs);
+				$em->flush();
+			} else {
+				return $this->redirectToRoute('app_amortizar_users', [
+					'id' => $id
+				]);
+			}
+
+		}
+
+		return $this->render('users/amortizar.html.twig', [
+			'form' => $form->createView(),
+			'user' => $user
+		]);
+	}
+
+	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
+	{
+		$log = new Logs();
+		$log->setIdCliente($cliente);
+		$log->setIdUser($this->getUser());
+		$log->setIdFactura($factura);
+		$log->setFecha(new \DateTime('now'));
+		$log->setTipo($tipo);
+		$log->setDetalles($detalles);
+		return $log;
 	}
 }

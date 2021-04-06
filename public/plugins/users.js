@@ -65,7 +65,7 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
     $('#dataTable3').dataTable({
-        order: [[0, 'desc']],
+        //order: [[0, 'desc']],
         lengthMenu: [[10, 20, 30, -1], [10, 20, 30, "All"]],
         language: {
             "emptyTable": "No hay resultados.",
