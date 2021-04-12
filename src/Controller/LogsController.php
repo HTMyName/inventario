@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Logs;
 use App\Entity\System;
 use App\Entity\User;
-use App\Form\LogsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,6 +17,19 @@ class LogsController extends AbstractController
 	 */
 	public function index(): Response
 	{
+		$arrayTipos = [
+			['additem', 'Productos Añadidos'],
+			['addtaller', 'Inventario a Taller'],
+			['addinventario', 'Taller a Inventario'],
+			['baja', 'Bajas'],
+			['factura', 'Facturas'],
+			['pago', 'Pago Facturas'],
+			['deudapaga', 'Deudas Pagas'],
+			['salario', 'Salarios'],
+			['prestamo', 'Prestamos'],
+			['gasto', 'Gastos'],
+		];
+
 		$actual_year = date('Y');
 		$year_start = $this->getDoctrine()->getRepository(System::class)->find(1)->getYearStart();
 		$arrayYears = [];
@@ -34,14 +47,15 @@ class LogsController extends AbstractController
 			'actualYear' => $actual_year,
 			'meses' => $arrayMes,
 			'actualMes' => date('n'),
-			'users' => $users
+			'users' => $users,
+			'tipos' => $arrayTipos
 		]);
 	}
 
 	/**
-	 * @Route("/logs/all/{year}/{mes}/{tipo}/{user}", name="app_logs_api", methods={"GET"})
+	 * @Route("/logs/{year}/{mes}/{tipo}/{user}", name="app_logs_api", methods={"POST"})
 	 */
-	public function getLogs($year = null, $mes = null, $tipo = "res", $user = "all")
+	public function getLogs($year = null, $mes = null, $tipo = "all", $user = "all"): JsonResponse
 	{
 		if ($year == null) {
 			$year = date('Y');
@@ -49,11 +63,31 @@ class LogsController extends AbstractController
 		if ($mes == null) {
 			$mes = date('n');
 		}
-		if ($tipo != "res") {
-			$tipo = "det";
-		}
 
 		$logs = $this->getDoctrine()->getRepository(Logs::class)->getLogs($year, $mes, $tipo, $user);
+		$arrayLogs = [];
+		$cliente = $detalles = '';
+		foreach ($logs as $log) {
+			if ($log->getIdCliente() != null) {
+				$cliente = $log->getIdCliente()->getName();
+			}else{
+				$cliente = null;
+			}
+			if ($log->getTipo() == 'factura') {
+				$detalles = $log->getIdFactura()->getId();
+			}else{
+				$detalles = $log->getDetalles();
+			}
+			$arrayLogs [] = [
+				'fecha' => date_format($log->getFecha(), 'd/m/Y'),
+				'detalles' => $detalles,
+				'user' => $log->getIdUser()->getName(),
+				'cliente' => $cliente,
+				'tipo' => $log->getTipo()
+			];
+		}
+
+		return new JsonResponse($arrayLogs, Response::HTTP_OK);
 
 	}
 

@@ -92,7 +92,7 @@ class InventarioController extends AbstractController
 	}
 
 	/**
-	 * @Route("/darbaja/{id}", name="app_inventario_darbaja")
+	 * @Route("/darbaja/{id}", name="app_inventario_darbaja", requirements={"id"="\d+"})
 	 */
 	public function darbaja($id = null, Request $request)
 	{

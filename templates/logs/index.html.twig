@@ -45,8 +45,10 @@
                         <div class="col-lg-2" style="margin-bottom: 10px">
                             <label>Tipo</label>
                             <select name="range" id="type" class="form-control">
-                                <option value="res" selected>Resumen</option>
-                                <option value="det">Detallado</option>
+                                <option value="all">Todos</option>
+                                {% for tipo in tipos %}
+                                    <option value="{{ tipo[0] }}">{{ tipo[1] }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 10px">
@@ -60,27 +62,29 @@
                         </div>
                         <div class="col-lg-4" style="margin-bottom: 10px">
                             <label>&nbsp;</label>
-                            <input class="btn btn-primary btn-block form-control col-lg-6" type="button" value="Buscar"
-                                   onclick="request_action()">
+                            <input id="aceptBtn" class="btn btn-primary btn-block form-control col-lg-6" type="button" value="Buscar"
+                                   onclick="getLogs()">
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Card Header - Dropdown -->
-            <div class="user p-5">
+            <div class="user pl-5 pr-5 pb-5 pt-4">
+                <label id="label_gastos"> </label>
                 <div class="table-responsive">
                     <table class="table table-striped" id="dataTableLogs" width="100%" cellspacing="0">
                         <thead>
-                        <tr>
-                            <th width="25%">Fecha</th>
-                            <th width="25%">Reportado</th>
-                            <th width="25%">Ganancia</th>
-                            <th width="25%">Usuario</th>
+                        <tr class="text-center">
+                            <th width="20%">Fecha</th>
+                            <th width="20%">Tipo</th>
+                            <th width="20%">Detalles</th>
+                            <th width="20%">Usuario</th>
+                            <th width="20%">Cliente</th>
                         </tr>
                         </thead>
                         <tbody id="query_result">
                         <tr class="text-center">
-                            <td colspan="4">Realiza una búsqueda para mostrar resultados</td>
+                            <td colspan="5">Realiza una búsqueda para mostrar resultados</td>
                         </tr>
                         </tbody>
                     </table>
@@ -89,3 +93,8 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('dist/js/logs.js') }}"></script>
+{% endblock %}
+

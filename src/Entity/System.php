@@ -50,6 +50,11 @@ class System
 	/**
 	 * @ORM\Column(type="float")
 	 */
+	private $gastos;
+
+	/**
+	 * @ORM\Column(type="float")
+	 */
 	private $caja;
 
 	/**
@@ -58,93 +63,93 @@ class System
 	private $year_start;
 
 	public function getId(): ?int
-      	{
-      		return $this->id;
-      	}
+            	{
+            		return $this->id;
+            	}
 
 	public function getPagename(): ?string
-      	{
-      		return $this->pagename;
-      	}
+            	{
+            		return $this->pagename;
+            	}
 
 	public function setPagename(string $pagename): self
-      	{
-      		$this->pagename = $pagename;
-      
-      		return $this;
-      	}
+            	{
+            		$this->pagename = $pagename;
+            
+            		return $this;
+            	}
 
 	public function getWinservice(): ?float
-      	{
-      		return $this->winservice;
-      	}
+            	{
+            		return $this->winservice;
+            	}
 
 	public function setWinservice(float $winservice): self
-      	{
-      		$this->winservice = $winservice;
-      
-      		return $this;
-      	}
+            	{
+            		$this->winservice = $winservice;
+            
+            		return $this;
+            	}
 
 	public function getWinproduct(): ?float
-      	{
-      		return $this->winproduct;
-      	}
+            	{
+            		return $this->winproduct;
+            	}
 
 	public function setWinproduct(float $winproduct): self
-      	{
-      		$this->winproduct = $winproduct;
-      
-      		return $this;
-      	}
+            	{
+            		$this->winproduct = $winproduct;
+            
+            		return $this;
+            	}
 
 	public function getInversion(): ?float
-      	{
-      		return $this->inversion;
-      	}
+            	{
+            		return $this->inversion;
+            	}
 
 	public function setInversion(float $inversion): self
-      	{
-      		$this->inversion = $inversion;
-      
-      		return $this;
-      	}
+            	{
+            		$this->inversion = $inversion;
+            
+            		return $this;
+            	}
 
 	public function getRecuperado(): ?float
-      	{
-      		return $this->recuperado;
-      	}
+            	{
+            		return $this->recuperado;
+            	}
 
 	public function setRecuperado(float $recuperado): self
-      	{
-      		$this->recuperado = $recuperado;
-      
-      		return $this;
-      	}
+            	{
+            		$this->recuperado = $recuperado;
+            
+            		return $this;
+            	}
 
 	public function getGanancia(): ?float
-      	{
-      		return $this->ganancia;
-      	}
+            	{
+            		return $this->ganancia;
+            	}
 
 	public function setGanancia(float $ganancia): self
-      	{
-      		$this->ganancia = $ganancia;
-      
-      		return $this;
-      	}
+            	{
+            		$this->ganancia = $ganancia;
+            
+            		return $this;
+            	}
 
 	public function getCaja(): ?float
-      	{
-      		return $this->caja;
-      	}
+            	{
+            		return $this->caja;
+            	}
 
 	public function setCaja(float $caja): self
-      	{
-      		$this->caja = $caja;
-      
-      		return $this;
-      	}
+            	{
+            		$this->caja = $caja;
+            
+            		return $this;
+            	}
 
     public function getYearStart(): ?int
     {
@@ -154,6 +159,18 @@ class System
     public function setYearStart(int $year_start): self
     {
         $this->year_start = $year_start;
+
+        return $this;
+    }
+
+    public function getGastos(): ?float
+    {
+        return $this->gastos;
+    }
+
+    public function setGastos(float $gastos): self
+    {
+        $this->gastos = $gastos;
 
         return $this;
     }

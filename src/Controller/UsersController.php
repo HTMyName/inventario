@@ -99,7 +99,7 @@ class UsersController extends AbstractController
 	}
 
 	/**
-	 * @Route("/pay/{id}", name="app_pay_users")
+	 * @Route("/pay/{id}", name="app_pay_users", requirements={"id"="\d+"})
 	 */
 	public function payUsers($id = null, Request $request)
 	{
@@ -173,7 +173,7 @@ class UsersController extends AbstractController
 	}
 
 	/**
-	 * @Route("/amortizar/{id}", name="app_amortizar_users")
+	 * @Route("/amortizar/{id}", name="app_amortizar_users", requirements={"id"="\d+"})
 	 */
 	public function amortizar($id = null, Request $request)
 	{
