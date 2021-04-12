@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Trasladar a Inventario
+{% endblock %}
+
+{% block page_name %}
+    Trasladar a Inventario
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="">Cantidad en Taller</label><label class="form-control">{{ cantidad_actual }} </label>
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(form.cantidadInventario, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(form.add, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ path('app_taller') }}"><input class="btn btn-danger btn-block" type="button"
+                                                             value="Cancelar" style="margin-top: 32px!important"></a>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <!-- /.card-body -->
+    </div>
+{% endblock %}

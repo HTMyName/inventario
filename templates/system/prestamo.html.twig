@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Préstamos
+{% endblock %}
+
+{% block page_name %}
+    Hacer un Préstamo
+{% endblock %}
+
+{% block main_content %}
+    <div class="card card-primary container-fluid">
+        <div class="card-body">
+            <form action="" class="submit-p-form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Ganancias</label>
+                        <label class="form-control">{{ ganancia }}</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Elige un Usuario</label>
+                        <select name="userlist" id="userlist_id" class="form-control">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Cantidad</label>
+                        <input type="text" name="cantidad" placeholder="0" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label> </label>
+                        <input type="submit" value="Enviar" class="btn btn-primary form-control submit-p-btn">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+

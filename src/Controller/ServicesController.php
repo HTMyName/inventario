@@ -6,7 +6,6 @@ use App\Entity\Servicio;
 use App\Form\ServicioType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,12 +21,15 @@ class ServicesController extends AbstractController
 		$servicio = new Servicio();
 		$form = $this->createForm(ServicioType::class, $servicio);
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
-			$servicio->setActive(1);
-			$em->persist($servicio);
-			$em->flush();
-			return $this->redirectToRoute('app_services');
+
+		if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN") {
+			if ($form->isSubmitted() && $form->isValid()) {
+				$em = $this->getDoctrine()->getManager();
+				$servicio->setActive(1);
+				$em->persist($servicio);
+				$em->flush();
+				return $this->redirectToRoute('app_services');
+			}
 		}
 
 		$servicio_data = $this->getDoctrine()->getRepository(Servicio::class);

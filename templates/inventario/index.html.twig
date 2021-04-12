@@ -43,14 +43,18 @@
                             <td>{{ item.xcientoganancia }}</td>
                             <td>{{ item.cantidad_inventario }}</td>
                             <td class="text-center">
-                                <a href="{{ path('app_inventario_add_taller', {'id': item.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Trasladar"
-                                            style="width: 80px"></a>
-                                <a href="{{ path('app_items_edit', {'id': item.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Editar"
-                                            style="width: 80px"></a>
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Trasladar a Taller"
+                                   href="{{ path('app_inventario_add_taller', {'id': item.id}) }}">
+                                    <i class=" fas fa-arrow-right text-primary"></i>
+                                </a>
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Editar"
+                                   href="{{ path('app_items_edit', {'id': item.id}) }}">
+                                    <i class="far fa-edit text-warning"></i>
+                                </a>
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Dar Baja"
+                                   href="{{ path('app_inventario_darbaja', {'id': item.id}) }}">
+                                    <i class=" fas fas fa-eraser text-red"></i>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}

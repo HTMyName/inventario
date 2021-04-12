@@ -24,6 +24,11 @@ class IndexController extends AbstractController
 		$settings->setPagename("Inventario");
 		$settings->setWinproduct(0);
 		$settings->setWinservice(0);
+		$settings->setInversion(0);
+		$settings->setRecuperado(0);
+		$settings->setGanancia(0);
+		$settings->setCaja(0);
+		$settings->setYearStart(date('Y'));
 
 		if ($data) {
 			return $this->redirectToRoute('app_login');
@@ -41,6 +46,7 @@ class IndexController extends AbstractController
 			$user->setRoles(['ROLE_ADMIN']);
 			$user->setPayV(0);
 			$user->setPayS(0);
+			$user->setPayTotal(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user,
 				$form['password']->getData()

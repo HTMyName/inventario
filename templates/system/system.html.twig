@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Sistema
+{% endblock %}
+
+{% block page_name %}
+    Sistema
+{% endblock %}
+
+{% block page_btns %}
+    <a type="button" class="btn btn-primary m-1 float-right col-lg-3" href="{{ path('app_system_configuration') }}">
+        Configuración
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Inversión:</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-primary"></i>
+                    </button>
+                </div>
+                <span class="float-right mr-2">{{ system.inversion }}</span>
+            </div>
+            <div class="card-body" style="display: none">
+                <a class="btn btn-sm btn-outline-primary col-12 mb-1 mt-1" href="{{ path('app_items') }}">Agregar
+                    Inversión</a>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Fondo:</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-success"></i>
+                    </button>
+                </div>
+                <span class="float-right mr-2">{{ system.recuperado }}</span>
+            </div>
+            <div class="card-body text-center" style="display: none">
+                <a class="btn btn-sm btn-outline-success col-md-3 mb-1 mt-1" href="{{ path('app_system_fondo') }}">Añadir</a>
+                <a class="btn btn-sm btn-outline-success col-md-3 mb-1 mt-1" href="{{ path('app_system_fondo') }}">Retirar</a>
+                <a class="btn btn-sm btn-outline-success col-md-5 mb-1 mt-1"
+                   href="{{ path('app_system_fondo_ganacia') }}">Mover a
+                    Ganancia</a>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Bajas:</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-danger"></i>
+                    </button>
+                </div>
+                <span class="float-right mr-2">
+                    {{ bajas }}
+                </span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Ganancia:</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-primary"></i>
+                    </button>
+                </div>
+                <span class="float-right mr-2">{{ system.ganancia }}</span>
+            </div>
+            <div class="card-body text-center" style="display: none">
+                <a class="btn btn-sm btn-outline-primary col-md-5 mb-1 mt-1" href="{{ path('app_system_prestamo') }}">Préstamo</a>
+                <a class="btn btn-sm btn-outline-primary col-md-5 mb-1 mt-1"
+                   href="{{ path('app_system_ganancia_fondo') }}">Mover a
+                    Fondo</a>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Gastos:</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-success"></i>
+                    </button>
+                </div>
+                <span class="float-right mr-2">{{ system.gastos }}</span>
+            </div>
+            <div class="card-body text-center" style="display: none">
+                <a class="btn btn-sm btn-outline-success col-md-5 mb-1 mt-1" href="{{ path('app_system_gastos') }}">Añadir Gasto</a>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Deudas:</h3>
+                <div class="card-tools">
+                    <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-maroon"></i>
+                    </button>-->
+                </div>
+                <span class="float-right mr-2">
+                    {% if salario[0]["payTotal"] < 0 %}
+                        {{ salario[0]["payTotal"]*-1 }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Salarios:</h3>
+                <div class="card-tools">
+                    <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-secondary"></i>
+                    </button>-->
+                </div>
+                <span class="float-right mr-2">
+                    {% if salario[0]["payTotal"] >= 0 %}
+                        {{ salario[0]["totalPV"] + salario[0]["totalPS"] + salario[0]["payTotal"] }}
+                    {% else %}
+                        {{ salario[0]["totalPV"] + salario[0]["totalPS"] }}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Salario Real:</h3>
+                <div class="card-tools">
+                    <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-danger"></i>
+                    </button>-->
+                </div>
+                <span class="float-right mr-2">
+                    {% if salario[0]["payTotal"] < 0 %}
+                        {{ salario[0]["totalPV"] + salario[0]["totalPS"] + salario[0]["payTotal"] }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Por Cobrar:</h3>
+                <div class="card-tools">
+                    <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-info"></i>
+                    </button>-->
+                </div>
+                <span class="float-right mr-2">{{ xcobrar }}</span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+{% endblock %}
+
+
+

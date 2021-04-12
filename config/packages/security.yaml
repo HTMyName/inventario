@@ -39,14 +39,18 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/home, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/taller, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/services, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/client, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/client/*/, roles: ROLE_ADMIN }
+        - { path: ^/services/*/, roles: ROLE_ADMIN }
         - { path: ^/inventario, roles: ROLE_ADMIN }
         - { path: ^/items, roles: ROLE_ADMIN }
         - { path: ^/users, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/system, roles: ROLE_ADMIN }
-
-
+        - { path: ^/home/vaciarcaja, roles: ROLE_ADMIN }
+        - { path: ^/home/todo/completar, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/home/todo/*, roles: ROLE_ADMIN }
+        - { path: ^/taller/add_inventario, roles: ROLE_ADMIN }
+        - { path: ^/home, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/taller, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/services, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/client, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/profile, roles: IS_AUTHENTICATED_REMEMBERED }

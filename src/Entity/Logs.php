@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LogsRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -52,129 +53,129 @@ class Logs
 	private $tipo;
 
 	public function __construct()
-                                       	{
-                                       		$this->id_cliente = new ArrayCollection();
-                                       		$this->id_user = new ArrayCollection();
-                                       	}
+	{
+		$this->id_cliente = new ArrayCollection();
+		$this->id_user = new ArrayCollection();
+	}
 
-    public function getIdCliente(): ?Cliente
-    {
-        return $this->id_cliente;
-    }
+	public function getIdCliente(): ?Cliente
+	{
+		return $this->id_cliente;
+	}
 
-    public function setIdCliente(?Cliente $id_cliente): self
-    {
-        $this->id_cliente = $id_cliente;
+	public function setIdCliente(?Cliente $id_cliente): self
+	{
+		$this->id_cliente = $id_cliente;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getIdUser(): ?User
-    {
-        return $this->id_user;
-    }
+	public function getIdUser(): ?User
+	{
+		return $this->id_user;
+	}
 
-    public function setIdUser(?User $id_user): self
-    {
-        $this->id_user = $id_user;
+	public function setIdUser(?User $id_user): self
+	{
+		$this->id_user = $id_user;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getFecha(): ?\DateTimeInterface
-    {
-        return $this->fecha;
-    }
+	public function getFecha(): ?DateTimeInterface
+	{
+		return $this->fecha;
+	}
 
-    public function setFecha(\DateTimeInterface $fecha): self
-    {
-        $this->fecha = $fecha;
+	public function setFecha(DateTimeInterface $fecha): self
+	{
+		$this->fecha = $fecha;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDetalles(): ?string
-    {
-        return $this->detalles;
-    }
+	public function getDetalles(): ?string
+	{
+		return $this->detalles;
+	}
 
-    public function setDetalles(string $detalles): self
-    {
-        $this->detalles = $detalles;
+	public function setDetalles(string $detalles): self
+	{
+		$this->detalles = $detalles;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	public function addIdCliente(Cliente $idCliente): self
-                                       	{
-                                       		if (!$this->id_cliente->contains($idCliente)) {
-                                       			$this->id_cliente[] = $idCliente;
-                                       			$idCliente->setLogs($this);
-                                       		}
+	{
+		if (!$this->id_cliente->contains($idCliente)) {
+			$this->id_cliente[] = $idCliente;
+			$idCliente->setLogs($this);
+		}
 
-                                       		return $this;
-                                       	}
+		return $this;
+	}
 
 	public function removeIdCliente(Cliente $idCliente): self
-                                       	{
-                                       		if ($this->id_cliente->removeElement($idCliente)) {
-                                       			// set the owning side to null (unless already changed)
-                                       			if ($idCliente->getLogs() === $this) {
-                                       				$idCliente->setLogs(null);
-                                       			}
-                                       		}
+	{
+		if ($this->id_cliente->removeElement($idCliente)) {
+			// set the owning side to null (unless already changed)
+			if ($idCliente->getLogs() === $this) {
+				$idCliente->setLogs(null);
+			}
+		}
 
-                                       		return $this;
-                                       	}
+		return $this;
+	}
 
 	public function addIdUser(User $idUser): self
-                                       	{
-                                       		if (!$this->id_user->contains($idUser)) {
-                                       			$this->id_user[] = $idUser;
-                                       			$idUser->setLogs($this);
-                                       		}
+	{
+		if (!$this->id_user->contains($idUser)) {
+			$this->id_user[] = $idUser;
+			$idUser->setLogs($this);
+		}
 
-                                       		return $this;
-                                       	}
+		return $this;
+	}
 
 	public function removeIdUser(User $idUser): self
-                                       	{
-                                       		if ($this->id_user->removeElement($idUser)) {
-                                       			// set the owning side to null (unless already changed)
-                                       			if ($idUser->getLogs() === $this) {
-                                       				$idUser->setLogs(null);
-                                       			}
-                                       		}
+	{
+		if ($this->id_user->removeElement($idUser)) {
+			// set the owning side to null (unless already changed)
+			if ($idUser->getLogs() === $this) {
+				$idUser->setLogs(null);
+			}
+		}
 
-                                       		return $this;
-                                       	}
+		return $this;
+	}
 
-    public function getIdFactura(): ?Facturas
-    {
-        return $this->id_factura;
-    }
+	public function getIdFactura(): ?Facturas
+	{
+		return $this->id_factura;
+	}
 
-    public function setIdFactura(?Facturas $id_factura): self
-    {
-        $this->id_factura = $id_factura;
+	public function setIdFactura(?Facturas $id_factura): self
+	{
+		$this->id_factura = $id_factura;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getTipo(): ?string
-    {
-        return $this->tipo;
-    }
+	public function getTipo(): ?string
+	{
+		return $this->tipo;
+	}
 
-    public function setTipo(string $tipo): self
-    {
-        $this->tipo = $tipo;
+	public function setTipo(string $tipo): self
+	{
+		$this->tipo = $tipo;
 
-        return $this;
-    }
+		return $this;
+	}
 }

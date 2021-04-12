@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sistema{% endblock %}
+{% block title %}Configuración{% endblock %}
 
 {% block page_name %}
-<div class="col-md-6">Sistema</div>
+<div class="col-md-6">Configuración</div>
 {% endblock %}
 
 {% block main_content %}
     <div class="card card-primary container-fluid">
-        {{ form_start(form) }}
+        {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
@@ -21,7 +21,7 @@
                     {{ form_row(form.winservice, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block', style: 'margin-top: 32px!important'}}) }}
+                    {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
         </div>

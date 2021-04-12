@@ -51,133 +51,133 @@ class Cliente
 
 
 	public function __construct()
-                                                                                                                                                                                                                                                                                                               	{
-                                                                                                                                                                                                                                                                                                               		$this->logs = new ArrayCollection();
-                                                                                                                                                                                                                                                                                                               		$this->facturas = new ArrayCollection();
-                                                                                                                                                                                                                                                                                                               	}
+	{
+		$this->logs = new ArrayCollection();
+		$this->facturas = new ArrayCollection();
+	}
 
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
+	public function getActive(): ?bool
+	{
+		return $this->active;
+	}
 
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
+	public function setActive(bool $active): self
+	{
+		$this->active = $active;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getTell(): ?string
-    {
-        return $this->tell;
-    }
+	public function getTell(): ?string
+	{
+		return $this->tell;
+	}
 
-    public function setTell(string $tell): self
-    {
-        $this->tell = $tell;
+	public function setTell(string $tell): self
+	{
+		$this->tell = $tell;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return Collection|Logs[]
-     */
-    public function getLogs(): Collection
-    {
-        return $this->logs;
-    }
-
-    public function addLog(Logs $log): self
-    {
-        if (!$this->logs->contains($log)) {
-            $this->logs[] = $log;
-            $log->setIdCliente($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLog(Logs $log): self
-    {
-        if ($this->logs->removeElement($log)) {
-            // set the owning side to null (unless already changed)
-            if ($log->getIdCliente() === $this) {
-                $log->setIdCliente(null);
-            }
-        }
-
-        return $this;
-    }
+	/**
+	 * @return Collection|Logs[]
+	 */
+	public function getLogs(): Collection
+	{
+		return $this->logs;
+	}
 
 	public function setLogs(?Logs $logs): self
-                                                                                                                                                                                                                                                                                                               	{
-                                                                                                                                                                                                                                                                                                               		$this->logs = $logs;
-                                                                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                                                               		return $this;
-                                                                                                                                                                                                                                                                                                               	}
+	{
+		$this->logs = $logs;
 
-    /**
-     * @return Collection|Facturas[]
-     */
-    public function getFacturas(): Collection
-    {
-        return $this->facturas;
-    }
+		return $this;
+	}
 
-    public function addFactura(Facturas $factura): self
-    {
-        if (!$this->facturas->contains($factura)) {
-            $this->facturas[] = $factura;
-            $factura->setIdCliente($this);
-        }
+	public function addLog(Logs $log): self
+	{
+		if (!$this->logs->contains($log)) {
+			$this->logs[] = $log;
+			$log->setIdCliente($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeFactura(Facturas $factura): self
-    {
-        if ($this->facturas->removeElement($factura)) {
-            // set the owning side to null (unless already changed)
-            if ($factura->getIdCliente() === $this) {
-                $factura->setIdCliente(null);
-            }
-        }
+	public function removeLog(Logs $log): self
+	{
+		if ($this->logs->removeElement($log)) {
+			// set the owning side to null (unless already changed)
+			if ($log->getIdCliente() === $this) {
+				$log->setIdCliente(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
+
+	/**
+	 * @return Collection|Facturas[]
+	 */
+	public function getFacturas(): Collection
+	{
+		return $this->facturas;
+	}
+
+	public function addFactura(Facturas $factura): self
+	{
+		if (!$this->facturas->contains($factura)) {
+			$this->facturas[] = $factura;
+			$factura->setIdCliente($this);
+		}
+
+		return $this;
+	}
+
+	public function removeFactura(Facturas $factura): self
+	{
+		if ($this->facturas->removeElement($factura)) {
+			// set the owning side to null (unless already changed)
+			if ($factura->getIdCliente() === $this) {
+				$factura->setIdCliente(null);
+			}
+		}
+
+		return $this;
+	}
 
 	public function __toString()
-                                                                                                                                                                                                                                                                                                               	{
-                                                                                                                                                                                                                                                                                                               		return $this->name;
-                                                                                                                                                                                                                                                                                                               	}
+	{
+		return $this->name;
+	}
 
-    public function getDescuento(): ?float
-    {
-        return $this->descuento;
-    }
+	public function getDescuento(): ?float
+	{
+		return $this->descuento;
+	}
 
-    public function setDescuento(float $descuento): self
-    {
-        $this->descuento = $descuento;
+	public function setDescuento(float $descuento): self
+	{
+		$this->descuento = $descuento;
 
-        return $this;
-    }
+		return $this;
+	}
 }

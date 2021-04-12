@@ -25,11 +25,13 @@ class ClientController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
-			$cliente->setName(ucfirst($cliente->getName()));
-			$cliente->setDescuento(0);
-			$cliente->setActive(1);
-			$em->persist($cliente);
-			$em->flush();
+			if (strlen($form->getData()->getTell()) == 8) {
+				$cliente->setName(ucfirst($cliente->getName()));
+				$cliente->setDescuento(0);
+				$cliente->setActive(1);
+				$em->persist($cliente);
+				$em->flush();
+			}
 			return $this->redirectToRoute('app_client');
 		}
 		$client_data = $this->getDoctrine()->getRepository(Cliente::class);
@@ -70,9 +72,18 @@ class ClientController extends AbstractController
 		$form = $this->createForm(EditClientType::class, $client);
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
-			$em->persist($client);
-			$em->flush();
-			return $this->redirectToRoute('app_client');
+			if ($form->getData()->getDescuento() >= 0 &&
+				$form->getData()->getDescuento() <= 100 &&
+				strlen($form->getData()->getTell()) == 8) {
+
+				$em->persist($client);
+				$em->flush();
+				return $this->redirectToRoute('app_client');
+			}
+			return $this->redirectToRoute('app_client_edit', [
+				'id' => $id
+			]);
+
 		}
 		return $this->render('client/edit.html.twig', ['form' => $form->createView()]);
 	}

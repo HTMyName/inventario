@@ -1,7 +1,217 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pagina principal{% endblock %}
-
-{% block body %}
-
+{% block title %}
+    Inicio
 {% endblock %}
+
+{% block page_name %}
+    Inicio
+{% endblock %}
+
+
+{% block main_content %}
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>$ {{ caja }}</h3>
+                        <p>Caja
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <span class="float-right btn text-white border-white mr-1co btn-sm"
+                                      onclick="vaciarCaja()">Vaciar Caja</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ total_productos }}/{{ total_servicios }}</h3>
+                        <p>Productos/Servicios</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3 class="text-white">$
+                            {% if salario[0]["payTotal"] >= 0 %}
+                                {{ salario[0]["totalPV"] + salario[0]["totalPS"] + salario[0]["payTotal"] }}
+                            {% else %}
+                                {{ salario[0]["totalPV"] + salario[0]["totalPS"] }}
+                            {% endif %}
+                        </h3>
+
+                        <p class="text-white">Salario</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>$
+                            {% if salario[0]["payTotal"] >= 0 %}
+                                0
+                            {% else %}
+                                {{ salario[0]["payTotal"]*-1 }}
+                            {% endif %}
+                        </h3>
+
+                        <p>Deuda</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-6">
+                <!-- TO DO List -->
+                <div class="card" style="position: relative; left: 0px; top: 0px;">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ion ion-clipboard mr-1"></i>
+                            To Do List
+                            {% if total_todo > 1 %}
+                                - <span id="todonumber">1</span>
+                            {% endif %}
+                        </h3>
+
+                        <div class="card-tools">
+                            <ul class="pagination pagination-sm">
+                                {% if total_todo >= 1 %}
+                                    {% for i in 1..total_todo %}
+                                        <li class="page-item"><a href="#" class="page-link"
+                                                                 onclick="showTodo({{ i }})">{{ i }}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <ul class="todo-list ui-sortable" data-widget="todo-list">
+                            {% if total_todo >= 1 %}
+                                {% set cantidad_todo = 0 %}
+                                {% set counter = 0 %}
+                                {% for nota in todo %}
+                                    {% if cantidad_todo % 5 == 0 %}
+                                        {% set counter = counter + 1 %}
+                                    {% endif %}
+                                    {% if counter > 1 %}
+                                    <li class="d-none todol{{ counter }} li-item-class">
+                                    {% else %}
+                                        <li class="todol{{ counter }} li-item-class">
+                                    {% endif %}
+                                    {% if nota.completed == 1 %}
+                                        {% set checked = 'checked' %}
+                                    {% else %}
+                                        {% set checked = '' %}
+                                    {% endif %}
+                                    <div class="row" style="user-select: none">
+                                        <div class="icheck-primary col-sm-9 mb-1">
+                                            <input onclick="completarTodo({{ nota.id }})" type="checkbox" value=""
+                                                   name="todo{{ nota.id }}"
+                                                   id="todoCheck{{ nota.id }}"
+                                                   style="cursor: pointer" {{ checked }}>
+                                            <label class="mb-0 text" for="todoCheck{{ nota.id }}"
+                                                   style="cursor: pointer;">{{ nota.texto }}</label>
+                                            <small class="badge badge-primary">{{ nota.fecha|date('d/m/Y') }}</small>
+                                        </div>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <div class="tools col-sm-3 text-right">
+                                                <a href="{{ path('app_home_todo_edit', {'id': nota.id }) }}">
+                                                    <i class="fas fa-edit text-warning"></i>
+                                                </a>
+                                                <a href="{{ path('app_todo_eliminar', {'id': nota.id }) }}">
+                                                    <i class="fas fa-trash-alt text-red ml-2 mr-2"></i>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    </li>
+                                    {% set cantidad_todo = cantidad_todo + 1 %}
+                                {% endfor %}
+                            {% else %}
+                                <label for="" class="mb-0">No hay tareas pendientes</label>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="card-footer clearfix">
+                            <a href="{{ path('app_home_todo') }}" class="btn btn-sm btn-info float-right"><i
+                                        class="fas fa-plus"></i> Añadir
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- /.card -->
+            </section>
+            <section class="col-lg-6">
+                <!-- Custom tabs (Charts with tabs)-->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Ventas
+                        </h3>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content p-0">
+                            <!-- Morris chart - Sales -->
+                            <div class="chart tab-pane active" id="revenue-chart"
+                                 style="position: relative; height: 336px;">
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+                                <canvas id="revenue-chart-canvas" height="336"
+                                        style="height: 336px; display: block; width: 538px;" width="538"
+                                        class="chartjs-render-monitor"></canvas>
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </section>
+            <!-- right col -->
+        </div>
+        <!-- /.row (main row) -->
+    </div><!-- /.container-fluid -->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('plugins/chart.js/chart.js') }}"></script>
+    <script src="{{ asset('dist/js/caja.js') }}"></script>
+    <script src="{{ asset('dist/js/ventas.js') }}"></script>
+{% endblock %}
+

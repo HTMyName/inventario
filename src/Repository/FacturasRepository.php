@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Facturas;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,16 +22,82 @@ class FacturasRepository extends ServiceEntityRepository
 	public function getUserFacturas($id_user)
 	{
 
-		$currentMonthDateTime = new \DateTime();
-		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
-		$firstDateTime->setTime(0, 0);
+		$mes = $this->getMes();
 
 		return $this->createQueryBuilder('f')
 			->select('f', 'fp', 'fs')
 			->where('f.id_user = :id_user')
 			->setParameter('id_user', $id_user)
 			->andWhere('f.fecha >= :fecha')
-			->setParameter('fecha', $firstDateTime)
+			->setParameter('fecha', $mes)
+			//->andWhere('f.xpagar != 0')
+			->orWhere('f.id_user = :id_user2')
+			->setParameter('id_user2', $id_user)
+			->andWhere('f.xpagar > 0')
+			->leftJoin('f.productos', 'fp')
+			->leftJoin('f.servicios', 'fs')
+			->orderBy('f.id', 'DESC')
+			->getQuery()
+			->getResult();
+	}
+
+	public function getMesFacturas($id_user)
+	{
+		$mes = $this->getMes();
+
+		$qb = $this->createQueryBuilder('f');
+		$qb->select('f', 'fp', 'fs');
+
+		if ($id_user != null) {
+			$qb->where('f.id_user = :id_user')->setParameter('id_user', $id_user);
+			$qb->andWhere('f.fecha >= :fecha')->setParameter('fecha', $mes);
+		} else {
+			$qb->where('f.fecha >= :fecha')->setParameter('fecha', $mes);
+		}
+		$qb->leftJoin('f.productos', 'fp')
+			->leftJoin('f.servicios', 'fs')
+			->orderBy('f.id', 'DESC');
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getYearFacturas($id_user)
+	{
+		$year = $this->getYear();
+
+		$qb = $this->createQueryBuilder('f');
+		$qb->select('f', 'fp', 'fs');
+
+		if ($id_user != null) {
+			$qb->where('f.id_user = :id_user')->setParameter('id_user', $id_user);
+			$qb->andWhere('f.fecha >= :fecha')->setParameter('fecha', $year);
+		} else {
+			$qb->where('f.fecha >= :fecha')->setParameter('fecha', $year);
+		}
+		$qb->leftJoin('f.productos', 'fp')
+			->leftJoin('f.servicios', 'fs')
+			->orderBy('f.id', 'DESC');
+		return $qb->getQuery()->getResult();
+	}
+
+	private function getYear()
+	{
+		$year = date('Y');
+		$currentMonthDateTime = new \DateTime();
+		$firstDateTime = $currentMonthDateTime->modify('now');
+		$firstDateTime->setTime(0, 0);
+		$firstDateTime->setDate($year, 1, 1);
+		return $firstDateTime;
+	}
+
+	public function getFacturasXcobrar()
+	{
+
+		$mes = $this->getMes();
+
+		return $this->createQueryBuilder('f')
+			->select('f', 'fp', 'fs')
+			->andWhere('f.fecha >= :fecha')
+			->setParameter('fecha', $mes)
 			->andWhere('f.xpagar != 0')
 			->orWhere('f.xpagar > 0')
 			->leftJoin('f.productos', 'fp')
@@ -54,6 +119,22 @@ class FacturasRepository extends ServiceEntityRepository
 			->leftJoin('fs.id_servicio', 's')
 			->getQuery()
 			->getResult();
+	}
+
+	public function getSumXpagar()
+	{
+		return $this->createQueryBuilder('f')
+			->select('SUM(f.xpagar) as xpagar')
+			->getQuery()
+			->getResult();
+	}
+
+	private function getMes()
+	{
+		$currentMonthDateTime = new \DateTime();
+		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
+		$firstDateTime->setTime(0, 0);
+		return $firstDateTime;
 	}
 
 	/*public function getUserFacturas($id_user){

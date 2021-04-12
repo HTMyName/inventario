@@ -39,8 +39,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	public function showAllUsers()
 	{
 		return $this->createQueryBuilder('u')
-			->select('u.id', 'u.name', 'u.username', 'u.payS', 'u.payV', 'u.roles')
+			->select('u.id', 'u.name', 'u.username', 'u.payS', 'u.payV', 'u.roles', 'u.payTotal')
 			->where('u.active = 1')
+			->getQuery()
+			->getResult();
+	}
+
+	public function countActiveUsers()
+	{
+		return $this->createQueryBuilder('u')
+			->select('u.id')
+			->where('u.active = 1')
+			->getQuery()
+			->getResult();
+	}
+
+	public function getAllUsersExept($id)
+	{
+		return $this->createQueryBuilder('u')
+			->select('u.id')
+			->where('u.active = 1')
+			->andWhere('u.id != :id')
+			->setParameter('id', $id)
 			->getQuery()
 			->getResult();
 	}
@@ -53,6 +73,35 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 			->where("u.id = :id")
 			->andWhere('u.id != 1')
 			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
+
+	public function sumAllSalarios()
+	{
+		return $this->createQueryBuilder('u')
+			->select('SUM(u.payV) as totalPV', 'SUM(u.payS) as totalPS', 'SUM(u.payTotal) as payTotal')
+			->where('u.active != 0')
+			->getQuery()
+			->getResult();
+	}
+
+	public function sumAllSalariosBy($id)
+	{
+		return $this->createQueryBuilder('u')
+			->select('SUM(u.payV) as totalPV', 'SUM(u.payS) as totalPS', 'SUM(u.payTotal) as payTotal')
+			->where('u.active != 0')
+			->andWhere('u.id = :id')
+			->setParameter('id', $id)
+			->getQuery()
+			->getResult();
+	}
+
+	public function showUsersName()
+	{
+		return $this->createQueryBuilder('u')
+			->select('u.id', 'u.name')
+			->where('u.active = 1')
 			->getQuery()
 			->getResult();
 	}

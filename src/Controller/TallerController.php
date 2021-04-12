@@ -9,20 +9,28 @@ use App\Entity\FacturasServicio;
 use App\Entity\Logs;
 use App\Entity\Producto;
 use App\Entity\Servicio;
+use App\Entity\System;
 use App\Entity\User;
+use App\Form\AddInventarioType;
 use App\Form\FacturaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * @Route("/taller")
  */
 class TallerController extends AbstractController
 {
+	private $logsOb;
+
+	public function __construct()
+	{
+		$this->logsOb = new LogsController();
+	}
+
 	/**
 	 * @Route("", name="app_taller")
 	 */
@@ -49,6 +57,11 @@ class TallerController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 
+			$user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+			$usercant2 = $this->getDoctrine()->getRepository(User::class)->countActiveUsers();
+			$usercant = count($usercant2);
+			$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+
 			$em = $this->getDoctrine()->getManager();
 			$createCliente = true;
 
@@ -62,7 +75,11 @@ class TallerController extends AbstractController
 				}
 				$tellForm = $request->get('telefono_name');
 				if ($tellForm !== null) {
-					$cliente->setTell($tellForm);
+					if (strlen($tellForm) == 8) {
+						$cliente->setTell($tellForm);
+					} else {
+						$createCliente = false;
+					}
 				} else {
 					$createCliente = false;
 				}
@@ -76,9 +93,15 @@ class TallerController extends AbstractController
 				$cliente = $this->getDoctrine()->getRepository(Cliente::class)->find($factura->getIdCliente());
 			}
 
+			$factura->setIdUser($user);
 			$factura->setFecha(new \DateTime("now"));
-			$factura->setIdUser($this->getUser());
+			$factura->setSaldoRetenidoP(0);
+			$factura->setSaldoRetenidoS(0);
+			$factura->setSaldoRetenidoI(0);
+			$factura->setSaldoRetenidoFI(0);
+			$factura->setSaldoRetenidoFG(0);
 			$facturaTotalTemporal = 0;
+			$facturaTotalRealTeamporal = 0;
 			$array_facturas_p = [];
 			$array_facturas_s = [];
 			$detalles = "";
@@ -95,16 +118,39 @@ class TallerController extends AbstractController
 					$product_data = $this->getDoctrine()->getRepository(Producto::class)->find($product);
 
 					if ($product_data->getCantidadTaller() - $products_cant[$product] >= 0) {
+						//tabla facturas producto
 						$factura_productos->setIdFactura($factura);
 						$factura_productos->setIdProducto($product_data);
 						$factura_productos->setPrecio($product_data->getPrecioV());
 						$factura_productos->setCantidad($products_cant[$product]);
-						$facturaTotalTemporal += ($product_data->getPrecioV() * $products_cant[$product]);
 						$product_data->setCantidadTaller($product_data->getCantidadTaller() - $products_cant[$product]);
+
+						//array y logs
 						$array_facturas_p[] = $factura_productos;
 						$detalles = $product_data->getMarca() . ","
 							. $product_data->getPrecioV() . ","
 							. $factura_productos->getCantidad() . "|";
+
+						//tabla facturas
+						$ganancia_producto = ($product_data->getPrecioV() - $product_data->getPrecioC()) * $products_cant[$product];
+						$ganancia_real_producto = $ganancia_producto - ($ganancia_producto * $cliente->getDescuento() / 100);
+
+						$total_venta_producto = $product_data->getPrecioV() * $products_cant[$product];
+						$total_real_venta_producto = $total_venta_producto - ($ganancia_producto * $cliente->getDescuento() / 100);
+
+						$facturaTotalTemporal += $total_venta_producto;
+						$facturaTotalRealTeamporal += $total_real_venta_producto;
+
+						//$total_real_venta_producto = $product_data->getPrecioC() - $product_data->getPrecioV() * $cliente->getDescuento() / 100;
+						//$ganancia_producto = ($total_real_venta_producto - $product_data->getPrecioC()) * $products_cant[$product];
+						$saldo_r_producto_t = $ganancia_real_producto * $product_data->getXcientoganancia() / 100;
+						$saldo_r_indirecto_t = $ganancia_real_producto * $system->getWinproduct() / 100 * ($usercant - 1);
+						$inversion_recuperada = $ganancia_real_producto - $saldo_r_producto_t - $saldo_r_indirecto_t;
+
+						$factura->setSaldoRetenidoP($factura->getSaldoRetenidoP() + $saldo_r_producto_t);
+						$factura->setSaldoRetenidoI($factura->getSaldoRetenidoI() + $saldo_r_indirecto_t);
+						$factura->setSaldoRetenidoFI($factura->getSaldoRetenidoFI() + ($product_data->getPrecioC() * $products_cant[$product]));
+						$factura->setSaldoRetenidoFG($factura->getSaldoRetenidoFG() + $inversion_recuperada);
 					}
 				}
 				foreach ($array_facturas_p as $prod) {
@@ -120,19 +166,36 @@ class TallerController extends AbstractController
 				$service_array = array_unique($service_array);
 
 				foreach ($service_array as $service) {
-
+					//tabla factura servicio
 					$factura_servicios = new FacturasServicio();
 					$service_data = $this->getDoctrine()->getRepository(Servicio::class)->find($service);
-
 					$factura_servicios->setIdFactura($factura);
 					$factura_servicios->setIdServicio($service_data);
 					$factura_servicios->setPrecio($service_data->getPrecio());
 					$factura_servicios->setCantidad($service_cant[$service]);
-					$facturaTotalTemporal += ($service_data->getPrecio() * $service_cant[$service]);
+
+					//array y logs
 					$array_facturas_s[] = $factura_servicios;
 					$detalles = $service_data->getName() . ","
 						. $service_data->getPrecio() . ","
-						. $factura_productos->getCantidad() . "|";
+						. $factura_servicios->getCantidad() . "|";
+
+					//tabla facturas
+					$total_venta_servicio = $service_data->getPrecio() * $service_cant[$service];
+					$total_real_venta_servicio = $total_venta_servicio - $total_venta_servicio * $cliente->getDescuento() / 100;
+
+					$facturaTotalTemporal += $total_venta_servicio;
+					$facturaTotalRealTeamporal += $total_real_venta_servicio;
+
+					//$total_real_venta_servicio = $service_data->getPrecio() - $service_data->getPrecio() * $cliente->getDescuento() / 100;
+					$saldo_r_servicio_t = $total_real_venta_servicio * $service_data->getXcientoganancia() / 100;
+					$saldo_r_indirecto_t = $total_real_venta_servicio * $system->getWinservice() / 100 * ($usercant - 1);
+					$inversion_recuperada = $total_real_venta_servicio - $saldo_r_servicio_t - $saldo_r_indirecto_t;
+
+					$factura->setSaldoRetenidoS($factura->getSaldoRetenidoS() + $saldo_r_servicio_t);
+					$factura->setSaldoRetenidoI($factura->getSaldoRetenidoI() + $saldo_r_indirecto_t);
+					//$factura->setSaldoRetenidoFI($factura->getSaldoRetenidoFI() + $service_data->getPrecio() - $saldo_r_servicio_t - $saldo_r_indirecto_t);
+					$factura->setSaldoRetenidoFG($factura->getSaldoRetenidoFG() + $inversion_recuperada);
 				}
 				foreach ($array_facturas_s as $serv) {
 					$em->persist($serv);
@@ -141,11 +204,13 @@ class TallerController extends AbstractController
 			}
 
 			$factura->setTotal($facturaTotalTemporal);
-			$factura->setXpagar($facturaTotalTemporal - $facturaTotalTemporal * $cliente->getDescuento() / 100);
+			$factura->setTotalReal($facturaTotalRealTeamporal);
+			$factura->setXpagar($factura->getTotalReal());
+			$factura->setDescuento($cliente->getDescuento());
 
 			$em->persist($factura);
 
-			$log = $this->generateLogs($cliente, $factura, "factura", $detalles);
+			$log = $this->logsOb->generateLogs($cliente, $factura, $this->getUser(), "factura", $detalles);
 			$em->persist($log);
 
 			if ($facturaTotalTemporal > 0 && $createCliente === true) {
@@ -181,12 +246,26 @@ class TallerController extends AbstractController
 		$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getUserFacturas($this->getUser()->getId());
 
 		return $this->render('taller/user_factura.html.twig', [
-			"facturas" => $factura_repo
+			"facturas" => $factura_repo,
+			'title' => 'Mis Facturas'
 		]);
 	}
 
 	/**
-	 * @Route("/user_factura/{id}", name="app_factura_detalles")
+	 * @Route("/user_factura_xcobrar", name="app_user_factura_xcobrar")
+	 */
+	public function facturaXcobrar()
+	{
+		$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getFacturasXcobrar();
+
+		return $this->render('taller/user_factura.html.twig', [
+			"facturas" => $factura_repo,
+			'title' => 'Por Cobrar'
+		]);
+	}
+
+	/**
+	 * @Route("/user_factura/{id}", name="app_factura_detalles", requirements={"id"="\d+"})
 	 */
 	public function detallesfacturaAction($id = null, Request $request)
 	{
@@ -213,11 +292,38 @@ class TallerController extends AbstractController
 			} else {
 				$metodoPago = "Efectivo";
 			}
-			if ($cantidad != null && $cantidad <= $factura->getXpagar()) {
+			if ($cantidad != null && $cantidad > 0 && $cantidad <= $factura->getXpagar()) {
+				$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+				$system->setCaja($system->getCaja() + $cantidad);
+
 				$detalles = $metodoPago . "," . $cantidad;
-				$log = $this->generateLogs($cliente, $factura, "pago", $detalles);
+				$log = $this->logsOb->generateLogs($cliente, $factura, $this->getUser(), "pago", $detalles);
 				$em->persist($log);
 				$factura->setXpagar($factura->getXpagar() - $cantidad);
+
+				if ($factura->getXpagar() == 0) {
+					$user = $this->getDoctrine()->getRepository(User::class)->find($factura->getIdUser());
+					$user->setPayV($user->getPayV() + $factura->getSaldoRetenidoP());
+					$user->setPayS($user->getPayS() + $factura->getSaldoRetenidoS());
+
+					$users_indirecto = $this->getDoctrine()->getRepository(User::class)->getAllUsersExept($factura->getIdUser());
+					$users_cant = count($users_indirecto);
+					foreach ($users_indirecto as $userid) {
+						$usertmp = $this->getDoctrine()->getRepository(User::class)->find($userid["id"]);
+						$usertmp->setPayV($usertmp->getPayV() + $factura->getSaldoRetenidoI() / $users_cant);
+						$em->persist($usertmp);
+					}
+
+					$system->setInversion($system->getInversion() - $factura->getSaldoRetenidoFI());
+					$system->setRecuperado($system->getRecuperado() + $factura->getSaldoRetenidoFI());
+					$system->setGanancia($system->getGanancia() + $factura->getSaldoRetenidoFG());
+
+					/*$factura->setSaldoRetenidoP(0);
+					$factura->setSaldoRetenidoS(0);
+					$factura->setSaldoRetenidoI(0);
+					$factura->setSaldoRetenidoFI(0);
+					$factura->setSaldoRetenidoFG(0);*/
+				}
 				$em->persist($factura);
 				$em->flush();
 				return $this->redirectToRoute('app_factura_detalles', ['id' => $id]);
@@ -229,6 +335,60 @@ class TallerController extends AbstractController
 			"facturas" => $factura_repo,
 			"logs" => $logsHistory,
 			"form" => $form->createView()
+		]);
+	}
+
+	/**
+	 * @Route("/add_inventario/{id}", name="app_taller_add_inventario", requirements={"id"="\d+"})
+	 */
+	public function add_tallerAction($id = null, Request $request)
+	{
+		$producto = new Producto();
+		if ($id !== null) {
+			$em = $this->getDoctrine()->getManager();
+			$item = $em->getRepository(Producto::class)->find($id);
+		} else {
+			return $this->redirectToRoute('app_taller');
+		}
+		if (!$item) {
+			return $this->redirectToRoute('app_taller');
+		}
+
+		//creando formulario
+		$form = $this->createForm(AddInventarioType::class, $producto);
+
+		$form = $form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$cantidad_inventario = $form->getData()->getCantidadInventario();
+
+			if ($cantidad_inventario <= 0) {
+				return $this->redirectToRoute('app_taller_add_inventario', [
+					'id' => $id
+				]);
+			}
+			if (($item->getCantidadTaller() - $cantidad_inventario) >= 0 &&
+				($item->getCantidadInventario() + $cantidad_inventario) >= 0) {
+				$item->setCantidadTaller($item->getCantidadTaller() - $cantidad_inventario);
+				$item->setCantidadInventario($item->getCantidadInventario() + $cantidad_inventario);
+
+				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cantidad_inventario;
+				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'addinventario', $detalles);
+				$em->persist($logs);
+
+				$em->flush();
+			} else {
+				return $this->redirectToRoute('app_taller_add_inventario', [
+					'id' => $id
+				]);
+			}
+
+			return $this->redirectToRoute('app_taller');
+		}
+		return $this->render("taller/add_inventario.html.twig", [
+			'form' => $form->createView(),
+			'cantidad_actual' => $item->getCantidadTaller()
 		]);
 	}
 
@@ -299,15 +459,4 @@ class TallerController extends AbstractController
 		return $json;
 	}
 
-	public function generateLogs($cliente, $factura, $tipo, $detalles): Logs
-	{
-		$log = new Logs();
-		$log->setIdCliente($cliente);
-		$log->setIdUser($this->getUser());
-		$log->setIdFactura($factura);
-		$log->setFecha($factura->getFecha());
-		$log->setTipo($tipo);
-		$log->setDetalles($detalles);
-		return $log;
-	}
 }
