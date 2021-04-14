@@ -1,7 +1,6 @@
 ###> symfony/framework-bundle ###
 /bin
 /migrations
-/public/dist/img/system
 /tests
 /var
 /vendor
@@ -13,3 +12,4 @@
 .phpunit.result.cache
 phpunit.xml.dist
 /phpunit.xml
+/public/dist/img/system/
