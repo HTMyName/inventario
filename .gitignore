@@ -1,6 +1,7 @@
 ###> symfony/framework-bundle ###
 /bin
 /migrations
+/public/dist/img/system
 /tests
 /var
 /vendor

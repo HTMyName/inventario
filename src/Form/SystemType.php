@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SystemType extends AbstractType
 {
@@ -16,6 +17,7 @@ class SystemType extends AbstractType
 			->add('pagename')
 			->add('winservice')
 			->add('winproduct')
+			->add('imageFile', VichImageType::class)
 			->add('submit', SubmitType::class);
 	}
 

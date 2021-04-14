@@ -38,7 +38,7 @@
                     <h5 class="d-inline-block">Cliente:</h5> {{ factura.idcliente }}
                 </div>
                 <div class="col-sm-8 invoice-col pb-4 pl-4">
-                    <a href="invoice-print.html" target="_blank" class="btn btn-default float-right"><i
+                    <a href="{{ path('app_factura_detalles_pdf', {'id': factura.id }) }}" target="_blank" class="btn btn-default float-right"><i
                                 class="fas fa-print"></i>
                         Imprimir</a>
                 </div>

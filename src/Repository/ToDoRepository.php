@@ -35,6 +35,8 @@ class ToDoRepository extends ServiceEntityRepository
 			$qb->orWhere('t.visible = :visible')->setParameter('visible', 1);
 		}
 
+		$qb->orderBy('t.id', 'DESC');
+
 		//dump($qb->getQuery());
 
 		return $qb->getQuery()->getResult();

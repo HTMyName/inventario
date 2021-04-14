@@ -13,6 +13,7 @@ use App\Entity\System;
 use App\Entity\User;
 use App\Form\AddInventarioType;
 use App\Form\FacturaType;
+use Mpdf\Mpdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -269,6 +270,7 @@ class TallerController extends AbstractController
 	 */
 	public function detallesfacturaAction($id = null, Request $request)
 	{
+
 		if ($id !== null) {
 			$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getFacturaById($id);
 			$logsHistory = $this->getDoctrine()->getRepository(Logs::class)->getClientPays($id);
@@ -457,6 +459,91 @@ class TallerController extends AbstractController
 		$json->setData($servicio_repository);
 
 		return $json;
+	}
+
+	/**
+	 * @Route("/user_factura/pdf/{id}", name="app_factura_detalles_pdf", requirements={"id"="\d+"})
+	 */
+	public function createPDF($id = null)
+	{
+
+		if ($id !== null) {
+			$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getFacturaById($id);
+			$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+			$logsHistory = $this->getDoctrine()->getRepository(Logs::class)->getClientPays($id);
+		} else {
+			return $this->redirectToRoute('app_user_factura');
+		}
+
+		$mpdf = new Mpdf();
+
+		$mpdf->SetTitle('Factura 1 - ' . date_format($factura_repo[0]->getFecha(), 'd-m-Y'));
+
+		$fecha = "<div style='text-align: right'>Fecha de Factura: " . date_format($factura_repo[0]->getFecha(), 'd-m-Y') . "</div>";
+		$users = "<span style='margin-right: 20px'>Usuario: {$factura_repo[0]->getIdUser()}</span>";
+		$users .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		$users .= "<span style='margin-left: 20px'>Cliente: {$factura_repo[0]->getIdCliente()}</span>";
+
+		$table = '<table width="100%" style="text-align: center;"><thead>';
+		$table .= '<tr style="background: gainsboro"><th style="padding: 4px">Nombre</th><th>Tipo</th><th>Cantidad</th>';
+		$table .= '<th>Precio</th><th>Subtotal</th></tr></thead><tbody>';
+
+		$tmpColor = true;
+
+		foreach ($factura_repo[0]->getProductos() as $producto) {
+			$nombre = $producto->getIdProducto()->getMarca();
+			$cantidad = $producto->getCantidad();
+			$precio = $producto->getPrecio();
+			$subtotal = $cantidad * $precio;
+			if ($tmpColor == true) {
+				$color = 'white';
+				$tmpColor = false;
+			} else {
+				$color = 'whitesmoke';
+				$tmpColor = true;
+			}
+			$table .= "<tr style='background: $color'><td style='padding: 4px;'>{$nombre}</td><td>Producto</td><td>{$cantidad}</td><td>{$precio}</td><td>{$subtotal}</td></tr>";
+		}
+
+		foreach ($factura_repo[0]->getServicios() as $servicio) {
+			$nombre = $servicio->getIdServicio()->getName();
+			$cantidad = $servicio->getCantidad();
+			$precio = $servicio->getPrecio();
+			$subtotal = $cantidad * $precio;
+			if ($tmpColor == true) {
+				$color = 'white';
+				$tmpColor = false;
+			} else {
+				$color = 'whitesmoke';
+				$tmpColor = true;
+			}
+			$table .= "<tr style='background: $color'><td style='padding: 4px;'>{$nombre}</td><td>Servicio</td><td>{$cantidad}</td><td>{$precio}</td><td>{$subtotal}</td></tr>";
+		}
+		$table .= '</tbody></table>';
+
+		$descuento = $factura_repo[0]->getTotal() - $factura_repo[0]->getTotalReal();
+		$style = "style='padding: 4px; border-bottom: 1px solid whitesmoke; width: 140px'";
+		$style2 = "style='text-align: right; width: 140px; border-bottom: 1px solid whitesmoke'";
+
+		$table_total = '<table>';
+		$table_total .= "<tr><td {$style}>Subtotal</td><td {$style2}>{$factura_repo[0]->getTotal()}</td></tr>";
+		$table_total .= "<tr><td {$style}>Descuento&nbsp;({$factura_repo[0]->getDescuento()}%)</td><td {$style2}>{$descuento}</td></tr>";
+		$table_total .= "<tr><td {$style}>Total</td><td {$style2}>{$factura_repo[0]->getTotalReal()}</td></tr>";
+		$table_total .= '</table>';
+
+		$img = "<img src='dist/img/system/{$system->getImageName()}' width='200px' height='50px' style='margin-bottom: -40px'>";
+		
+		$mpdf->WriteHTML($img);
+		$mpdf->WriteHTML($fecha);
+		$mpdf->WriteHTML("<br><br>");
+		$mpdf->WriteHTML($users);
+		$mpdf->WriteHTML("<br>");
+		$mpdf->WriteHTML($table);
+		$mpdf->WriteHTML("<br>");
+		$mpdf->WriteHTML($table_total);
+
+		//return $this->render('test.html.twig');
+		$mpdf->Output('factura.pdf', \Mpdf\Output\Destination::INLINE);
 	}
 
 }

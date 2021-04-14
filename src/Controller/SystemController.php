@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Facturas;
+use App\Entity\Images;
 use App\Entity\Logs;
 use App\Entity\System;
 use App\Entity\User;
 use App\Form\FondoType;
 use App\Form\GastosType;
+use App\Form\ImageType;
 use App\Form\SystemType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +71,7 @@ class SystemController extends AbstractController
 		}
 
 		return $this->render('system/index.html.twig', [
-			'form' => $form->createView()
+			'form' => $form->createView(),
 		]);
 	}
 
