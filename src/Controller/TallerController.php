@@ -244,7 +244,7 @@ class TallerController extends AbstractController
 	 */
 	public function user_facturaAction()
 	{
-		$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getUserFacturas($this->getUser()->getId());
+		$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getUserFacturas($this->getUser());
 
 		return $this->render('taller/user_factura.html.twig', [
 			"facturas" => $factura_repo,
