@@ -320,11 +320,6 @@ class TallerController extends AbstractController
 					$system->setRecuperado($system->getRecuperado() + $factura->getSaldoRetenidoFI());
 					$system->setGanancia($system->getGanancia() + $factura->getSaldoRetenidoFG());
 
-					/*$factura->setSaldoRetenidoP(0);
-					$factura->setSaldoRetenidoS(0);
-					$factura->setSaldoRetenidoI(0);
-					$factura->setSaldoRetenidoFI(0);
-					$factura->setSaldoRetenidoFG(0);*/
 				}
 				$em->persist($factura);
 				$em->flush();

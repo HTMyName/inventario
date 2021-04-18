@@ -48,17 +48,21 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Tipo</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Subtotal</th>
+                            <th width="28%">Nombre</th>
+                            <th width="18%">Tipo</th>
+                            <th width="18%">Cantidad</th>
+                            <th width="18%">Precio</th>
+                            <th width="18%">Subtotal</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for producto in factura.productos %}
                             <tr>
-                                <td>{{ producto.idproducto.marca }}</td>
+                                <td>
+                                    {{ producto.idproducto.serie }}
+                                    {{ producto.idproducto.marca }}
+                                    {{ producto.idproducto.modelo }}
+                                </td>
                                 <td>Producto</td>
                                 <td>{{ producto.cantidad }}</td>
                                 <td>{{ producto.precio }}</td>

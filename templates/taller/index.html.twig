@@ -33,9 +33,9 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
+                        <th width="14%">Tipo</th>
                         <th width="14%">Marca</th>
                         <th width="14%">Modelo</th>
-                        <th width="14%">Serie</th>
                         <th width="14%">Precio_Venta</th>
                         <th width="14%">Cantidad</th>
                         {% if is_granted('ROLE_ADMIN') %}
@@ -46,9 +46,9 @@
                     <tbody>
                     {% for item in data %}
                         <tr class="text-center">
+                            <td class="text-left pl-4">{{ item.serie }}</td>
                             <td>{{ item.marca }}</td>
                             <td>{{ item.modelo }}</td>
-                            <td>{{ item.serie }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.cantidad_taller }}</td>
                             {% if is_granted('ROLE_ADMIN') %}

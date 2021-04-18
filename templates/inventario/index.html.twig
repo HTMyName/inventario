@@ -20,9 +20,9 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
+                        <th width="10%">Tipo</th>
                         <th width="10%">Marca</th>
                         <th width="10%">Modelo</th>
-                        <th width="10%">Serie</th>
                         <th width="10%">Precio_Compra</th>
                         <th width="10%">Precio_Venta</th>
                         <th width="10%">Ganancia</th>
@@ -34,9 +34,9 @@
                     <tbody>
                     {% for item in data %}
                         <tr class="text-center">
+                            <td class="text-left pl-4">{{ item.serie }}</td>
                             <td>{{ item.marca }}</td>
                             <td>{{ item.modelo }}</td>
-                            <td>{{ item.serie }}</td>
                             <td>{{ item.precioC }}</td>
                             <td>{{ item.precioV }}</td>
                             <td>{{ item.ganancia }}</td>
