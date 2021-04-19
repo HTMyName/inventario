@@ -25,7 +25,7 @@ class Cliente
 	private $name;
 
 	/**
-	 * @ORM\Column(type="string", length=8)
+	 * @ORM\Column(type="string", length=8, unique=true)
 	 */
 	private $tell;
 

@@ -13,6 +13,7 @@ use App\Entity\System;
 use App\Entity\User;
 use App\Form\AddInventarioType;
 use App\Form\FacturaType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Mpdf\Mpdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -204,6 +205,10 @@ class TallerController extends AbstractController
 				}
 			}
 
+			if ($service_array == null && $products_array == null) {
+				return $this->redirectToRoute('app_factura');
+			}
+
 			$factura->setTotal($facturaTotalTemporal);
 			$factura->setTotalReal($facturaTotalRealTeamporal);
 			$factura->setXpagar($factura->getTotalReal());
@@ -215,7 +220,11 @@ class TallerController extends AbstractController
 			$em->persist($log);
 
 			if ($facturaTotalTemporal > 0 && $createCliente === true) {
-				$em->flush();
+				try {
+					$em->flush();
+				} catch (UniqueConstraintViolationException $e) {
+					return $this->redirectToRoute('app_factura');
+				}
 				return $this->redirectToRoute('app_factura_detalles', [
 					"id" => $factura->getId()
 				]);

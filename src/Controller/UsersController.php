@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\AddUserType;
 use App\Form\EditUserType;
 use App\Form\PayUserType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,7 +46,11 @@ class UsersController extends AbstractController
 				$user, '12345'
 			));
 			$em->persist($user);
-			$em->flush();
+			try {
+				$em->flush();
+			} catch (UniqueConstraintViolationException $e) {
+				//exeption
+			}
 
 			return $this->redirectToRoute('app_users');
 		}
