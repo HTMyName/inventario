@@ -18,8 +18,6 @@ xmlhttp.onreadystatechange = function () {
             var datap = myObj.productos;
             var datas = myObj.servicios;
 
-            //console.log(myObj);
-
             var salesChartData = {
                 labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                 datasets: [

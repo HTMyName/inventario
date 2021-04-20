@@ -36,7 +36,6 @@ class HomeController extends AbstractController
 		}
 
 		$total_todo = ceil(count($todo) / 5);
-
 		$total_productos = $total_servicios = 0;
 
 		foreach ($facturas as $factura) {

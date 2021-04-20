@@ -25,7 +25,7 @@ class SystemController extends AbstractController
 	{
 		$this->logsOb = new LogsController();
 	}
-
+  
 	/**
 	 * @Route("", name="app_system")
 	 */
