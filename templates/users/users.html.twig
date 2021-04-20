@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block title %}
-    Trabajadores
+    Usuarios
 {% endblock %}
 
 {% block page_name %}
-    Trabajadores
+    Usuarios
 {% endblock %}
 
 {% block main_content %}
@@ -58,24 +58,29 @@
                             <td>{{ user.payS }}</td>
                             <td>{{ user.payS + user.payV + user.payTotal }}</td>
                             <td class="text-center">
-                                <a href="{{ path('app_pay_users', {'id': user.id}) }}">
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Pagar"
-                                           style="width: 80px">
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
+                                   href="{{ path('app_pay_users', {'id': user.id}) }}" title="Pagar">
+                                    <i class="fas fa-dollar-sign text-success"
+                                       style="margin-left: 3px; margin-right: 3px"></i>
                                 </a>
-                                <a href="{{ path('app_amortizar_users', {'id': user.id}) }}">
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Amortizar"
-                                           style="width: 80px">
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
+                                   href="{{ path('app_amortizar_users', {'id': user.id}) }}" title="Amortizar">
+                                    <i class="fas fa-landmark text-primary"></i>
                                 </a>
-                                <a href="{{ path('app_users_edit', {'id': user.id}) }}">
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Editar"
-                                           style="width: 80px">
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
+                                   href="{{ path('app_users_edit', {'id': user.id}) }}" title="Editar">
+                                    <i class="far fa-edit text-warning"></i>
                                 </a>
                                 {% if user.roles[0] != "ROLE_ADMIN" %}
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Eliminar"
-                                           style="width: 80px" onclick="delUser({{ user.id }}, '{{ user.name }}')">
+                                    <button type="button" class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Eliminar"
+                                            onclick="delUser({{ user.id }}, '{{ user.name }}')">
+                                        <i class=" fas fa-trash-alt text-red"></i>
+                                    </button>
                                 {% else %}
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button" value="Eliminar"
-                                           style="width: 80px" disabled>
+                                    <button type="button" class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Eliminar"
+                                            disabled>
+                                        <i class=" fas fa-trash-alt"></i>
+                                    </button>
                                 {% endif %}
                             </td>
                         </tr>

@@ -44,6 +44,7 @@
       "": ""
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "^5.2",
         "symfony/css-selector": "^5.2",
         "symfony/debug-bundle": "^5.2",

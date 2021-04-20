@@ -265,7 +265,7 @@ class TallerController extends AbstractController
 	}
 
 	/**
-	 * @Route("/user_factura/{id}", name="app_factura_detalles")
+	 * @Route("/user_factura/{id}", name="app_factura_detalles", requirements={"id"="\d+"})
 	 */
 	public function detallesfacturaAction($id = null, Request $request)
 	{

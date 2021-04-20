@@ -46,6 +46,8 @@ security:
         - { path: ^/users, roles: ROLE_ADMIN }
         - { path: ^/system, roles: ROLE_ADMIN }
         - { path: ^/home/vaciarcaja, roles: ROLE_ADMIN }
+        - { path: ^/home/todo/completar, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/home/todo/*, roles: ROLE_ADMIN }
         - { path: ^/taller/add_inventario, roles: ROLE_ADMIN }
         - { path: ^/home, roles: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/taller, roles: IS_AUTHENTICATED_REMEMBERED }

@@ -7,6 +7,7 @@ use App\Entity\Logs;
 use App\Entity\System;
 use App\Entity\User;
 use App\Form\FondoType;
+use App\Form\GastosType;
 use App\Form\SystemType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ class SystemController extends AbstractController
 	{
 		$this->logsOb = new LogsController();
 	}
+  
 	/**
 	 * @Route("", name="app_system")
 	 */
@@ -206,6 +208,41 @@ class SystemController extends AbstractController
 		return $this->render('system/prestamo.html.twig', [
 			'users' => $usuarios,
 			'ganancia' => $system->getGanancia()
+		]);
+	}
+
+	/**
+	 * @Route("/gastos", name="app_system_gastos")
+	 */
+	public function gastos(Request $request)
+	{
+		$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+		$form = $this->createForm(GastosType::class, $system);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$gastos = $request->get('gastos_input');
+			$nota = $request->get('nota_input');
+			if (($gastos != "" && is_numeric($gastos) && $gastos > 0 && $gastos <= $system->getGanancia())) {
+				$em = $this->getDoctrine()->getManager();
+
+				$system->setGastos($system->getGastos() + $gastos);
+				$system->setGanancia($system->getGanancia() - $gastos);
+
+				$detalles = $gastos . ',' . $nota;
+
+				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'gasto', $detalles);
+				$em->persist($logs);
+				$em->persist($system);
+				$em->flush();
+			} else {
+				$this->redirectToRoute('app_system_gastos');
+			}
+		}
+
+		return $this->render('system/gastos.html.twig', [
+			'form' => $form->createView(),
+			'system' => $system
 		]);
 	}
 

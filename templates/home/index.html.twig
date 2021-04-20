@@ -20,7 +20,8 @@
                         <h3>$ {{ caja }}</h3>
                         <p>Caja
                             {% if is_granted('ROLE_ADMIN') %}
-                                <span class="float-right btn text-white border-white mr-1co btn-sm" onclick="vaciarCaja()">Vaciar Caja</span>
+                                <span class="float-right btn text-white border-white mr-1co btn-sm"
+                                      onclick="vaciarCaja()">Vaciar Caja</span>
                             {% endif %}
                         </p>
                     </div>
@@ -71,7 +72,7 @@
                             {% if salario[0]["payTotal"] >= 0 %}
                                 0
                             {% else %}
-                                {{ salario[0]["payTotal"] }}
+                                {{ salario[0]["payTotal"]*-1 }}
                             {% endif %}
                         </h3>
 
@@ -95,129 +96,79 @@
                         <h3 class="card-title">
                             <i class="ion ion-clipboard mr-1"></i>
                             To Do List
+                            {% if total_todo > 1 %}
+                                - <span id="todonumber">1</span>
+                            {% endif %}
                         </h3>
 
                         <div class="card-tools">
                             <ul class="pagination pagination-sm">
-                                <li class="page-item"><a href="#" class="page-link">«</a></li>
-                                <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                                <li class="page-item"><a href="#" class="page-link">»</a></li>
+                                {% if total_todo >= 1 %}
+                                    {% for i in 1..total_todo %}
+                                        <li class="page-item"><a href="#" class="page-link"
+                                                                 onclick="showTodo({{ i }})">{{ i }}</a></li>
+                                    {% endfor %}
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <ul class="todo-list ui-sortable" data-widget="todo-list">
-                            <li>
-                                <!-- drag handle -->
-                                <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <!-- checkbox -->
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                                    <label for="todoCheck1"></label>
-                                </div>
-                                <!-- todo text -->
-                                <span class="text">Design a nice theme</span>
-                                <!-- Emphasis label -->
-                                <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                                <!-- General tools such as edit or delete-->
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li class="done">
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo2" id="todoCheck2" checked="">
-                                    <label for="todoCheck2"></label>
-                                </div>
-                                <span class="text">Make the theme responsive</span>
-                                <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                                    <label for="todoCheck3"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                                    <label for="todoCheck4"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                                    <label for="todoCheck5"></label>
-                                </div>
-                                <span class="text">Check your messages and notifications</span>
-                                <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo6" id="todoCheck6">
-                                    <label for="todoCheck6"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
+                            {% if total_todo >= 1 %}
+                                {% set cantidad_todo = 0 %}
+                                {% set counter = 0 %}
+                                {% for nota in todo %}
+                                    {% if cantidad_todo % 5 == 0 %}
+                                        {% set counter = counter + 1 %}
+                                    {% endif %}
+                                    {% if counter > 1 %}
+                                    <li class="d-none todol{{ counter }} li-item-class">
+                                    {% else %}
+                                        <li class="todol{{ counter }} li-item-class">
+                                    {% endif %}
+                                    {% if nota.completed == 1 %}
+                                        {% set checked = 'checked' %}
+                                    {% else %}
+                                        {% set checked = '' %}
+                                    {% endif %}
+                                    <div class="row" style="user-select: none">
+                                        <div class="icheck-primary col-sm-9 mb-1">
+                                            <input onclick="completarTodo({{ nota.id }})" type="checkbox" value=""
+                                                   name="todo{{ nota.id }}"
+                                                   id="todoCheck{{ nota.id }}"
+                                                   style="cursor: pointer" {{ checked }}>
+                                            <label class="mb-0 text" for="todoCheck{{ nota.id }}"
+                                                   style="cursor: pointer;">{{ nota.texto }}</label>
+                                            <small class="badge badge-primary">{{ nota.fecha|date('d/m/Y') }}</small>
+                                        </div>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <div class="tools col-sm-3 text-right">
+                                                <a href="{{ path('app_home_todo_edit', {'id': nota.id }) }}">
+                                                    <i class="fas fa-edit text-warning"></i>
+                                                </a>
+                                                <a href="{{ path('app_todo_eliminar', {'id': nota.id }) }}">
+                                                    <i class="fas fa-trash-alt text-red ml-2 mr-2"></i>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    </li>
+                                    {% set cantidad_todo = cantidad_todo + 1 %}
+                                {% endfor %}
+                            {% else %}
+                                <label for="" class="mb-0">No hay tareas pendientes</label>
+                            {% endif %}
                         </ul>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                        <button type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Add item
-                        </button>
-                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="card-footer clearfix">
+                            <a href="{{ path('app_home_todo') }}" class="btn btn-sm btn-info float-right"><i
+                                        class="fas fa-plus"></i> Añadir
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
                 <!-- /.card -->
             </section>

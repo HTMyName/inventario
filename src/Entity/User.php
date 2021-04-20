@@ -77,183 +77,246 @@ class User implements UserInterface
 		$this->facturas = new ArrayCollection();
 	}
 
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\ToDo", mappedBy="id_user")
+	 */
+	private $todo;
+	/**
+	 * @ORM\Column(type="json")
+	 */
+	private $roles = [];
+	/**
+	 * @var string The hashed password
+	 * @ORM\Column(type="string")
+	 */
+	private $password;
+
+	public function __construct()
+            	{
+            		$this->logs = new ArrayCollection();
+            		$this->facturas = new ArrayCollection();
+              $this->todo = new ArrayCollection();
+            	}
+
 	public function getName(): ?string
-	{
-		return $this->name;
-	}
+            	{
+            		return $this->name;
+            	}
 
 	public function setName(string $name): self
-	{
-		$this->name = $name;
-
-		return $this;
-	}
+            	{
+            		$this->name = $name;
+            
+            		return $this;
+            	}
 
 	public function getPayS(): ?float
-	{
-		return $this->payS;
-	}
+            	{
+            		return $this->payS;
+            	}
 
 	public function setPayS(float $payS): self
-	{
-		$this->payS = $payS;
-
-		return $this;
-	}
+            	{
+            		$this->payS = $payS;
+            
+            		return $this;
+            	}
 
 	public function getPayV(): ?float
-	{
-		return $this->payV;
-	}
+            	{
+            		return $this->payV;
+            	}
 
 	public function setPayV(float $payV): self
-	{
-		$this->payV = $payV;
-
-		return $this;
-	}
+            	{
+            		$this->payV = $payV;
+            
+            		return $this;
+            	}
 
 	public function getActive(): ?bool
-	{
-		return $this->active;
-	}
+            	{
+            		return $this->active;
+            	}
 
 	public function setActive(bool $active): self
-	{
-		$this->active = $active;
-
-		return $this;
-	}
+            	{
+            		$this->active = $active;
+            
+            		return $this;
+            	}
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+            	{
+            		return $this->id;
+            	}
 
 	public function getUsername(): ?string
-	{
-		return $this->username;
-	}
+            	{
+            		return $this->username;
+            	}
 
 	public function setUsername(string $username): self
-	{
-		$this->username = $username;
-
-		return $this;
-	}
+            	{
+            		$this->username = $username;
+            
+            		return $this;
+            	}
 
 	public function getRoles(): ?array
-	{
-		return $this->roles;
-	}
+            	{
+            		return $this->roles;
+            	}
 
 	public function setRoles(array $roles): self
-	{
-		$this->roles = $roles;
-
-		return $this;
-	}
+            	{
+            		$this->roles = $roles;
+            
+            		return $this;
+            	}
 
 	public function getPassword(): ?string
-	{
-		return $this->password;
-	}
+            	{
+            		return $this->password;
+            	}
 
 	public function setPassword(string $password): self
-	{
-		$this->password = $password;
-
-		return $this;
-	}
+            	{
+            		$this->password = $password;
+            
+            		return $this;
+            	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getSalt()
-	{
-		// not needed when using the "bcrypt" algorithm in security.yaml
-	}
+            	{
+            		// not needed when using the "bcrypt" algorithm in security.yaml
+            	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials()
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+            	{
+            		// If you store any temporary, sensitive data on the user, clear it here
+            		// $this->plainPassword = null;
+            	}
 
 	/**
 	 * @return Collection|Logs[]
 	 */
 	public function getLogs(): Collection
-	{
-		return $this->logs;
-	}
+            	{
+            		return $this->logs;
+            	}
 
 	public function setLogs(?Logs $logs): self
-	{
-		$this->logs = $logs;
-
-		return $this;
-	}
+            	{
+            		$this->logs = $logs;
+            
+            		return $this;
+            	}
 
 	public function addLog(Logs $log): self
-	{
-		if (!$this->logs->contains($log)) {
-			$this->logs[] = $log;
-			$log->setIdUser($this);
-		}
-
-		return $this;
-	}
+            	{
+            		if (!$this->logs->contains($log)) {
+            			$this->logs[] = $log;
+            			$log->setIdUser($this);
+            		}
+            
+            		return $this;
+            	}
 
 	public function removeLog(Logs $log): self
-	{
-		if ($this->logs->removeElement($log)) {
-			// set the owning side to null (unless already changed)
-			if ($log->getIdUser() === $this) {
-				$log->setIdUser(null);
-			}
-		}
-
-		return $this;
-	}
+            	{
+            		if ($this->logs->removeElement($log)) {
+            			// set the owning side to null (unless already changed)
+            			if ($log->getIdUser() === $this) {
+            				$log->setIdUser(null);
+            			}
+            		}
+            
+            		return $this;
+            	}
 
 	/**
 	 * @return Collection|Facturas[]
 	 */
 	public function getFacturas(): Collection
-	{
-		return $this->facturas;
-	}
+            	{
+            		return $this->facturas;
+            	}
 
 	public function addFactura(Facturas $factura): self
-	{
-		if (!$this->facturas->contains($factura)) {
-			$this->facturas[] = $factura;
-			$factura->setIdUser($this);
-		}
-
-		return $this;
-	}
+            	{
+            		if (!$this->facturas->contains($factura)) {
+            			$this->facturas[] = $factura;
+            			$factura->setIdUser($this);
+            		}
+            
+            		return $this;
+            	}
 
 	public function removeFactura(Facturas $factura): self
-	{
-		if ($this->facturas->removeElement($factura)) {
-			// set the owning side to null (unless already changed)
-			if ($factura->getIdUser() === $this) {
-				$factura->setIdUser(null);
-			}
-		}
-
-		return $this;
-	}
+            	{
+            		if ($this->facturas->removeElement($factura)) {
+            			// set the owning side to null (unless already changed)
+            			if ($factura->getIdUser() === $this) {
+            				$factura->setIdUser(null);
+            			}
+            		}
+            
+            		return $this;
+            	}
 
 	public function __toString()
-	{
-		return $this->name;
-	}
+            	{
+            		return $this->name;
+            	}
+
+	public function getPayTotal(): ?float
+            	{
+            		return $this->payTotal;
+            	}
+
+	public function setPayTotal(float $payTotal): self
+            	{
+            		$this->payTotal = $payTotal;
+            
+            		return $this;
+            	}
+
+    /**
+     * @return Collection|ToDo[]
+     */
+    public function getTodo(): Collection
+    {
+        return $this->todo;
+    }
+
+    public function addTodo(ToDo $todo): self
+    {
+        if (!$this->todo->contains($todo)) {
+            $this->todo[] = $todo;
+            $todo->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTodo(ToDo $todo): self
+    {
+        if ($this->todo->removeElement($todo)) {
+            // set the owning side to null (unless already changed)
+            if ($todo->getIdUser() === $this) {
+                $todo->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 	public function getPayTotal(): ?float
 	{

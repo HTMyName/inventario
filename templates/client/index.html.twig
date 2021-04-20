@@ -51,19 +51,19 @@
                             <td>{{ client.tell }}</td>
                             <td>{{ client.descuento }}</td>
                             <td class="text-center">
-                                <a href="tel:{{ client.tell }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Llamar"
-                                            style="width: 80px"></a>
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Llamar"
+                                   href="tel:{{ client.tell }}">
+                                    <i class=" fas fa-phone text-primary"></i>
+                                </a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('app_client_edit', {'id': client.id}) }}"><input
-                                                class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                                value="Editar"
-                                                style="width: 80px"></a>
-                                    <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                           value="Eliminar"
-                                           style="width: 80px"
-                                           onclick="delClient({{ client.id }}, '{{ client.name }}')">
+                                    <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Editar"
+                                       href="{{ path('app_client_edit', {'id': client.id}) }}">
+                                        <i class="far fa-edit text-warning"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Eliminar"
+                                            onclick="delClient({{ client.id }}, '{{ client.name }}')">
+                                        <i class=" fas fa-trash-alt text-red"></i>
+                                    </button>
                                 {% endif %}
                             </td>
                         </tr>

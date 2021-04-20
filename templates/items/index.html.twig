@@ -76,18 +76,18 @@
                             <td>{{ item.ganancia }}</td>
                             <td>{{ item.xcientoganancia }}</td>
                             <td class="text-center">
-                                <a href="{{ path('app_item_transf', {'id': item.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Añadir"
-                                            style="width: 80px"></a>
-                                <a href="{{ path('app_items_edit', {'id': item.id}) }}"><input
-                                            class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                            value="Editar"
-                                            style="width: 80px"></a>
-                                <input class="btn btn-sm btn-default mr-1 ml-1 mb-1" type="button"
-                                       value="Eliminar"
-                                       style="width: 80px"
-                                       onclick="delItem('{{ item.id }}', '{{ item.marca }}', '{{ item.modelo }}')">
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
+                                   href="{{ path('app_item_transf', {'id': item.id}) }}" title="Añadir">
+                                    <i class="fas fa-plus text-primary"></i>
+                                </a>
+                                <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
+                                   href="{{ path('app_items_edit', {'id': item.id}) }}" title="Editar">
+                                    <i class="far fa-edit text-warning"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Eliminar"
+                                        onclick="delItem('{{ item.id }}', '{{ item.marca }}', '{{ item.modelo }}')">
+                                    <i class=" fas fa-trash-alt text-red"></i>
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}

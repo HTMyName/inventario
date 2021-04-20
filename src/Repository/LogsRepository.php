@@ -34,14 +34,27 @@ class LogsRepository extends ServiceEntityRepository
 
 	public function getLogs($year, $mes, $tipo, $user)
 	{
-		$fecha = $this->getFecha($year, $mes);
 
-		return $this->createQueryBuilder('l')
-			->select('l.id', 'l.fecha', 'l.detalles', 'l.tipo', 'l.id_user')
-			->where('l.fecha >= :fecha')
-			->andWhere('l.id_user = :id_user')
-			->getQuery()
-			->getResult();
+		$qb = $this->createQueryBuilder('l');
+		$qb->select('l');
+		if ($mes == "all") {
+			$fecha = $this->getYearFirstLastDay($year);
+			$qb->where('l.fecha >= :fecha_ini')->setParameter('fecha_ini', $fecha[0]);
+			$qb->andWhere('l.fecha <= :fecha_fin')->setParameter('fecha_fin', $fecha[1]);
+		} else {
+			$fecha = $this->getMesFirstLastDay($year, $mes);
+			$qb->where('l.fecha >= :fecha_ini')->setParameter('fecha_ini', $fecha[0]);
+			$qb->andWhere('l.fecha <= :fecha_fin')->setParameter('fecha_fin', $fecha[1]);
+		}
+		if ($user != "all") {
+			$qb->andWhere('l.id_user = :id_user')->setParameter('id_user', $user);
+		}
+		if ($tipo != "all") {
+			$qb->andWhere('l.tipo = :tipo')->setParameter('tipo', $tipo);
+		}
+		$qb->orderBy('l.id', 'DESC');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function getBajas()
@@ -66,12 +79,40 @@ class LogsRepository extends ServiceEntityRepository
 		return $firstDateTime;
 	}
 
-	private function getFecha($year, $mes)
+	private function getMesFirstLastDay($year, $mes)
 	{
-		$fecha = new \DateTime('now');
-		$fecha->setDate($year, $mes, 1);
-		$fecha->setTime(0, 0);
-		return $fecha;
+		$array = [];
+
+		$currentMonthDateTime = new \DateTime("{$year}-{$mes}-1");
+		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
+		$firstDateTime->setTime(0, 0);
+
+		$currentMonthDateTime2 = new \DateTime("{$year}-{$mes}-1");
+		$lastDateTime = $currentMonthDateTime2->modify('last day of this month');
+		$lastDateTime->setTime(23, 59, 59);
+
+		$array [] = $firstDateTime;
+		$array [] = $lastDateTime;
+
+		return $array;
+	}
+
+	private function getYearFirstLastDay($year)
+	{
+		$array = [];
+
+		$currentMonthDateTime = new \DateTime("{$year}-1-1");
+		$firstDateTime = $currentMonthDateTime->modify('first day of this month');
+		$firstDateTime->setTime(0, 0);
+
+		$currentMonthDateTime2 = new \DateTime("{$year}-12-1");
+		$lastDateTime = $currentMonthDateTime2->modify('last day of this month');
+		$lastDateTime->setTime(23, 59, 59);
+
+		$array [] = $firstDateTime;
+		$array [] = $lastDateTime;
+
+		return $array;
 	}
 
 	// /**

@@ -33,18 +33,8 @@ xmlhttp.onreadystatechange = function () {
                         pointHitRadius: 10,
                         pointBorderWidth: 2,
                         data: [
-                            getNumberFun(datap[0][0]),
-                            getNumberFun(datap[1][0]),
-                            getNumberFun(datap[2][0]),
-                            getNumberFun(datap[3][0]),
-                            getNumberFun(datap[4][0]),
-                            getNumberFun(datap[5][0]),
-                            getNumberFun(datap[6][0]),
-                            getNumberFun(datap[7][0]),
-                            getNumberFun(datap[8][0]),
-                            getNumberFun(datap[9][0]),
-                            getNumberFun(datap[10][0]),
-                            getNumberFun(datap[11][0])
+                            datap[0], datap[1], datap[2], datap[3], datap[4], datap[5],
+                            datap[6], datap[7], datap[8], datap[9], datap[10], datap[11]
                         ]
                     },
                     {
@@ -59,18 +49,8 @@ xmlhttp.onreadystatechange = function () {
                         pointHitRadius: 10,
                         pointBorderWidth: 2,
                         data: [
-                            getNumberFun(datas[0][0]),
-                            getNumberFun(datas[1][0]),
-                            getNumberFun(datas[2][0]),
-                            getNumberFun(datas[3][0]),
-                            getNumberFun(datas[4][0]),
-                            getNumberFun(datas[5][0]),
-                            getNumberFun(datas[6][0]),
-                            getNumberFun(datas[7][0]),
-                            getNumberFun(datas[8][0]),
-                            getNumberFun(datas[9][0]),
-                            getNumberFun(datas[10][0]),
-                            getNumberFun(datas[11][0])
+                            datas[0], datas[1], datas[2], datas[3], datas[4], datas[5],
+                            datas[6], datas[7], datas[8], datas[9], datas[10], datas[11]
                         ]
                     },
                 ]
@@ -85,13 +65,13 @@ xmlhttp.onreadystatechange = function () {
             },
             scales: {
                 xAxes: [{
-                    stacked: true,
+                    stacked: false,
                     gridLines: {
                         display: false,
                     }
                 }],
                 yAxes: [{
-                    stacked: true,
+                    stacked: false,
                     ticks: {
                         beginAtZero: true,
                         maxTicksLimit: 10,
@@ -130,10 +110,3 @@ xmlhttp.onreadystatechange = function () {
 
 xmlhttp.open("GET", "home/sales", true);
 xmlhttp.send();
-
-function getNumberFun(number) {
-    if (isNaN(number)) {
-        return 0;
-    }
-    return number;
-}
