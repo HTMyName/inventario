@@ -102,6 +102,7 @@ class TallerController extends AbstractController
 			$factura->setSaldoRetenidoI(0);
 			$factura->setSaldoRetenidoFI(0);
 			$factura->setSaldoRetenidoFG(0);
+			$factura->setActive(1);
 			$facturaTotalTemporal = 0;
 			$facturaTotalRealTeamporal = 0;
 			$array_facturas_p = [];
@@ -249,6 +250,41 @@ class TallerController extends AbstractController
 	}
 
 	/**
+	 * @Route("/eliminar_factura/{id}", name="app_eliminar_factura", requirements={"id"="\d+"} ,methods={"POST"})
+	 */
+	public function eliminar($id = null)
+	{
+		if ($id != null) {
+			$factura = $this->getDoctrine()->getRepository(Facturas::class)->find($id);
+			if ($factura) {
+				$productos = $this->getDoctrine()->getRepository(FacturasProducto::class)->findBy([
+					'id_factura' => $id
+				]);
+				$servicios = $this->getDoctrine()->getRepository(FacturasServicio::class)->findBy([
+					'id_factura' => $id
+				]);
+
+				if ($factura->getTotalReal() == $factura->getXpagar()) {
+					if ($this->getUser() == $factura->getIdUser() || $this->getUser()->getRoles()[0] == "ROLE_ADMIN") {
+						$em = $this->getDoctrine()->getManager();
+						foreach ($productos as $producto) {
+							$producto->getIdProducto()->setCantidadTaller($producto->getIdProducto()->getCantidadTaller() + $producto->getCantidad());
+							$em->remove($producto);
+						}
+						foreach ($servicios as $servicio) {
+							$em->remove($servicio);
+						}
+						$factura->setActive(0);
+						$em->persist($factura);
+						$em->flush();
+					}
+				}
+			}
+		}
+		return new Response("ok");
+	}
+
+	/**
 	 * @Route("/user_factura", name="app_user_factura")
 	 */
 	public function user_facturaAction()
@@ -283,11 +319,15 @@ class TallerController extends AbstractController
 		if ($id !== null) {
 			$factura_repo = $this->getDoctrine()->getRepository(Facturas::class)->getFacturaById($id);
 			$logsHistory = $this->getDoctrine()->getRepository(Logs::class)->getClientPays($id);
+			$factura = $this->getDoctrine()->getRepository(Facturas::class)->find($id);
 		} else {
 			return $this->redirectToRoute('app_user_factura');
 		}
 
-		$factura = $this->getDoctrine()->getRepository(Facturas::class)->find($id);
+		if ($factura->getActive() == 0) {
+			return $this->redirectToRoute('app_user_factura');
+		}
+
 		$form = $this->createForm(FacturaType::class, $factura);
 		$form->handleRequest($request);
 
@@ -305,7 +345,8 @@ class TallerController extends AbstractController
 			}
 			if ($cantidad != null && $cantidad > 0 && $cantidad <= $factura->getXpagar()) {
 				$system = $this->getDoctrine()->getRepository(System::class)->find(1);
-				$system->setCaja($system->getCaja() + $cantidad);
+				$userforcaja = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+				$userforcaja->setCaja($userforcaja->getCaja() + $cantidad);
 
 				$detalles = $metodoPago . "," . $cantidad;
 				$log = $this->logsOb->generateLogs($cliente, $factura, $this->getUser(), "pago", $detalles);
@@ -325,9 +366,28 @@ class TallerController extends AbstractController
 						$em->persist($usertmp);
 					}
 
+					$logsPagos = $this->getDoctrine()->getRepository(Logs::class)->findBy([
+						'id_factura' => $id,
+						'tipo' => 'pago'
+					]);
+
+					$total_para_banco = 0;
+
+					foreach ($logsPagos as $logdetalles) {
+						$tipo = explode(',', $logdetalles->getDetalles(), 2);
+						if ($tipo[0] == "Transfermovil") {
+							$total_para_banco += $tipo[1];
+						}
+					}
+
+					if ($metodoPago == "Transfermovil") {
+						$total_para_banco += $cantidad;
+					}
+
 					$system->setInversion($system->getInversion() - $factura->getSaldoRetenidoFI());
 					$system->setRecuperado($system->getRecuperado() + $factura->getSaldoRetenidoFI());
 					$system->setGanancia($system->getGanancia() + $factura->getSaldoRetenidoFG());
+					$system->setBanco($system->getBanco() + $total_para_banco);
 
 				}
 				$em->persist($factura);
@@ -479,6 +539,10 @@ class TallerController extends AbstractController
 			return $this->redirectToRoute('app_user_factura');
 		}
 
+		if (!$factura_repo) {
+			return $this->redirectToRoute('app_user_factura');
+		}
+
 		$mpdf = new Mpdf();
 
 		$mpdf->SetTitle('Factura 1 - ' . date_format($factura_repo[0]->getFecha(), 'd-m-Y'));
@@ -536,7 +600,7 @@ class TallerController extends AbstractController
 		$table_total .= '</table>';
 
 		$img = "<img src='dist/img/system/{$system->getImageName()}' width='200px' height='50px' style='margin-bottom: -40px'>";
-		
+
 		$mpdf->WriteHTML($img);
 		$mpdf->WriteHTML($fecha);
 		$mpdf->WriteHTML("<br><br>");

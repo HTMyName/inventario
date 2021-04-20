@@ -38,7 +38,8 @@
                     <h5 class="d-inline-block">Cliente:</h5> {{ factura.idcliente }}
                 </div>
                 <div class="col-sm-8 invoice-col pb-4 pl-4">
-                    <a href="{{ path('app_factura_detalles_pdf', {'id': factura.id }) }}" target="_blank" class="btn btn-default float-right"><i
+                    <a href="{{ path('app_factura_detalles_pdf', {'id': factura.id }) }}" target="_blank"
+                       class="btn btn-default float-right"><i
                                 class="fas fa-print"></i>
                         Imprimir</a>
                 </div>
@@ -134,6 +135,9 @@
                         </div>
                     {% endif %}
                     <div class="col-12 no-print mt-4">
+                        {% if factura.totalreal == factura.xpagar %}
+                            <button type="button" onclick="delFactura({{ factura.id }})" class="btn btn-danger float-right col-md-3 ml-2 mb-2" title="Cancelar">Cancelar</button>
+                        {% endif %}
                         {% if factura.xpagar != 0 %}
                             {{ form_row(form.submit, {attr: {'class':'btn btn-primary float-right col-md-3 submit-p-btn'}}) }}
                             {{ form_row(form.id_cliente, { attr: {'readonly': 'readonly', 'class': 'd-none'}, label:'', label_attr:{'class':'d-none'} } ) }}
@@ -150,43 +154,44 @@
             <!-- this row will not appear when printing -->
         </div>
     {% endfor %}
-        {% for factura in facturas %}
-            <div class="invoice p-3 mb-3 container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <h4>
-                            <small>Historial de Pagos</small>
-                        </h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Usuario</th>
-                                <th>Metodo</th>
-                                <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for log in logs %}
-                                <tr>
-                                    <td>{{ log.fecha|date("d/m/Y") }}</td>
-                                    <td>{{ log.iduser }}</td>
-                                    {% set array = log.detalles|split(',',3) %}
-                                    <td>{{ array[0] }}</td>
-                                    <td>{{ array[1] }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+    {% for factura in facturas %}
+        <div class="invoice p-3 mb-3 container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <small>Historial de Pagos</small>
+                    </h4>
                 </div>
             </div>
-        {% endfor %}
+            <div class="row">
+                <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Metodo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td>{{ log.fecha|date("d/m/Y") }}</td>
+                                <td>{{ log.iduser }}</td>
+                                {% set array = log.detalles|split(',',3) %}
+                                <td>{{ array[0] }}</td>
+                                <td>{{ array[1] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
 
-
-
+{% block javascripts %}
+    <script src="{{ asset('dist/js/actions.js') }}"></script>
+{% endblock %}

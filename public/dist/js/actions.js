@@ -310,3 +310,36 @@ function serviceRemove(id, name) {
     servicio.remove();
 
 }
+
+function delFactura(id) {
+
+    let url = window.location.href;
+    let url2 = url;
+
+    if (url.includes("user_factura/")){
+        url = url.replace('user_factura', 'eliminar_factura');
+    }else if (url.includes("user_factura")){
+        url = url.replace('user_factura', 'eliminar_factura/') + id;
+    }
+
+    if (confirm("¿Estás seguro de eliminar esta factura? Esta acción no se puede revertir.")) {
+
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+
+        } else {  // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                window.location.assign(url2);
+            }
+        };
+
+        xmlhttp.open("POST", url, false);
+        xmlhttp.send();
+
+    }
+}

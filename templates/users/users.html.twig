@@ -41,12 +41,13 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="15%">Nombre</th>
-                        <th width="15%">Usuario</th>
-                        <th width="15%">Acumulado_Ventas</th>
-                        <th width="15%">Acumulado_Servicios</th>
-                        <th width="15%">Total</th>
-                        <th width="25%">Acciones</th>
+                        <th width="11%">Nombre</th>
+                        <th width="11%">Usuario</th>
+                        <th width="11%">Acumulado_Ventas</th>
+                        <th width="11%">Acumulado_Servicios</th>
+                        <th width="11%">Total</th>
+                        <th width="11%">Caja</th>
+                        <th width="23%">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -57,12 +58,17 @@
                             <td>{{ user.payV }}</td>
                             <td>{{ user.payS }}</td>
                             <td>{{ user.payS + user.payV + user.payTotal }}</td>
+                            <td>{{ user.caja }}</td>
                             <td class="text-center">
                                 <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
                                    href="{{ path('app_pay_users', {'id': user.id}) }}" title="Pagar">
                                     <i class="fas fa-dollar-sign text-success"
                                        style="margin-left: 3px; margin-right: 3px"></i>
                                 </a>
+                                <button title="Vaciar Caja" class="btn text-info btn-default btn-sm mb-1 ml-1 mr-1"
+                                        type="button" onclick="vaciarCaja('{{ user.id }}','{{ user.username }}')">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                </button>
                                 <a class="btn btn-sm btn-default mr-1 ml-1 mb-1"
                                    href="{{ path('app_amortizar_users', {'id': user.id}) }}" title="Amortizar">
                                     <i class="fas fa-landmark text-primary"></i>
@@ -97,4 +103,5 @@
     <script src="{{ asset('plugins/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('plugins/users.js') }}"></script>
+    <script src="{{ asset('dist/js/caja.js') }}"></script>
 {% endblock %}

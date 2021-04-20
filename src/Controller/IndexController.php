@@ -28,6 +28,7 @@ class IndexController extends AbstractController
 		$settings->setRecuperado(0);
 		$settings->setGanancia(0);
 		$settings->setCaja(0);
+		$settings->setBanco(0);
 		$settings->setGastos(0);
 		$settings->setYearStart(date('Y'));
 

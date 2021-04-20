@@ -61,7 +61,18 @@
                             <td>{{ factura.total }}</td>
                             <td>{{ factura.xpagar }}</td>
                             <td><a href="{{ path('app_factura_detalles', {'id': factura.id}) }}"><input
-                                            class="btn btn-default btn-sm" type="button" value="Detalles"></a></td>
+                                            class="btn btn-default btn-sm" type="button" value="Detalles"></a>
+                                {% if factura.xpagar == factura.totalreal %}
+                                    <button type="button" class="btn btn-sm btn-default mr-1 ml-1" title="Eliminar"
+                                            onclick="delFactura({{ factura.id }})">
+                                        <i class=" fas fa-trash-alt text-red"></i>
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-sm btn-default mr-1 ml-1 disabled" title="Eliminar">
+                                        <i class=" fas fa-trash-alt"></i>
+                                    </button>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

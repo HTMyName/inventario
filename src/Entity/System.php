@@ -58,7 +58,7 @@ class System
 	/**
 	 * @ORM\Column(type="float")
 	 */
-	private $caja;
+	private $banco;
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -227,18 +227,6 @@ class System
 		return $this;
 	}
 
-	public function getCaja(): ?float
-	{
-		return $this->caja;
-	}
-
-	public function setCaja(float $caja): self
-	{
-		$this->caja = $caja;
-
-		return $this;
-	}
-
 	public function getYearStart(): ?int
 	{
 		return $this->year_start;
@@ -259,6 +247,18 @@ class System
 	public function setGastos(float $gastos): self
 	{
 		$this->gastos = $gastos;
+
+		return $this;
+	}
+
+	public function getBanco(): ?float
+	{
+		return $this->banco;
+	}
+
+	public function setBanco(float $banco): self
+	{
+		$this->banco = $banco;
 
 		return $this;
 	}
