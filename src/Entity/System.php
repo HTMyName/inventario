@@ -124,7 +124,7 @@ class System
 		return $this->imageName;
 	}
 
-	public function setImageName(string $imageName): self
+	public function setImageName(?string $imageName): self
 	{
 		$this->imageName = $imageName;
 
@@ -136,7 +136,7 @@ class System
 		return $this->imageSize;
 	}
 
-	public function setImageSize(int $imageSize): self
+	public function setImageSize(?int $imageSize): self
 	{
 		$this->imageSize = $imageSize;
 
@@ -148,7 +148,7 @@ class System
 		return $this->updatedAt;
 	}
 
-	public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+	public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
 	{
 		$this->updatedAt = $updatedAt;
 
