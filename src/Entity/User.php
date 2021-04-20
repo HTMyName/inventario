@@ -61,6 +61,21 @@ class User implements UserInterface
 	 * @ORM\OneToMany(targetEntity="App\Entity\Facturas", mappedBy="id_user")
 	 */
 	private $facturas;
+	/**
+	 * @ORM\Column(type="json")
+	 */
+	private $roles = [];
+	/**
+	 * @var string The hashed password
+	 * @ORM\Column(type="string")
+	 */
+	private $password;
+
+	public function __construct()
+	{
+		$this->logs = new ArrayCollection();
+		$this->facturas = new ArrayCollection();
+	}
 
 	/**
 	 * @ORM\OneToMany(targetEntity="App\Entity\ToDo", mappedBy="id_user")
@@ -319,6 +334,5 @@ class User implements UserInterface
 
         return $this;
     }
-
-
+  
 }
