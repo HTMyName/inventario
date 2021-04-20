@@ -33,7 +33,7 @@ class ProductoRepository extends ServiceEntityRepository
 	public function showAllProducts()
 	{
 		return $this->createQueryBuilder('p')
-			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.xcientoganancia')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.xcientoganancia', 'p.imageName')
 			->where('p.active = 1')
 			->getQuery()
 			->getResult();
@@ -42,7 +42,7 @@ class ProductoRepository extends ServiceEntityRepository
 	public function showAllIventario()
 	{
 		return $this->createQueryBuilder('p')
-			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.xcientoganancia', 'p.cantidad_inventario')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioC', 'p.precioV', 'p.ganancia', 'p.xcientoganancia', 'p.cantidad_inventario', 'p.imageName')
 			->where('p.active = 1')
 			->andWhere('p.cantidad_inventario > 0')
 			->getQuery()
@@ -52,7 +52,7 @@ class ProductoRepository extends ServiceEntityRepository
 	public function showAllTaller()
 	{
 		return $this->createQueryBuilder('p')
-			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioV', 'p.cantidad_taller')
+			->select('p.id', 'p.marca', 'p.modelo', 'p.serie', 'p.precioV', 'p.cantidad_taller', 'p.imageName')
 			->where('p.active = 1')
 			->andWhere('p.cantidad_taller > 0')
 			->getQuery()

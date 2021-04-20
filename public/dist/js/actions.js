@@ -343,3 +343,15 @@ function delFactura(id) {
 
     }
 }
+
+function getFileJs(){
+    let img = document.getElementById('add_item_imageFile_file');
+    let labelimg = document.getElementById('label_for_img');
+    labelimg.innerHTML = img.files[0].name;
+}
+
+function getFileJsSystem(){
+    let img = document.getElementById('system_imageFile_file');
+    let labelimg = document.getElementById('label_for_img');
+    labelimg.innerHTML = img.files[0].name;
+}

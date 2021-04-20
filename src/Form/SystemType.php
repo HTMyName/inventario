@@ -17,7 +17,9 @@ class SystemType extends AbstractType
 			->add('pagename')
 			->add('winservice')
 			->add('winproduct')
-			->add('imageFile', VichImageType::class)
+			->add('imageFile', VichImageType::class, [
+				'required' => false
+			])
 			->add('submit', SubmitType::class);
 	}
 

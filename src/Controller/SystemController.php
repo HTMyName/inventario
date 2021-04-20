@@ -14,7 +14,9 @@ use App\Form\SystemType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/system")
@@ -61,6 +63,7 @@ class SystemController extends AbstractController
 	public function index(Request $request): Response
 	{
 		$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+
 		$form = $this->createForm(SystemType::class, $system);
 		$form->handleRequest($request);
 
@@ -72,6 +75,7 @@ class SystemController extends AbstractController
 
 		return $this->render('system/index.html.twig', [
 			'form' => $form->createView(),
+			'system' => $system->getImageName()
 		]);
 	}
 

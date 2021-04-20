@@ -9,7 +9,7 @@
 {% block stylesheet %}
     <style>
         .img-file a, .form-check-label, #system_imageFile_delete {
-            display: none!important;
+            display: none !important;
         }
     </style>
 {% endblock %}
@@ -20,19 +20,24 @@
         {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-6">
                     {{ form_row(form.pagename, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
                     {{ form_row(form.winproduct, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
                     {{ form_row(form.winservice, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-2 img-file" style="margin-top: -6px">
-                    {{ form_row(form.imageFile, { attr: {'autocomplete': 'off'} } ) }}
+                <div class="col-md-6">
+                    <label>Seleccionar Imagen</label>
+                    <label id="label_for_img" for="system_imageFile_file" class="form-control"
+                           style="overflow: hidden; cursor: pointer"></label>
                 </div>
-                <div class="col-md-2">
+                <div class="d-none" style="margin-top: -6px">
+                    {{ form_row(form.imageFile, { attr: {'autocomplete': 'off', 'onchange':'getFileJsSystem()', 'required':'off'} } ) }}
+                </div>
+                <div class="col-md-3 m-auto">
                     {{ form_row(form.submit, {attr:{text: 'Actualizar', class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
             </div>
@@ -42,3 +47,7 @@
     </div>
 {% endblock %}
 
+
+{% block javascripts %}
+    <script src="{{ asset('dist/js/actions.js') }}"></script>
+{% endblock %}
