@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Facturas;
+use App\Entity\Images;
 use App\Entity\Logs;
 use App\Entity\System;
 use App\Entity\User;
 use App\Form\FondoType;
 use App\Form\GastosType;
+use App\Form\ImageType;
 use App\Form\SystemType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +71,7 @@ class SystemController extends AbstractController
 		}
 
 		return $this->render('system/index.html.twig', [
-			'form' => $form->createView()
+			'form' => $form->createView(),
 		]);
 	}
 
@@ -101,6 +103,39 @@ class SystemController extends AbstractController
 			}
 		}
 		return $this->render('system/fondo.html.twig', [
+			'form' => $form->createView(),
+			'system' => $system
+		]);
+	}
+
+	/**
+	 * @Route("/banco", name="app_system_banco")
+	 */
+	public function banco(Request $request)
+	{
+		$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+		$form = $this->createForm(FondoType::class, $system);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$idform = $form->getData()->getId();
+			if ($idform == 1) {
+				if (is_numeric($request->get("cantidad-pagar"))) {
+					$cantidad_pagar = $request->get("cantidad-pagar");
+				} else {
+					return $this->redirectToRoute('app_system_fondo');
+				}
+			} else {
+				return $this->redirectToRoute('app_system_fondo');
+			}
+			if ($system->getBanco() + $cantidad_pagar >= 0) {
+				$system->setBanco($system->getBanco() + $cantidad_pagar);
+				$em->persist($system);
+				$em->flush();
+			}
+		}
+		return $this->render('system/banco.html.twig', [
 			'form' => $form->createView(),
 			'system' => $system
 		]);

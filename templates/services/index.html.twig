@@ -57,7 +57,7 @@
                     <tbody>
                     {% for service in data %}
                         <tr class="text-center">
-                            <td>{{ service.name }}</td>
+                            <td class="text-left pl-4">{{ service.name }}</td>
                             <td><input type="button" class="btn btn-sm btn-default" value="Ver detalles" onclick="alert('{{ service.detalles }}')"></td>
                             <td>{{ service.precio }}</td>
                             {% if is_granted('ROLE_ADMIN') %}

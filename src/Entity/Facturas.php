@@ -97,6 +97,11 @@ class Facturas
 	 */
 	private $saldoRetenidoFG;
 
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $active;
+
 
 	public function __construct()
 	{

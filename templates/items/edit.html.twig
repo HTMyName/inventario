@@ -13,13 +13,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
+                    {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
+                </div>
+                <div class="col-md-3">
                     {{ form_row(form.marca, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_row(form.modelo, { attr: {'autocomplete': 'off'} } ) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_row(form.precioC, { attr: {'autocomplete': 'off'} } ) }}

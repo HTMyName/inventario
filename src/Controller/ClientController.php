@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cliente;
 use App\Form\AddClientType;
 use App\Form\EditClientType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,11 @@ class ClientController extends AbstractController
 				$cliente->setDescuento(0);
 				$cliente->setActive(1);
 				$em->persist($cliente);
-				$em->flush();
+				try {
+					$em->flush();
+				} catch (UniqueConstraintViolationException $e){
+					//exeption
+				}
 			}
 			return $this->redirectToRoute('app_client');
 		}

@@ -45,8 +45,7 @@
                 <span class="float-right mr-2">{{ system.recuperado }}</span>
             </div>
             <div class="card-body text-center" style="display: none">
-                <a class="btn btn-sm btn-outline-success col-md-3 mb-1 mt-1" href="{{ path('app_system_fondo') }}">Añadir</a>
-                <a class="btn btn-sm btn-outline-success col-md-3 mb-1 mt-1" href="{{ path('app_system_fondo') }}">Retirar</a>
+                <a class="btn btn-sm btn-outline-success col-md-3 mb-1 mt-1" href="{{ path('app_system_fondo') }}">Añadir - Retirar</a>
                 <a class="btn btn-sm btn-outline-success col-md-5 mb-1 mt-1"
                    href="{{ path('app_system_fondo_ganacia') }}">Mover a
                     Ganancia</a>
@@ -57,18 +56,16 @@
     <div class="col-lg-4">
         <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
             <div class="card-header">
-                <h3 class="card-title">Bajas:</h3>
+                <h3 class="card-title">En Banco:</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
                                 class="fas fa-plus text-md text-danger"></i>
                     </button>
                 </div>
-                <span class="float-right mr-2">
-                    {{ bajas }}
-                </span>
+                <span class="float-right mr-2">{{ system.banco }}</span>
             </div>
-            <div class="card-body" style="display: none">
-                The body of the card
+            <div class="card-body text-center" style="display: none">
+                <a class="btn btn-sm btn-outline-danger col-md-3 mb-1 mt-1" href="{{ path('app_system_banco') }}">Añadir - Retirar</a>
             </div>
             <!-- /.card-body -->
         </div>
@@ -113,18 +110,14 @@
     <div class="col-lg-4">
         <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
             <div class="card-header">
-                <h3 class="card-title">Deudas:</h3>
+                <h3 class="card-title">Bajas:</h3>
                 <div class="card-tools">
                     <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
-                                class="fas fa-plus text-md text-maroon"></i>
+                                class="fas fa-plus text-md text-danger"></i>
                     </button>-->
                 </div>
                 <span class="float-right mr-2">
-                    {% if salario[0]["payTotal"] < 0 %}
-                        {{ salario[0]["payTotal"]*-1 }}
-                    {% else %}
-                        0
-                    {% endif %}
+                    {{ bajas }}
                 </span>
             </div>
             <div class="card-body" style="display: none">
@@ -181,6 +174,29 @@
     </div>
     <div class="col-lg-4">
         <div class="card card-outline pt-1 pb-1 collapsed-card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Deudas:</h3>
+                <div class="card-tools">
+                    <!--<button type="button" class="btn btn-tool pl-3 pr-3 mr-n2" data-card-widget="collapse"><i
+                                class="fas fa-plus text-md text-maroon"></i>
+                    </button>-->
+                </div>
+                <span class="float-right mr-2">
+                    {% if salario[0]["payTotal"] < 0 %}
+                        {{ salario[0]["payTotal"]*-1 }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-body" style="display: none">
+                The body of the card
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card card-outline pt-1 pb-1 collapsed-card card-indigo">
             <div class="card-header">
                 <h3 class="card-title">Por Cobrar:</h3>
                 <div class="card-tools">

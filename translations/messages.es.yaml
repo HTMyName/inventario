@@ -7,7 +7,7 @@ Update: Actualizar
 Add: Añadir
 Marca: Marca
 Modelo: Modelo
-Serie: Serie
+Serie: Tipo
 Precio c: Precio de Compra
 Precio v: Precio de Venta
 Tell: Teléfono
@@ -23,3 +23,4 @@ Winservice: Ganancias por servicios
 Xcientoganancia: '% Venta'
 Id: ''
 Descuento: Descuento
+Image file: Imagen PDF

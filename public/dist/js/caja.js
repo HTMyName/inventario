@@ -1,5 +1,5 @@
-function vaciarCaja() {
-    if (confirm("¿Estás seguro de vaciar la caja? Esta acción no se puede revertir.")) {
+function vaciarCaja(id, name) {
+    if (confirm("¿Estás seguro de vaciar la caja de " + name + "? Esta acción no se puede revertir.")) {
 
         if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -11,11 +11,11 @@ function vaciarCaja() {
 
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                window.location.assign("home");
+                window.location.assign("users");
             }
         };
 
-        xmlhttp.open("POST", "home/vaciarcaja", true);
+        xmlhttp.open("POST", "home/vaciarcaja/" + id, true);
         xmlhttp.send();
 
     }

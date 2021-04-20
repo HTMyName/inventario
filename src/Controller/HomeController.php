@@ -23,6 +23,8 @@ class HomeController extends AbstractController
 	 */
 	public function index(): Response
 	{
+		$caja = $this->getDoctrine()->getRepository(User::class)->find($this->getUser())->getCaja();
+
 		$system = $this->getDoctrine()->getRepository(System::class)->find(1);
 
 		$salario = $this->getDoctrine()->getRepository(User::class)->sumAllSalariosBy($this->getUser());
@@ -36,6 +38,7 @@ class HomeController extends AbstractController
 		}
 
 		$total_todo = ceil(count($todo) / 5);
+
 		$total_productos = $total_servicios = 0;
 
 		foreach ($facturas as $factura) {
@@ -48,7 +51,7 @@ class HomeController extends AbstractController
 		}
 
 		return $this->render('home/index.html.twig', [
-			'caja' => $system->getCaja(),
+			'caja' => $caja,
 			'salario' => $salario,
 			'total_productos' => $total_productos,
 			'total_servicios' => $total_servicios,
@@ -147,13 +150,13 @@ class HomeController extends AbstractController
 	}
 
 	/**
-	 * @Route("/vaciarcaja", name="app_vaciarcaja", methods={"POST"})
+	 * @Route("/vaciarcaja/{id}", name="app_vaciarcaja", methods={"POST"}, requirements={"id"="\d+"})
 	 */
-	public function vaciarcaja()
+	public function vaciarcaja($id = null)
 	{
-		if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN") {
-			$system = $this->getDoctrine()->getRepository(System::class)->find(1);
-			$system->setCaja(0);
+		if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN" && $id != null) {
+			$user = $this->getDoctrine()->getRepository(User::class)->find($id);
+			$user->setCaja(0);
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 			return new JsonResponse('ok', Response::HTTP_OK);

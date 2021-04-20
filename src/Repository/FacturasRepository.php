@@ -21,24 +21,30 @@ class FacturasRepository extends ServiceEntityRepository
 
 	public function getUserFacturas($id_user)
 	{
-
 		$mes = $this->getMes();
 
-		return $this->createQueryBuilder('f')
-			->select('f', 'fp', 'fs')
-			->where('f.id_user = :id_user')
-			->setParameter('id_user', $id_user)
-			->andWhere('f.fecha >= :fecha')
-			->setParameter('fecha', $mes)
-			//->andWhere('f.xpagar != 0')
-			->orWhere('f.id_user = :id_user2')
-			->setParameter('id_user2', $id_user)
-			->andWhere('f.xpagar > 0')
-			->leftJoin('f.productos', 'fp')
+		$qb = $this->createQueryBuilder('f')
+			->select('f', 'fp', 'fs');
+		if ($id_user->getRoles()[0] == "ROLE_ADMIN") {
+			$qb->where('f.fecha >= :fecha')
+				->setParameter('fecha', $mes)
+				->orWhere('f.xpagar > 0');
+		} else {
+			$qb->where('f.id_user = :id_user')
+				->setParameter('id_user', $id_user->getId())
+				->andWhere('f.fecha >= :fecha')
+				->setParameter('fecha', $mes)
+				->orWhere('f.xpagar > 0')
+				->andWhere('f.id_user = :id_user2')
+				->setParameter('id_user2', $id_user->getId());
+		}
+
+		$qb->andWhere('f.active = 1');
+
+		$qb->leftJoin('f.productos', 'fp')
 			->leftJoin('f.servicios', 'fs')
-			->orderBy('f.id', 'DESC')
-			->getQuery()
-			->getResult();
+			->orderBy('f.id', 'DESC');
+		return $qb->getQuery()->getResult();
 	}
 
 	public function getMesFacturas($id_user)
@@ -54,6 +60,7 @@ class FacturasRepository extends ServiceEntityRepository
 		} else {
 			$qb->where('f.fecha >= :fecha')->setParameter('fecha', $mes);
 		}
+		$qb->andWhere('f.active = 1');
 		$qb->leftJoin('f.productos', 'fp')
 			->leftJoin('f.servicios', 'fs')
 			->orderBy('f.id', 'DESC');
@@ -73,6 +80,7 @@ class FacturasRepository extends ServiceEntityRepository
 		} else {
 			$qb->where('f.fecha >= :fecha')->setParameter('fecha', $year);
 		}
+		$qb->andWhere('f.active = 1');
 		$qb->leftJoin('f.productos', 'fp')
 			->leftJoin('f.servicios', 'fs')
 			->orderBy('f.id', 'DESC');
@@ -94,17 +102,19 @@ class FacturasRepository extends ServiceEntityRepository
 
 		$mes = $this->getMes();
 
-		return $this->createQueryBuilder('f')
+		$qb = $this->createQueryBuilder('f')
 			->select('f', 'fp', 'fs')
+			->where('f.active = 1')
 			->andWhere('f.fecha >= :fecha')
 			->setParameter('fecha', $mes)
 			->andWhere('f.xpagar != 0')
 			->orWhere('f.xpagar > 0')
+			->andWhere('f.active = 1')
 			->leftJoin('f.productos', 'fp')
 			->leftJoin('f.servicios', 'fs')
-			->orderBy('f.id', 'DESC')
-			->getQuery()
-			->getResult();
+			->orderBy('f.id', 'DESC');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function getFacturaById($id)
@@ -113,6 +123,7 @@ class FacturasRepository extends ServiceEntityRepository
 			->select('f', 'fp', 'p', 'fs', 's')
 			->where('f.id = :id')
 			->setParameter('id', $id)
+			->andWhere('f.active = 1')
 			->leftJoin('f.productos', 'fp')
 			->leftJoin('fp.id_producto', 'p')
 			->leftJoin('f.servicios', 'fs')
@@ -125,6 +136,7 @@ class FacturasRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('f')
 			->select('SUM(f.xpagar) as xpagar')
+			->where('f.active = 1')
 			->getQuery()
 			->getResult();
 	}
@@ -136,47 +148,4 @@ class FacturasRepository extends ServiceEntityRepository
 		$firstDateTime->setTime(0, 0);
 		return $firstDateTime;
 	}
-
-	/*public function getUserFacturas($id_user){
-		return $this->createQueryBuilder('f')
-			->select('f', 'fp', 'p', 'fs', 's')
-			->where('f.id_user = :id_user')
-			->setParameter('id_user', $id_user)
-			->innerJoin('f.productos', 'fp')
-			->innerJoin('fp.id_producto', 'p')
-			->innerJoin('f.servicios', 'fs')
-			->innerJoin('fs.id_servicio', 's')
-			->getQuery()
-			->getResult()
-			;
-	}*/
-
-	// /**
-	//  * @return Facturas[] Returns an array of Facturas objects
-	//  */
-	/*
-	public function findByExampleField($value)
-	{
-		return $this->createQueryBuilder('f')
-			->andWhere('f.exampleField = :val')
-			->setParameter('val', $value)
-			->orderBy('f.id', 'ASC')
-			->setMaxResults(10)
-			->getQuery()
-			->getResult()
-		;
-	}
-	*/
-
-	/*
-	public function findOneBySomeField($value): ?Facturas
-	{
-		return $this->createQueryBuilder('f')
-			->andWhere('f.exampleField = :val')
-			->setParameter('val', $value)
-			->getQuery()
-			->getOneOrNullResult()
-		;
-	}
-	*/
 }

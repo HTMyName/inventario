@@ -39,7 +39,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	public function showAllUsers()
 	{
 		return $this->createQueryBuilder('u')
-			->select('u.id', 'u.name', 'u.username', 'u.payS', 'u.payV', 'u.roles', 'u.payTotal')
+			->select('u.id', 'u.name', 'u.username', 'u.payS', 'u.payV', 'u.roles', 'u.payTotal', 'u.caja')
 			->where('u.active = 1')
 			->getQuery()
 			->getResult();
