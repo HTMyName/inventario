@@ -599,7 +599,7 @@ class TallerController extends AbstractController
 		$table_total .= "<tr><td {$style}>Total</td><td {$style2}>{$factura_repo[0]->getTotalReal()}</td></tr>";
 		$table_total .= '</table>';
 
-		$img = "<img src='dist/img/system/{$system->getImageName()}' width='200px' height='50px' style='margin-bottom: -40px'>";
+		$img = "<img src='dist/img/system/{$system->getImageName()}' width='150px' height='50px' style='margin-bottom: -40px'>";
 
 		$mpdf->WriteHTML($img);
 		$mpdf->WriteHTML($fecha);
