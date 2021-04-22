@@ -265,7 +265,11 @@ class User implements UserInterface
 
 	public function __toString()
 	{
-		return $this->name;
+		if ($this->getActive() == 1) {
+			return $this->name;
+		}else{
+			return "-eliminated-";
+		}
 	}
 
 	public function getPayTotal(): ?float
