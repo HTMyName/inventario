@@ -33,7 +33,9 @@ class ClientController extends AbstractController
 				$em->persist($cliente);
 				try {
 					$em->flush();
+					$this->addFlash('success', 'Cliente añadido');
 				} catch (UniqueConstraintViolationException $e){
+					$this->addFlash('error', 'Ya existe un cliente con ese número de Teléfono');
 					//exeption
 				}
 			}
@@ -83,6 +85,7 @@ class ClientController extends AbstractController
 
 				$em->persist($client);
 				$em->flush();
+				$this->addFlash('success', 'Cliente editado');
 				return $this->redirectToRoute('app_client');
 			}
 			return $this->redirectToRoute('app_client_edit', [

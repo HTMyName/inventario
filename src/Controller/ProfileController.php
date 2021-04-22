@@ -27,6 +27,7 @@ class ProfileController extends AbstractController
 			));
 			$em->persist($user);
 			$em->flush();
+			$this->addFlash('success', "Perfil actualizado");
 		}
 
 		return $this->render('profile/index.html.twig',

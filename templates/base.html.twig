@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     {% block metas %}
-        
+
     {% endblock %}
 
 
@@ -22,6 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- Custom style -->
     <link rel="stylesheet" href="{{ asset('dist/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    co
 </head>
 <body class="hold-transition sidebar-mini">
 {% block body %}
@@ -192,9 +194,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="row pl-3 mb-3">
                 <a href="{{ path('app_profile') }}"><i class="nav-icon fas fa-user-cog"></i> Perfil</a>
             </div>
-            <div class="row pl-3 mb-3">
-                <a href="{{ path('app_system_configuration') }}"><i class="nav-icon fas fa-cog"></i> Configuración</a>
-            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="row pl-3 mb-3">
+                    <a href="{{ path('app_system_configuration') }}"><i class="nav-icon fas fa-cog"></i>
+                        Configuración</a>
+                </div>
+            {% endif %}
             <div class="row pl-3 mb-3">
                 <a href="{{ path('app_logout') }}"><i class="nav-icon fas fa-sign-out-alt"></i> Salir</a>
             </div>

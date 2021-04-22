@@ -50,4 +50,11 @@
 
 {% block javascripts %}
     <script src="{{ asset('dist/js/actions.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('success') %}
+        <script>
+            showAlert('success', '{{ msg }}', 'Correcto');
+        </script>
+    {% endfor %}
 {% endblock %}
