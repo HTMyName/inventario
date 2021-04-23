@@ -27,7 +27,6 @@ class IndexController extends AbstractController
 		$settings->setInversion(0);
 		$settings->setRecuperado(0);
 		$settings->setGanancia(0);
-		$settings->setCaja(0);
 		$settings->setBanco(0);
 		$settings->setGastos(0);
 		$settings->setYearStart(date('Y'));
@@ -49,6 +48,7 @@ class IndexController extends AbstractController
 			$user->setPayV(0);
 			$user->setPayS(0);
 			$user->setPayTotal(0);
+			$user->setCaja(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user,
 				$form['password']->getData()

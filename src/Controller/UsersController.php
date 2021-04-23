@@ -42,13 +42,16 @@ class UsersController extends AbstractController
 			$user->setPayV(0);
 			$user->setPayS(0);
 			$user->setPayTotal(0);
+			$user->setCaja(0);
 			$user->setPassword($passwordEncoder->encodePassword(
 				$user, '12345'
 			));
 			$em->persist($user);
 			try {
 				$em->flush();
+				$this->addFlash('success', "Usuario añadido");
 			} catch (UniqueConstraintViolationException $e) {
+				$this->addFlash('error', "Ya existe ese nombre de usuario");
 				//exeption
 			}
 
@@ -97,6 +100,7 @@ class UsersController extends AbstractController
 			$user->setPassword($passwordEncoder->encodePassword($user, '12345'));
 			$em->persist($user);
 			$em->flush();
+			$this->addFlash('success', "Usuario editado");
 			return $this->redirectToRoute('app_users');
 		}
 
@@ -157,6 +161,7 @@ class UsersController extends AbstractController
 				}
 
 			} else {
+				$this->addFlash('error', "Error al pagar");
 				return $this->redirectToRoute('app_pay_users', [
 					'id' => $id
 				]);
@@ -169,6 +174,7 @@ class UsersController extends AbstractController
 
 			$em->persist($user);
 			$em->flush();
+			$this->addFlash('success', "Pago efectuado");
 		}
 
 		return $this->render('users/payusers.html.twig', [
@@ -229,7 +235,9 @@ class UsersController extends AbstractController
 				$logs = $this->logsOb->generateLogs(null, null, $user, 'deudapaga', $cantidad_pagar);
 				$em->persist($logs);
 				$em->flush();
+				$this->addFlash('success', "Deuda pagada");
 			} else {
+				$this->addFlash('error', "Estas intentando pagar mas que la deuda");
 				return $this->redirectToRoute('app_amortizar_users', [
 					'id' => $id
 				]);

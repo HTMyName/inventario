@@ -8,7 +8,6 @@
     Inicio
 {% endblock %}
 
-
 {% block main_content %}
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -90,7 +89,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="ion ion-clipboard mr-1"></i>
-                            To Do List
+                            Lista de Tareas
                             {% if total_todo > 1 %}
                                 - <span id="todonumber">1</span>
                             {% endif %}
@@ -208,5 +207,17 @@
     <script src="{{ asset('plugins/chart.js/chart.js') }}"></script>
     <script src="{{ asset('dist/js/caja.js') }}"></script>
     <script src="{{ asset('dist/js/ventas.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('success') %}
+        <script>
+            showAlert('success', '{{ msg }}', 'Correcto');
+        </script>
+    {% endfor %}
+    {% for msg in app.flashes('error') %}
+        <script>
+            showAlert('error', '{{ msg }}', 'Error');
+        </script>
+    {% endfor %}
 {% endblock %}
 

@@ -28,6 +28,7 @@ class ServicesController extends AbstractController
 				$servicio->setActive(1);
 				$em->persist($servicio);
 				$em->flush();
+				$this->addFlash('success', 'Servicio añadido');
 				return $this->redirectToRoute('app_services');
 			}
 		}
@@ -46,7 +47,6 @@ class ServicesController extends AbstractController
 		if ($id !== null) {
 			$this->getDoctrine()->getRepository(Servicio::class)->deleteBy($id);
 		}
-
 		return $this->redirectToRoute('app_services');
 	}
 
@@ -71,6 +71,7 @@ class ServicesController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->persist($servicio);
 			$em->flush();
+			$this->addFlash('success', 'Servicio editado');
 			return $this->redirectToRoute('app_services');
 		}
 		return $this->render('services/edit.html.twig', ['form' => $form->createView()]);

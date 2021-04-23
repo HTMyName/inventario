@@ -53,7 +53,8 @@
                             <td>{{ item.cantidad_taller }}</td>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Trasladar a Inventario" href="{{ path('app_taller_add_inventario', {'id': item.id}) }}">
+                                    <a class="btn btn-sm btn-default mr-1 ml-1 mb-1" title="Trasladar a Inventario"
+                                       href="{{ path('app_taller_add_inventario', {'id': item.id}) }}">
                                         <i class="fas fa-arrow-right text-primary"></i>
                                     </a>
                                 </td>
@@ -72,4 +73,11 @@
     <script src="{{ asset('plugins/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('plugins/users.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('success') %}
+        <script>
+            showAlert('success', '{{ msg }}', 'Correcto');
+        </script>
+    {% endfor %}
 {% endblock %}

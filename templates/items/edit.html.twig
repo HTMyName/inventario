@@ -12,28 +12,36 @@
         {{ form_start(form, { attr: {class: 'submit-p-form'} }) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <label>Seleccionar Imagen</label>
+                    <label id="label_for_img" for="add_item_imageFile_file" class="form-control"
+                           style="overflow: hidden; cursor: pointer"></label>
+                </div>
+                <div class="d-none">
+                    {{ form_row(form.imageFile, { attr: {'autocomplete': 'off', 'onchange':'getFileJs()'} } ) }}
+                </div>
+                <div class="col-md-4">
                     {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.marca, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.modelo, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.precioC, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.precioV, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.xcientoganancia, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_row(form.submit, {attr:{class: 'btn-primary btn-block submit-p-btn', style: 'margin-top: 32px!important'}}) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <a href="{{ path('app_items') }}"><input class="btn btn-danger btn-block" type="button"
                                                              value="Cancelar" style="margin-top: 32px!important"></a>
                 </div>
@@ -42,4 +50,8 @@
         {{ form_end(form) }}
         <!-- /.card-body -->
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('dist/js/actions.js') }}"></script>
 {% endblock %}

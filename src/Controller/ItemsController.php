@@ -43,7 +43,7 @@ class ItemsController extends AbstractController
 			$items->setCantidadTaller(0);
 			$em->persist($items);
 			$em->flush();
-
+			$this->addFlash('success', "Producto añadido");
 			return $this->redirectToRoute('app_items');
 		}
 
@@ -95,7 +95,7 @@ class ItemsController extends AbstractController
 			$item->setGanancia($item->getPrecioV() - $item->getPrecioC());
 			$em->persist($item);
 			$em->flush();
-
+			$this->addFlash('success', "Producto editado");
 			return $this->redirectToRoute('app_items');
 		}
 		return $this->render("items/edit.html.twig", ['form' => $form->createView()]);
@@ -141,8 +141,10 @@ class ItemsController extends AbstractController
 					$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'additem', $detalles);
 					$em->persist($logs);
 					$em->flush();
+					$this->addFlash('success', "Se añadieron {$actualCant} producto(s) al Inventario");
 				} else {
 					//$sin_fondos = "No hay suficiente fondo";
+					$this->addFlash('error', "No hay fondos suficientes para añadir esa cantidad de productos");
 					return $this->redirectToRoute('app_item_transf', [
 						'id' => $id,
 					]);

@@ -20,6 +20,14 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
+                    <label>Seleccionar Imagen</label>
+                    <label id="label_for_img" for="add_item_imageFile_file" class="form-control"
+                           style="overflow: hidden; cursor: pointer"></label>
+                </div>
+                <div class="d-none">
+                    {{ form_row(form.imageFile, { attr: {'autocomplete': 'off', 'onchange':'getFileJs()'} } ) }}
+                </div>
+                <div class="col-md-3">
                     {{ form_row(form.serie, { attr: {'autocomplete': 'off'} } ) }}
                 </div>
                 <div class="col-md-3">
@@ -55,14 +63,15 @@
                 <table id="dataTable" class="table table-striped" width="100%" cellspacing="0">
                     <thead>
                     <tr class="text-center">
-                        <th width="11%">Tipo</th>
-                        <th width="11%">Marca</th>
-                        <th width="11%">Modelo</th>
-                        <th width="11%">Precio_Compra</th>
-                        <th width="11%">Precio_Venta</th>
-                        <th width="11%">Ganancia</th>
-                        <th width="11%">%_Venta</th>
-                        <th width="23%">Acciones</th>
+                        <th width="10%">Tipo</th>
+                        <th width="10%">Marca</th>
+                        <th width="10%">Modelo</th>
+                        <th width="10%">Precio_Compra</th>
+                        <th width="10%">Precio_Venta</th>
+                        <th width="10%">Ganancia</th>
+                        <th width="10%">%_Venta</th>
+                        <th width="20%">Acciones</th>
+                        <th width="10%">Imagen</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -89,6 +98,8 @@
                                     <i class=" fas fa-trash-alt text-red"></i>
                                 </button>
                             </td>
+                            <td><img width="30" height="30" style="border-radius: 50%"
+                                     src="dist/img/system/{{ item.imageName }}" alt=""></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -103,4 +114,11 @@
     <script src="{{ asset('plugins/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('plugins/users.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('success') %}
+        <script>
+            showAlert('success', '{{ msg }}', 'Correcto');
+        </script>
+    {% endfor %}
 {% endblock %}

@@ -32,3 +32,13 @@
         <!-- /.card-body -->
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('error') %}
+        <script>
+            showAlert('error', '{{ msg }}', 'Error');
+        </script>
+    {% endfor %}
+{% endblock %}

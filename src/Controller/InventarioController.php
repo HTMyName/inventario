@@ -77,7 +77,9 @@ class InventarioController extends AbstractController
 				$em->persist($logs);
 
 				$em->flush();
+				$this->addFlash('success', "Se movieron {$cantidad_taller} producto(s) al Taller");
 			} else {
+				$this->addFlash('error', "Estas intentando mover más productos de los que existen");
 				return $this->redirectToRoute('app_inventario_add_taller', [
 					'id' => $id
 				]);
@@ -120,7 +122,9 @@ class InventarioController extends AbstractController
 				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'baja', $detalles);
 				$em->persist($logs);
 				$em->flush();
+				$this->addFlash('success', "Se dio baja a {$cant_bajas} producto(s)");
 			} else {
+				$this->addFlash('error', "Estas intentando dar baja a más productos de los que existen");
 				return $this->redirectToRoute('app_inventario_darbaja', [
 					'id' => $id
 				]);

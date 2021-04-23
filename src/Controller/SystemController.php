@@ -14,7 +14,9 @@ use App\Form\SystemType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/system")
@@ -61,6 +63,7 @@ class SystemController extends AbstractController
 	public function index(Request $request): Response
 	{
 		$system = $this->getDoctrine()->getRepository(System::class)->find(1);
+
 		$form = $this->createForm(SystemType::class, $system);
 		$form->handleRequest($request);
 
@@ -68,10 +71,12 @@ class SystemController extends AbstractController
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($system);
 			$em->flush();
+			$this->addFlash('success', "Configuración actualizada");
 		}
 
 		return $this->render('system/index.html.twig', [
 			'form' => $form->createView(),
+			'system' => $system->getImageName()
 		]);
 	}
 
@@ -100,6 +105,13 @@ class SystemController extends AbstractController
 				$system->setRecuperado($system->getRecuperado() + $cantidad_pagar);
 				$em->persist($system);
 				$em->flush();
+				if ($cantidad_pagar < 0) {
+					$this->addFlash('success', "Fondo retirado");
+				}else{
+					$this->addFlash('success', "Fondo añadido");
+				}
+			}else{
+				$this->addFlash('error', "Estas intentando retirar más que el fondo existente");
 			}
 		}
 		return $this->render('system/fondo.html.twig', [
@@ -133,6 +145,13 @@ class SystemController extends AbstractController
 				$system->setBanco($system->getBanco() + $cantidad_pagar);
 				$em->persist($system);
 				$em->flush();
+				if ($cantidad_pagar < 0) {
+					$this->addFlash('success', "Banco retirado");
+				}else{
+					$this->addFlash('success', "Banco añadido");
+				}
+			}else{
+				$this->addFlash('error', "Estas intentando retirar más que el banco existente");
 			}
 		}
 		return $this->render('system/banco.html.twig', [
@@ -167,6 +186,9 @@ class SystemController extends AbstractController
 				$system->setGanancia($system->getGanancia() + $cantidad_pagar);
 				$em->persist($system);
 				$em->flush();
+				$this->addFlash('success', "Movido {$cantidad_pagar} a Ganancia");
+			}else{
+				$this->addFlash('error', "Estas intentando mover más que el fondo existente");
 			}
 		}
 		return $this->render('system/fondo_ganacia.html.twig', [
@@ -201,6 +223,9 @@ class SystemController extends AbstractController
 				$system->setRecuperado($system->getRecuperado() + $cantidad_pagar);
 				$em->persist($system);
 				$em->flush();
+				$this->addFlash('success', "Movido {$cantidad_pagar} a Fondo");
+			}else{
+				$this->addFlash('error', "Estas intentando mover más que la ganancia existente");
 			}
 		}
 		return $this->render('system/ganancia_fondo.html.twig', [
@@ -236,8 +261,11 @@ class SystemController extends AbstractController
 				$em->persist($system);
 				$em->persist($user);
 				$em->flush();
+				$this->addFlash('success', "Préstamo realizado");
 				return $this->redirectToRoute('app_system_prestamo');
 			}
+		}else{
+			$this->addFlash('error', "Estas intentando prestar más que la ganancia existente");
 		}
 
 		return $this->render('system/prestamo.html.twig', [

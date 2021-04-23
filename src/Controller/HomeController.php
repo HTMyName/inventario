@@ -79,7 +79,12 @@ class HomeController extends AbstractController
 				$todo->setVisible(0);
 			}
 			$em->persist($todo);
-			$em->flush();
+			if ($todo->getIdUser() == null || $todo->getIdUser()->getActive() != 0) {
+				$em->flush();
+				$this->addFlash('success', 'Tarea añadida');
+			}else{
+				$this->addFlash('error', 'No se pudo añadir la tarea');
+			}
 			return $this->redirectToRoute('app_home');
 		}
 		return $this->render('home/todo.html.twig', [
@@ -107,6 +112,7 @@ class HomeController extends AbstractController
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($todo);
 			$em->flush();
+			$this->addFlash('success', 'Tarea editada');
 			return $this->redirectToRoute('app_home');
 		}
 		return $this->render('home/todo.html.twig', [
@@ -144,6 +150,7 @@ class HomeController extends AbstractController
 				$em = $this->getDoctrine()->getManager();
 				$em->remove($todo);
 				$em->flush();
+				$this->addFlash('success', 'Tarea eliminada');
 			}
 		}
 		return $this->redirectToRoute('app_home');

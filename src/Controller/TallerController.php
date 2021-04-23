@@ -275,6 +275,7 @@ class TallerController extends AbstractController
 							$em->remove($servicio);
 						}
 						$factura->setActive(0);
+						$this->addFlash('success', 'Factura eliminada');
 						$em->persist($factura);
 						$em->flush();
 					}
@@ -441,10 +442,11 @@ class TallerController extends AbstractController
 
 				$detalles = $item->getMarca() . ',' . $item->getModelo() . ',' . $item->getPrecioC() . ',' . $cantidad_inventario;
 				$logs = $this->logsOb->generateLogs(null, null, $this->getUser(), 'addinventario', $detalles);
+				$this->addFlash('success', "Se movieron {$cantidad_inventario} producto(s) al Inventario");
 				$em->persist($logs);
-
 				$em->flush();
 			} else {
+				$this->addFlash('error', "Estas intentando mover más productos de los que existen");
 				return $this->redirectToRoute('app_taller_add_inventario', [
 					'id' => $id
 				]);

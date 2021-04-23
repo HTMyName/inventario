@@ -68,6 +68,18 @@
         let parent = div.parentElement;
         parent.style.display = 'none';
     </script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('dist/js/alerts.js') }}"></script>
+    {% for msg in app.flashes('success') %}
+        <script>
+            showAlert('success', '{{ msg }}', 'Correcto');
+        </script>
+    {% endfor %}
+    {% for msg in app.flashes('error') %}
+        <script>
+            showAlert('error', '{{ msg }}', 'Error');
+        </script>
+    {% endfor %}
 {% endblock %}
 
 
