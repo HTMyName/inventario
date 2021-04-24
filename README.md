@@ -1,6 +1,9 @@
 # Inventario
 > Inventario en Symfony 5
 
+Preview
+<img src="https://github.com/HTMyName/inventario/blob/main/preview.png">
+
 ## Requerimientos
 1. Composer
 2. PHP > 7.0
@@ -26,28 +29,5 @@ php bin/console doctrine:schema:update --force
 php bin/console server:run
 ``` 
 
-5.
-Preview
-https://github.com/HTMyName/inventario/blob/main/preview.png
-
-6. Ingresar a la url:
+5. Ingresar a la url:
 > *localhost:8000* [Entrar](http://localhost:8000)
-
-# Tips de consola
-1. Generar entidades y sus atributos
-
-```sh
-php bin/console doctrine:generate:entity
-``` 
-
-2. Generar getters y setters de las entidades
-
-```sh
-php bin/console doctrine:generate:entities AppBundle
-``` 
-
-3. Actualizar el esquema de la Base de Datos
-
-```sh
-php bin/console doctrine:schema:update --force
-``` 
